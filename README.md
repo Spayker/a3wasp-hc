@@ -1,1 +1,2 @@
-# a3wasp-hc
+# ARMA3WARFARE_HC
+Headless Client scripts
