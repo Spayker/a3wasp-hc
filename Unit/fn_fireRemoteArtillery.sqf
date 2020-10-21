@@ -56,7 +56,7 @@ params ["_units", "_destination", "_side", "_artyRange"];
             	[_art_pos, west] remoteExec ["WFCL_FNC_ARRadarMarkerUpdate", west]
             };
 
-                for '_i' from 1 to _burst*3 do {
+                for '_i' from 1 to _burst do {
                     sleep (_reloadTime+random 3);
                     if (!alive _gunner || !alive _artillery) exitWith {};
 
@@ -68,7 +68,7 @@ params ["_units", "_destination", "_side", "_artyRange"];
                     _landDestination = [((_destination # 0)+((sin _direction)*_distance))+(random _dispersion)-(random _dispersion),(_destination # 1)+((cos _direction)*_distance)+(random _dispersion)-(random _dispersion),0];
 
                     _artillery doArtilleryFire [_landDestination, currentMagazine _artillery, 0];
-                    sleep 5;
+                sleep 10;
                 _artillery fire (currentWeapon _artillery)
             };
 
