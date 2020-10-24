@@ -38,6 +38,8 @@ params ["_units", "_destination", "_side", "_artyRange"];
             {_gunner disableAI _x} forEach ['MOVE','TARGET','AUTOTARGET'];
             _watchPosition = [_destination # 0, _destination # 1, (_artillery distance _destination)/(tan(90-_angle))];
 
+			
+			(_gunner) doWatch _watchPosition;
             if !(alive _artillery) exitWith {
             	if (alive _gunner) then {{_gunner enableAI _x} forEach ['MOVE','TARGET','AUTOTARGET']};
             };
@@ -52,7 +54,8 @@ params ["_units", "_destination", "_side", "_artyRange"];
             	[_art_pos, west] remoteExec ["WFCL_FNC_ARRadarMarkerUpdate", west]
             };
 
-                for '_i' from 1 to _burst do {
+			sleep 15;
+            for '_i' from 1 to _burst do {
                     if (!alive _gunner || !alive _artillery) exitWith {};
 
                 //--- Randomize Land Area.
@@ -63,7 +66,7 @@ params ["_units", "_destination", "_side", "_artyRange"];
                     _landDestination = [((_destination # 0)+((sin _direction)*_distance))+(random _dispersion)-(random _dispersion),(_destination # 1)+((cos _direction)*_distance)+(random _dispersion)-(random _dispersion),0];
 
                     _artillery doArtilleryFire [_landDestination, currentMagazine _artillery, 0];
-                sleep 15;
+                
                 _artillery fire (currentWeapon _artillery);
                 sleep (_reloadTime+random 5);
             };
