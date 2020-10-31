@@ -58,7 +58,7 @@ params ["_units", "_destination", "_side", "_artyRange"];
                 if (!alive _gunner || !alive _artillery) exitWith {};
 
                 //--- Randomize Land Area.
-                _distance = random (_distance / _maxRange * 100) + random _radius;
+                _distance = random (_distance / _maxRange * 100) + random _artyRange;
 				_direction = random 360;
 
 				//--- Default Position.
