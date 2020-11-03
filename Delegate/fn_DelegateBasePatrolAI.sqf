@@ -21,5 +21,5 @@ if (_created > 0) then {
 	_built = _built + 1;
 	_WF_Logic setVariable [Format["%1UnitsCreated",str _side],_built,true];
 	[str _side,'UnitsCreated',_built] Call WFCO_FNC_UpdateStatistics;
-	[_group,_site,missionNamespace getVariable "WF_C_AI_PATROL_RANGE"] Spawn WFSE_FNC_AIPatrol;
+	[_group,_site,missionNamespace getVariable "WF_C_AI_PATROL_RANGE"] Spawn WFCO_FNC_AIPatrol;
 };
