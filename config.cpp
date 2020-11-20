@@ -28,6 +28,11 @@ class CfgFunctions {
             class delegateTownAI {};
         };
 		
+        class DelegateAiEnvironment {
+            file = "\wasphc\Environment";
+            class startGarbageCollector {};
+        };
+		
 		class OperateTownDefenses {
 			file = "wasphc\OperateTownDefenses";
 			class RemoveGroup {};

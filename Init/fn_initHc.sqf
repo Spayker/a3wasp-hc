@@ -17,4 +17,5 @@ sleep 3;
 //--- Notify the server that our headless client is here.
 [player] remoteExecCall ["WFSE_FNC_addHeadlessClient",2];
 
+0 = [] spawn WFHC_FNC_startGarbageCollector;
 0 = [] spawn WFHC_FNC_broadCastFPS;
