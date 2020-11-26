@@ -28,6 +28,11 @@ class CfgFunctions {
             class delegateTownAI {};
         };
 		
+        class TownCamps {
+            file = "\wasphc\Town";
+            class updateCampsInTown {};
+        };
+
         class DelegateAiEnvironment {
             file = "\wasphc\Environment";
             class startGarbageCollector {};
