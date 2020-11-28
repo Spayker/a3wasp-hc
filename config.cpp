@@ -31,6 +31,11 @@ class CfgFunctions {
         class TownCamps {
             file = "\wasphc\Town";
             class updateCampsInTown {};
+            class startTownAiProcessing {};
+            class getTownGroups {};
+            class getVehicleTownGroups {};
+            class getTownActiveGroups {};
+            class spawnTownGroups {};
         };
 
         class DelegateAiEnvironment {
