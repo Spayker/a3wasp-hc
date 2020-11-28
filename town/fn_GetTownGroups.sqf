@@ -38,12 +38,6 @@ if (_side != resistance) then {
     _groups_max = round(_groups_max * (missionNamespace getVariable "WF_C_TOWNS_UNITS_DEFENDER_COEF"));
 };
 
-diag_log format ['fn_GetTownGroups.sqf: _current_infantry_upgrade - %1', _current_infantry_upgrade];
-diag_log format ['fn_GetTownGroups.sqf: maxSupplyValue - %1', _town getVariable "maxSupplyValue"];
-diag_log format ['fn_GetTownGroups.sqf: _sv - %1', _sv];
-diag_log format ['fn_GetTownGroups.sqf: WF_C_TOWNS_UNITS_DEFENDER_COEF - %1', missionNamespace getVariable "WF_C_TOWNS_UNITS_DEFENDER_COEF"];
-diag_log format ['fn_GetTownGroups.sqf: _groups_max - %1', _groups_max];
-
 if (count _townDefendersSpeciality > 0) then {
     _infantrySpeciality = _townDefendersSpeciality # 0;
     _infantryGroupAmount = _infantrySpeciality # 0;
