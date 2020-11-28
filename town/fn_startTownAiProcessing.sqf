@@ -1,12 +1,10 @@
 private["_town","_range_detect_active","_position","_groups","_town_camps","_town_camps_count","_airHeight","_unitsInactiveMax",
 "_patrol_delay","_patrol_enabled","_town_defender_enabled","_town_occupation_enabled", "_hc", "_grps"];
 
-diag_log format [''];
-for "_j" from 0 to ((count towns) - 1) step 1 do
-{
+for "_j" from 0 to ((count towns) - 1) step 1 do {
 	_loc = towns select _j;
 	["INITIALIZATION",format ["fn_startTownAiProcessing.sqf : Initialized for [%1].", _loc getVariable "name"]] call WFCO_FNC_LogContent;
-	sleep 0.01;
+	sleep 0.01
 };
 
 _lastUp = 0;
@@ -14,20 +12,20 @@ _range_detect_active = missionNamespace getVariable "WF_C_TOWNS_AI_SPAWN_RANGE";
 _range_detect_active_occupation = _range_detect_active / 3;
 
 _airHeight = missionNamespace getVariable "WF_C_TOWNS_DETECTION_RANGE_AIR";
-_unitsInactiveMax = 15;//missionNamespace getVariable "WF_C_TOWNS_UNITS_INACTIVE";
+_unitsInactiveMax = missionNamespace getVariable "WF_C_TOWNS_UNITS_INACTIVE";
 _town_defender_enabled = if ((missionNamespace getVariable "WF_C_TOWNS_DEFENDER") > 0) then {true} else {false};
 _town_occupation_enabled = if ((missionNamespace getVariable "WF_C_TOWNS_OCCUPATION") > 0) then {true} else {false};
 
 for "_k" from 0 to ((count towns) - 1) step 1 do {
 	_town = towns select _k;
-	_town setVariable ["wf_active", false];
-	_town setVariable ["wf_active_air", false];
-	_town setVariable ["wf_inactivity", 0];
-	_town setVariable ['wf_town_active_vehicles',[]];
-	_town setVariable ['wf_active_vehicles', []];
-	_town setVariable ['wf_town_teams', []];
-	_town setVariable ['wf_saved_inf_town_teams', []];
-	_town setVariable ['wf_saved_veh_town_teams', []];
+	_town setVariable ["wf_active", false, true];
+	_town setVariable ["wf_active_air", false, true];
+	_town setVariable ["wf_inactivity", 0, true];
+	_town setVariable ['wf_town_active_vehicles',[], true];
+	_town setVariable ['wf_active_vehicles', [], true];
+	_town setVariable ['wf_town_teams', [], true];
+	_town setVariable ['wf_saved_inf_town_teams', [], true];
+	_town setVariable ['wf_saved_veh_town_teams', [], true];
     _town setVariable ['wf_rest_infantry_groups', [], true];
     _town setVariable ['wf_rest_vehicle_groups', [], true];
 	_town setVariable ['wf_spawning', false];
@@ -162,8 +160,7 @@ _procesAiTowns = {
                    }
                }
            }
-       };
-       sleep 0.01
+       }
    }
 };
 

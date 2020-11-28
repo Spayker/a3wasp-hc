@@ -19,6 +19,7 @@ while {!WF_GameOver} do {
         _town = _filteredTowns # _j;
         if!(isNil "_town") then {
         _camps = _town getVariable ["camps", []];
+
         _town_starting_sv = _town getVariable "startingSupplyValue";
 
         for "_i" from 0 to ((count _camps) - 1) step 1 do {
