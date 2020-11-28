@@ -114,7 +114,7 @@ _procesAiTowns = {
 
                        //--- create the groups
                        if(count _infGroups > 0 ) then {
-                            [_town, _camps, _side, _vehGroups, _infGroups] call WFHC_FNC_spawnTownGroups
+                            [_town, _camps, _side, _vehGroups, _infGroups] spawn WFHC_FNC_spawnTownGroups
                        }
                        //// end of creating
                    };
