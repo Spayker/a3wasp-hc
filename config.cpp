@@ -36,6 +36,9 @@ class CfgFunctions {
             class getVehicleTownGroups {};
             class getTownActiveGroups {};
             class spawnTownGroups {};
+            class manageTownDefenses {};
+            class operateTownDefensesUnits {};
+            class spawnTownDefense {};
         };
 
         class DelegateAiEnvironment {

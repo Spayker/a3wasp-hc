@@ -1,9 +1,6 @@
 //--- Headless Client initialization...
 ["INITIALIZATION", "Init_HC.sqf: Running the headless client initialization."] Call WFCO_FNC_LogContent;
 
-//--- We wait for the server full init (just in case!).
-sleep 15;
-
 sideID = WF_Client_SideJoined Call WFCO_FNC_GetSideID;
 WF_Client_SideID = sideID;
 
@@ -24,6 +21,9 @@ WF_HC_DEFENCE_GROUP_WEST = nil;
 waitUntil{count towns == totalTowns};
 
 call WFCO_fnc_respawnStartVeh;
+
+//--- We wait for the server full init (just in case!).
+sleep 15;
 
 0 = [] spawn WFHC_FNC_updateCampsInTown;
 ["INITIALIZATION", "Init_HC.sqf: camps update script is initialized."] Call WFCO_FNC_LogContent;

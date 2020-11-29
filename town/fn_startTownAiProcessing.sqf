@@ -28,7 +28,7 @@ for "_k" from 0 to ((count towns) - 1) step 1 do {
 	_town setVariable ['wf_saved_veh_town_teams', [], true];
     _town setVariable ['wf_rest_infantry_groups', [], true];
     _town setVariable ['wf_rest_vehicle_groups', [], true];
-	_town setVariable ['wf_spawning', false];
+	_town setVariable ['wf_spawning', false, true];
 	sleep 0.01;
 };
 
@@ -58,7 +58,7 @@ _procesAiTowns = {
                    _town setVariable ["wf_inactivity", time, true];
                    if(!(_town getVariable "wf_active")) then {
                        ["INFORMATION", format ["fn_startTownAiProcessing.sqf: Town [%1] has been activated, creating defensive units for [%2].", _town, _side]] call WFCO_FNC_LogContent;
-                       [_town, _side, "spawn"] remoteExecCall ["WFSE_FNC_OperateTownDefensesUnits",2];
+                       [_town, _side, "spawn"] spawn WFHC_FNC_OperateTownDefensesUnits;
                        _town setVariable ["wf_active", true, true];
 
                        if(_side == resistance) then {
@@ -139,7 +139,7 @@ _procesAiTowns = {
 
 
                        //--- Despawn the town defenses unit.
-                       [_town, _side, "remove"] remoteExecCall ["WFSE_FNC_OperateTownDefensesUnits",2];
+                       [_town, _side, "remove"] spawn WFHC_FNC_OperateTownDefensesUnits;
                        //// end of inner block
                    } else { //--Town still active, check capturing time--
                        if((time - (_town getVariable ["captureTime",time])) > WF_C_TOWNS_BACKCAPTURING_TIMEOUT) then {

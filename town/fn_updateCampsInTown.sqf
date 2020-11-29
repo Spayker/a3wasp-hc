@@ -7,11 +7,19 @@ _camp_cap_rate = missionNamespace getVariable "WF_C_CAMPS_CAPTURE_RATE";
 _camp_range = missionNamespace getVariable "WF_C_CAMPS_RANGE";
 _camp_range_players = missionNamespace getVariable "WF_C_CAMPS_RANGE_PLAYERS";
 _filteredTowns = [];
+
+["INITIALIZATION",format ["fn_updateCampsInTown.sqf: Total town amount %1", count towns]] call WFCO_FNC_LogContent;
 {
     _town = _x;
     _camps = _town getVariable ["camps", []];
-    if (count _camps > 0) then { _filteredTowns pushBack _town }
+    if (count _camps > 0) then {
+        _filteredTowns pushBack _town
+    } else {
+        ["INITIALIZATION",format ["fn_updateCampsInTown.sqf: Town %1 does not have camps", _town getVariable "name"]] call WFCO_FNC_LogContent
+    }
 } foreach towns;
+
+["INITIALIZATION",format ["fn_updateCampsInTown.sqf: Total amount of filtered towns with camps %1", count _filteredTowns]] call WFCO_FNC_LogContent;
 
 while {!WF_GameOver} do {
     _filteredTowns = _filteredTowns - [objNull];

@@ -39,4 +39,4 @@ if (isNil '_group') then {
     };
 };
 
-[_side, _group, _defences] spawn WFCO_FNC_CreateUnitForStaticDefence;
+[_side, _group, _defences] call WFCO_FNC_CreateUnitForStaticDefence;
