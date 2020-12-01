@@ -73,7 +73,9 @@ if(_deleteOnlyMen > 0) then {
         deleteGroup _x
 	} forEach _town_teams;
 
-    [_town] remoteExecCall ["WFSE_FNC_MarkTownInactive", 2];
+	_town setVariable ["wf_active", false];
+    _town setVariable ["wf_active_air", false];
+    _town setVariable ["captureTime", nil, true];
 };
 
 if(_isPersistGroup) then {

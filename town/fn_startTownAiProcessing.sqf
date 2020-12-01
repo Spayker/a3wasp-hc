@@ -18,14 +18,14 @@ _town_occupation_enabled = if ((missionNamespace getVariable "WF_C_TOWNS_OCCUPAT
 
 for "_k" from 0 to ((count towns) - 1) step 1 do {
 	_town = towns select _k;
-	_town setVariable ["wf_active", false, true];
+	_town setVariable ["wf_active", false];
 	_town setVariable ["wf_active_air", false, true];
-	_town setVariable ["wf_inactivity", 0, true];
+	_town setVariable ["wf_inactivity", 0];
 	_town setVariable ['wf_town_active_vehicles',[], true];
 	_town setVariable ['wf_active_vehicles', [], true];
 	_town setVariable ['wf_town_teams', [], true];
-	_town setVariable ['wf_saved_inf_town_teams', [], true];
-	_town setVariable ['wf_saved_veh_town_teams', [], true];
+	_town setVariable ['wf_saved_inf_town_teams', []];
+	_town setVariable ['wf_saved_veh_town_teams', []];
     _town setVariable ['wf_rest_infantry_groups', [], true];
     _town setVariable ['wf_rest_vehicle_groups', [], true];
 	_town setVariable ['wf_spawning', false, true];
@@ -55,11 +55,11 @@ _procesAiTowns = {
                _enemies = [_detected, _side] call WFCO_FNC_GetAreaEnemiesCount;
                if(_enemies > 0) then {
 
-                   _town setVariable ["wf_inactivity", time, true];
+                   _town setVariable ["wf_inactivity", time];
                    if(!(_town getVariable "wf_active")) then {
                        ["INFORMATION", format ["fn_startTownAiProcessing.sqf: Town [%1] has been activated, creating defensive units for [%2].", _town, _side]] call WFCO_FNC_LogContent;
                        [_town, _side, "spawn"] spawn WFHC_FNC_OperateTownDefensesUnits;
-                       _town setVariable ["wf_active", true, true];
+                       _town setVariable ["wf_active", true];
 
                        if(_side == resistance) then {
                            _locationSpecialities = _town getVariable "townSpeciality";
@@ -79,8 +79,8 @@ _procesAiTowns = {
                                    _vehicle = [_type, _x # 0, resistance, _x # 1, false] Call WFCO_FNC_CreateVehicle;
                                    _vehicles pushBack [_type, _x # 0, _x # 1, _vehicle]
                                } forEach (_town getVariable ["respVehPositions", []]);
-                               _town setVariable ["respVehicles", _vehicles, true];
-                               _town setVariable ["respVehPositions", [], true]
+                               _town setVariable ["respVehicles", _vehicles];
+                               _town setVariable ["respVehPositions", []]
                            }
 
                        };
@@ -92,7 +92,7 @@ _procesAiTowns = {
                            ["INFORMATION", format ["fn_startTownAiProcessing.sqf: infantry groups [%1] to be spawned: %2", count _infGroups, _infGroups]] call WFCO_FNC_LogContent
                        } else {
                            _infGroups = _savedInfGroups;
-                           _town setVariable ['wf_saved_inf_town_teams', [], true]
+                           _town setVariable ['wf_saved_inf_town_teams', []]
                        };
 
                        _savedVehGroups = _town getVariable "wf_saved_veh_town_teams";
@@ -102,7 +102,7 @@ _procesAiTowns = {
                            ["INFORMATION", format ["fn_startTownAiProcessing.sqf: vehicles %1 to be spawned: %2", count _vehGroups, _vehGroups]] call WFCO_FNC_LogContent
                        } else {
                            _vehGroups = _savedVehGroups;
-                           _town setVariable ['wf_saved_veh_town_teams', [], true]
+                           _town setVariable ['wf_saved_veh_town_teams', []]
                        };
 
                         _camps = +(_town getVariable "camps");
@@ -129,8 +129,8 @@ _procesAiTowns = {
                            if(_side == resistance) then {
                                { deleteVehicle (_x # 3) } forEach (_town getVariable ["respVehicles", []])
                            } else {
-                               _town setVariable ["respVehicles", [], true];
-                               _town setVariable ["respVehPositions", [], true]
+                               _town setVariable ["respVehicles", []];
+                               _town setVariable ["respVehPositions", []]
                            }
                        };
 

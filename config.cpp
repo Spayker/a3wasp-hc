@@ -39,6 +39,7 @@ class CfgFunctions {
             class manageTownDefenses {};
             class operateTownDefensesUnits {};
             class spawnTownDefense {};
+            class saveTownSurvivedGroups {};
         };
 
         class DelegateAiEnvironment {
