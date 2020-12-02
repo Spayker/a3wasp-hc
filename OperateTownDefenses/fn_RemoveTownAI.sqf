@@ -118,6 +118,6 @@ if(_isPersistGroup) then {
     _town setVariable ['wf_rest_infantry_groups', [], true];
     ["INFORMATION", format ["fn_RemoveTownAI.sqf: filtered infantry groups to be saved in [%1]: %2", _town, _groupsToSave]] call WFCO_FNC_LogContent;
     ["INFORMATION", format ["fn_RemoveTownAI.sqf: filtered vehicles to be saved in [%1]: %2", _town, _groupsVehToSave]] call WFCO_FNC_LogContent;
-    [_town, _groupsToSave, _groupsVehToSave] remoteExecCall ["WFSE_FNC_SaveTownSurvivedGroups", 2]
+    [_town, _groupsToSave, _groupsVehToSave] call WFHC_FNC_SaveTownSurvivedGroups
 };
 
