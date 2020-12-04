@@ -41,7 +41,7 @@ if (_side != resistance) then {
 } else {
     _sv = _town getVariable "maxSupplyValue";
     _groups_max = round(_groups_max * (missionNamespace getVariable "WF_C_TOWNS_UNITS_DEFENDER_COEF"));
-    _current_light_upgrade = floor random 8; //--Random real (floating point) value from 0 (inclusive) to x (not inclusive)--
+    _current_light_upgrade = floor random 10; //--Random real (floating point) value from 0 (inclusive) to x (not inclusive)--
     _current_heavy_upgrade = floor random 3;
     _current_air_upgrade = floor random 5;
 };

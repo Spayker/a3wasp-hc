@@ -22,8 +22,8 @@ _groups_max = 2;
 _units = [];
 _unit_vehicles = [];
 _unitTemplates = [
-    [Format ["Motorized_%1", floor random 8]],
-    [Format ["Motorized_%1", floor random 8]]
+    [Format ["Motorized_%1", floor random 10]],
+    [Format ["Motorized_%1", floor random 10]]
 ];
 
 _k = 0;
