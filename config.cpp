@@ -69,5 +69,10 @@ class CfgFunctions {
             class resBuyUnit {};
             class manningOfResBaseDefense {};
         };
+
+        class ServerTaskDirector {
+            file = "wasphc\Task";
+            class initTaskDirector {};
+        };
 	};
 };

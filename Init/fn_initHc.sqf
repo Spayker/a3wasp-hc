@@ -30,3 +30,7 @@ sleep 15;
 
 0 = [] spawn WFHC_fnc_startTownAiProcessing;
 ["INITIALIZATION", "Init_HC.sqf: ai town processing script is initialized."] Call WFCO_FNC_LogContent;
+
+//--WASP MODULES: start TaskDirector--
+["INITIALIZATION", Format ["Init_HC.sqf: HC start TaskDirector at [%1]", time]] Call WFCO_FNC_LogContent;
+[] spawn WFHC_fnc_initTaskDirector;
