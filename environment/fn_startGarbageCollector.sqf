@@ -38,9 +38,6 @@ while {!WF_GameOver} do {
                         _crew = crew _object;
                         if (count _crew > 0) then {
                             {
-                                _x removeAllEventHandlers "killed";
-                                _x removeAllEventHandlers "hit";
-            					_x removeAllEventHandlers "Fired";
                                 ["INFORMATION", Format["fn_TrashObject.sqf: Deleting crew unit [%1] of trashed object [%2].", _x, _object]] Call WFCO_FNC_LogContent;
                                 _object deleteVehicleCrew _x
                             } forEach _crew;
