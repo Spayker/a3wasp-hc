@@ -3,7 +3,7 @@
 //--Task Object: integer InUse flag; array TaskData; array task for a Side: [WEST, EAST, CIVILIAN]; integer max total launches count for all sides--
 //--Task data: string Name, boolean playerOnAllSides (west and east must include online players), array Timings [min, mid, max] (time range for mission start) --
 WF_TD_TASKS = [
-				[scriptNull, ["saveTourists", false, [60, 90, 120]], [WEST, EAST], 2]
+				[scriptNull, ["saveTourists", false, [5400, 7200, 8200]], [WEST, EAST], 2]
 			];
 
 _directorDoWork = true;
