@@ -40,7 +40,10 @@ if (count _defenseData > 0) then {
     //--- If found, create a defense.
     if (_defense != "") then {
         _entity = createVehicle [_defense, _defenseData # 1, [], 0, "NONE"];
-        _entity addEventHandler ['Killed', format ["[_this # 0, _this # 1, %1] spawn WFCO_FNC_OnUnitKilled;", _sideID]];
+        _entity addMPEventHandler ['MPKilled', {
+            params ["_unit", "_killer", "_instigator", "_useEffects"];
+            [_unit,_killer] call WFCO_FNC_OnUnitKilled
+        }];
         _entity setDir (_defenseData # 2);
         _entity setVariable ["wf_defense", _entity, true];
         _entity setVariable ["wf_defense_kind", _kinds, true];
