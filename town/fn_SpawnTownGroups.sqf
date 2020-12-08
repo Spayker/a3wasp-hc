@@ -2,7 +2,7 @@ params["_town", "_camps", "_side", "_vehGroups", "_infGroups"];
 private ["_spawn_inf_radius","_position","_camp","_index","_roadList","_road","_roadConnectedTo",
 "_selectedRoad", "_secondWaveSpawnRange"];
 
-_town setVariable ['wf_spawning', true, true]; //--Mark town as spawning--
+_town setVariable ['wf_spawning', true]; //--Mark town as spawning--
 _spawn_inf_radius = 25;
 _secondWaveSpawnRange = (_town getVariable "range") / 2;
 
@@ -26,7 +26,7 @@ _spawnGroups = {
             if (isNil '_position') then {
                 ["WARNING", Format["fn_SpawnTownGroups.sqf: position is nil for _town %1, _side %2, groups %3 ", _town,_side,_groupToBeSpawned]] Call WFCO_FNC_LogContent
             } else {
-                [_town, _side, [_groupToBeSpawned], [_position]] spawn WFCO_FNC_CreateTownUnits
+                [_town, _side, [_groupToBeSpawned], [_position]] spawn WFHC_FNC_CreateTownUnits
             }
         };
 
@@ -50,7 +50,7 @@ if (count _camps > 0) then {
         _position = ([getPosATL _camp, _spawn_inf_radius] call WFCO_FNC_GetSafePlace);
 
         if(count _infGroups > _i) then {
-            [_town, _side, [_infGroups # _i], [_position], _camp] spawn WFCO_FNC_CreateTownUnits
+            [_town, _side, [_infGroups # _i], [_position], _camp] spawn WFHC_FNC_CreateTownUnits
         };
         _infGroups deleteAt _i;
         sleep (random 5);
@@ -90,7 +90,7 @@ if((_allGroupCount + _campsCount + _defenceStaticGroup) > _grpCountThresshold) t
 
     if (count _waveInfGroups > 0) then { [true, true, _side, _waveInfGroups, _town] call _spawnGroups };
     if (count _waveVehGroups > 0) then { [false, true, _side, _waveVehGroups, _town] call _spawnGroups };
-    _town setVariable ['wf_spawning', false, true];
+    _town setVariable ['wf_spawning', false];
 
     _allUnits = 0;
     _townSpawnedGroups = _town getVariable 'wf_town_teams';
@@ -100,8 +100,8 @@ if((_allGroupCount + _campsCount + _defenceStaticGroup) > _grpCountThresshold) t
         } forEach units (_townSpawnedGroups # _i)
     };
 
-    _town setVariable ['wf_rest_infantry_groups', _infGroups, true];
-    _town setVariable ['wf_rest_vehicle_groups', _vehGroups, true];
+    _town setVariable ['wf_rest_infantry_groups', _infGroups];
+    _town setVariable ['wf_rest_vehicle_groups', _vehGroups];
     while {_town getVariable "wf_active" && _allUnits > 10} do {
         _allUnits = 0;
         for "_i" from 0 to (count (_townSpawnedGroups) - 1) do {
@@ -115,15 +115,15 @@ if((_allGroupCount + _campsCount + _defenceStaticGroup) > _grpCountThresshold) t
         _town setVariable ['wf_spawning', true];
         [true, false, _side, _infGroups, _town, _secondWaveSpawnRange] call _spawnGroups;
         [false, false, _side, _vehGroups, _town, _secondWaveSpawnRange] call _spawnGroups;
-        _town setVariable ['wf_rest_infantry_groups', [], true];
-        _town setVariable ['wf_rest_vehicle_groups', [], true];
+        _town setVariable ['wf_rest_infantry_groups', []];
+        _town setVariable ['wf_rest_vehicle_groups', []];
     }
 } else {
-    _town setVariable ['wf_spawning', true, true];
+    _town setVariable ['wf_spawning', true];
     [true, true, _side, _infGroups, _town] call _spawnGroups;
     [false, true, _side, _vehGroups, _town] call _spawnGroups
 };
 
-_town setVariable ['wf_spawning', false, true] //--Mark town as finished spawning--
+_town setVariable ['wf_spawning', false] //--Mark town as finished spawning--
 
 

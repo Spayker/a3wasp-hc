@@ -26,11 +26,13 @@ class CfgFunctions {
             class delegateAIStaticDefence {};
             class delegateBasePatrolAI {};
             class delegateTownAI {};
+            class createHighCommandGroup {};
         };
 		
-        class TownCamps {
+        class Towns {
             file = "\wasphc\Town";
             class updateCampsInTown {};
+            class startTownProcessing {};
             class startTownAiProcessing {};
             class getTownGroups {};
             class getVehicleTownGroups {};
@@ -40,6 +42,7 @@ class CfgFunctions {
             class operateTownDefensesUnits {};
             class spawnTownDefense {};
             class saveTownSurvivedGroups {};
+            class createTownUnits {};
         };
 
         class DelegateAiEnvironment {

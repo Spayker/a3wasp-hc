@@ -19,16 +19,15 @@ _town_occupation_enabled = if ((missionNamespace getVariable "WF_C_TOWNS_OCCUPAT
 for "_k" from 0 to ((count towns) - 1) step 1 do {
 	_town = towns select _k;
 	_town setVariable ["wf_active", false];
-	_town setVariable ["wf_active_air", false, true];
+	_town setVariable ["wf_active_air", false];
 	_town setVariable ["wf_inactivity", 0];
-	_town setVariable ['wf_town_active_vehicles',[], true];
-	_town setVariable ['wf_active_vehicles', [], true];
-	_town setVariable ['wf_town_teams', [], true];
+	_town setVariable ['wf_active_vehicles', []];
+	_town setVariable ['wf_town_teams', []];
 	_town setVariable ['wf_saved_inf_town_teams', []];
 	_town setVariable ['wf_saved_veh_town_teams', []];
-    _town setVariable ['wf_rest_infantry_groups', [], true];
-    _town setVariable ['wf_rest_vehicle_groups', [], true];
-	_town setVariable ['wf_spawning', false, true];
+    _town setVariable ['wf_rest_infantry_groups', []];
+    _town setVariable ['wf_rest_vehicle_groups', []];
+	_town setVariable ['wf_spawning', false];
 	sleep 0.01;
 };
 
@@ -114,14 +113,14 @@ _procesAiTowns = {
 
                        //--- create the groups
                        if(count _infGroups > 0 ) then {
-                            [_town, _camps, _side, _vehGroups, _infGroups] spawn WFHC_FNC_spawnTownGroups
+                           [_town, _camps, _side, _vehGroups, _infGroups] spawn WFHC_FNC_spawnTownGroups
                        }
                        //// end of creating
                    };
                };
 
                if((_town getVariable "wf_active") || (_town getVariable "wf_active_air")) then {
-               if((time - (_town getVariable "wf_inactivity") > _unitsInactiveMax) &&
+                    if((time - (_town getVariable "wf_inactivity") > _unitsInactiveMax) &&
                        !(_town getVariable ['wf_spawning', false])) then {
 
                        _locationSpecialities = _town getVariable "townSpeciality";

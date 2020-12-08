@@ -75,7 +75,7 @@ if(_deleteOnlyMen > 0) then {
 
 	_town setVariable ["wf_active", false];
     _town setVariable ["wf_active_air", false];
-    _town setVariable ["captureTime", nil, true];
+    _town setVariable ["captureTime", nil];
 };
 
 if(_isPersistGroup) then {
@@ -86,14 +86,14 @@ if(_isPersistGroup) then {
             _vehicleType = typeOf _x;
             _vehicleSideId = getNumber(configFile >> "CfgVehicles" >> _vehicleType >> "side");
             if (_sideID == _vehicleSideId) then {
-        if (_vehCounter == 2) then {
-            _groupsVehToSave pushBack _groupToSave;
-            _vehCounter = 0;
-                _groupToSave = []
-            };
+                if (_vehCounter == 2) then {
+                    _groupsVehToSave pushBack _groupToSave;
+                    _vehCounter = 0;
+                    _groupToSave = []
+                };
 
                 _groupToSave pushBack (_vehicleType);
-            _vehCounter = _vehCounter + 1
+                _vehCounter = _vehCounter + 1
             }
         }
     } forEach (_town_vehicles);
@@ -114,8 +114,8 @@ if(_isPersistGroup) then {
         { _groupsVehToSave pushBack _x } forEach _restVehicleGroups
     };
 
-    _town setVariable ['wf_rest_vehicle_groups', [], true];
-    _town setVariable ['wf_rest_infantry_groups', [], true];
+    _town setVariable ['wf_rest_vehicle_groups', []];
+    _town setVariable ['wf_rest_infantry_groups', []];
     ["INFORMATION", format ["fn_RemoveTownAI.sqf: filtered infantry groups to be saved in [%1]: %2", _town, _groupsToSave]] call WFCO_FNC_LogContent;
     ["INFORMATION", format ["fn_RemoveTownAI.sqf: filtered vehicles to be saved in [%1]: %2", _town, _groupsVehToSave]] call WFCO_FNC_LogContent;
     [_town, _groupsToSave, _groupsVehToSave] call WFHC_FNC_SaveTownSurvivedGroups
