@@ -165,7 +165,10 @@ _procesTowns = {
                     if (_rate < 1) then {_rate = 1};
 
                     if (_sideID != WF_C_UNKNOWN_ID) then {
-                        if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {_timeAttacked = time + 60;[_side, "IsUnderAttack", ["Town", _location]] Spawn WFSE_FNC_SideMessage};
+                        if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
+                            _timeAttacked = time + 60;
+                            [_side, "IsUnderAttack", ["Town", _location]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
+                        };
                     };
 
                     _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
