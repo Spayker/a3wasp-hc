@@ -27,6 +27,7 @@ class CfgFunctions {
             class delegateBasePatrolAI {};
             class delegateTownAI {};
             class createHighCommandGroup {};
+			class createTownUnits {};
         };
 		
         class Towns {
@@ -42,7 +43,6 @@ class CfgFunctions {
             class operateTownDefensesUnits {};
             class spawnTownDefense {};
             class saveTownSurvivedGroups {};
-            class createTownUnits {};
         };
 
         class DelegateAiEnvironment {
