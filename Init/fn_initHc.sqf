@@ -18,12 +18,10 @@ WF_HC_DEFENCE_GROUP_WEST = nil;
 0 = [] spawn WFHC_FNC_startGarbageCollector;
 0 = [] spawn WFHC_FNC_broadCastFPS;
 
-waitUntil{count towns == totalTowns};
-
 call WFCO_fnc_respawnStartVeh;
 
 //--- We wait for the server full init (just in case!).
-sleep 15;
+sleep 25;
 
 0 = [] spawn WFHC_FNC_updateCampsInTown;
 ["INITIALIZATION", "Init_HC.sqf: camps update script is initialized."] Call WFCO_FNC_LogContent;
