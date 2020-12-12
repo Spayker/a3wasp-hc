@@ -19,6 +19,12 @@ class CfgFunctions {
             class broadCastFPS {};
         };
 
+        class HcBase {
+            file = "wasphc\base";
+            class startStaticDefenseProcessing {};
+            class stationaryDefense {};
+        };
+
         class DelegateAi {
             file = "wasphc\Delegate";
             class delegateAI {};

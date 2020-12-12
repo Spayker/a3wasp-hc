@@ -37,3 +37,8 @@ sleep 15;
 //--WASP MODULES: start TaskDirector--
 ["INITIALIZATION", Format ["Init_HC.sqf: HC start TaskDirector at [%1]", time]] Call WFCO_FNC_LogContent;
 [] spawn WFHC_fnc_initTaskDirector;
+
+//--- Stationary defense init
+WF_static_defenses = [];
+[] spawn WFHC_FNC_startStaticDefenseProcessing;
+["INITIALIZATION", Format ["Init_HC.sqf: HC start static defense processing at [%1]", time]] Call WFCO_FNC_LogContent;
