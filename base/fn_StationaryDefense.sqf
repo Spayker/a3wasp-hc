@@ -101,6 +101,11 @@ if (_manned && _defense emptyPositions "gunner" > 0 && (((missionNamespace getVa
     //    [_defense] spawn WFSE_FNC_initCram
 	//};
 
+	_defense addMPEventHandler ['MPKilled', {
+        params ["_unit", "_killer", "_instigator", "_useEffects"];
+        [_unit,_killer] call WFCO_FNC_OnUnitKilled
+    }];
+
 
 	if (_specDefenseIndex == -1) then {
         WF_static_defenses pushBack [_defense, _side, _team, time]
