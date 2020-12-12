@@ -103,6 +103,10 @@ _resBasePositions = [_azi, _resBasePositions] call {
                     _newObj enableSimulation false;
                     _newObj setPos _newPos;
                     _newObj enableSimulation true;
+                    _newObj addMPEventHandler ['MPKilled', {
+                        params ["_unit", "_killer", "_instigator", "_useEffects"];
+                        [_unit,_killer] call WFCO_FNC_OnUnitKilled
+                    }];
                     _defences pushBack _newObj
                 } else {
                     _newObj = _type createVehicle _newPos
@@ -196,6 +200,10 @@ _resBasePositions = [_azi, _resBasePositions] call {
                     _newObj enableSimulation false;
                     _newObj setPos _newPos;
                     _newObj enableSimulation true;
+                    _newObj addMPEventHandler ['MPKilled', {
+                        params ["_unit", "_killer", "_instigator", "_useEffects"];
+                        [_unit,_killer] call WFCO_FNC_OnUnitKilled
+                    }];
                     _defences pushBack _newObj
                 } else {
                     _newObj = _type createVehicle _newPos
@@ -287,6 +295,10 @@ _resBasePositions = [_azi, _resBasePositions] call {
                     _newObj enableSimulation false;
                     _newObj setPos _newPos;
                     _newObj enableSimulation true;
+                    _newObj addMPEventHandler ['MPKilled', {
+                        params ["_unit", "_killer", "_instigator", "_useEffects"];
+                        [_unit,_killer] call WFCO_FNC_OnUnitKilled
+                    }];
                     _defences pushBack _newObj
                 }else{
                     _newObj = _type createVehicle _newPos
@@ -376,6 +388,10 @@ _resBasePositions = [_azi, _resBasePositions] call {
                     _newObj enableSimulation false;
                     _newObj setPos _newPos;
                     _newObj enableSimulation true;
+                    _newObj addMPEventHandler ['MPKilled', {
+                        params ["_unit", "_killer", "_instigator", "_useEffects"];
+                        [_unit,_killer] call WFCO_FNC_OnUnitKilled
+                    }];
                     _defences pushBack _newObj
                 } else {
                     _newObj = _type createVehicle _newPos

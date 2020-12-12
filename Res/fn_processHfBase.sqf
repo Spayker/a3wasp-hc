@@ -6,12 +6,12 @@ _sideText = str _side;
 _dmgr = (missionNamespace getVariable format["WF_%1STRUCTUREDMGREDUCER",str _side]) # _facIndex;
 _siteMaxHealth = (missionNamespace getVariable format ["WF_%1STRUCTUREMAXHEALTH",str _side]) # _facIndex;
 
-_building setVariable ["wf_side", _side];
-_building setVariable ["wf_structure_type", _type];
-_building setVariable ["wf_site_maxhealth", _siteMaxHealth];
+_building setVariable ["wf_side", _side, true];
+_building setVariable ["wf_structure_type", _type, true];
+_building setVariable ["wf_site_maxhealth", _siteMaxHealth, true];
 _building setVariable ["wf_site_health", _siteMaxHealth, true];
-_building setVariable ["wf_reducer", _dmgr # 0];
-_building setVariable ["wf_index", _facIndex];
+_building setVariable ["wf_reducer", _dmgr # 0, true];
+_building setVariable ["wf_index", _facIndex, true];
 
 _building addEventHandler ["HandleDamage", {
     _this call WFCO_FNC_BuildingHandleDamage;
