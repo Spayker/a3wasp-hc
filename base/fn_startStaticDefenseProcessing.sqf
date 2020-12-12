@@ -61,5 +61,5 @@ _procesStaticDefenses = {
 
 while {!WF_GameOver} do {
 	[] call _procesStaticDefenses;
-	sleep 90
+	sleep 15
 }
