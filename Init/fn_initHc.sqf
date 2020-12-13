@@ -24,11 +24,8 @@ call WFCO_fnc_respawnStartVeh;
 0 = [] spawn WFHC_FNC_broadCastFPS;
 ["INITIALIZATION", "Init_HC.sqf: broadcasting HC fps."] Call WFCO_FNC_LogContent;
 
-waitUntil{count towns == totalTowns};
-["INITIALIZATION", "Init_HC.sqf: towns count is equal to totalTowns count"] Call WFCO_FNC_LogContent;
-
 //--- We wait for the server full init (just in case!).
-sleep 15;
+sleep 20;
 
 0 = [] spawn WFHC_FNC_updateCampsInTown;
 ["INITIALIZATION", "Init_HC.sqf: camps update script is initialized."] Call WFCO_FNC_LogContent;
