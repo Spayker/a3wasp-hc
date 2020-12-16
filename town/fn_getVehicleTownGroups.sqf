@@ -125,7 +125,6 @@ switch (true) do {
                 [Format ["Armored_%1", _current_heavy_upgrade]],
                 [Format ["Armored_%1", _current_heavy_upgrade]]
             ];
-        _groups_max = _groups_max + 2;
     };
 };
 
