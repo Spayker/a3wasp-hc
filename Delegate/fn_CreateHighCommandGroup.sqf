@@ -49,6 +49,11 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
     if (_isVehicle) then { _unitGroup setFormation "FILE" };
     _unitGroup setSpeedMode "FULL";
 
+    {
+        _x disableAI "AUTOTARGET";
+        _x disableAI "AUTOCOMBAT"
+    } forEach (units _unitGroup);
+
     (units _unitGroup) doFollow (leader _unitGroup);
 
     _unitGroup setVariable ["isHighCommandPurchased",true, true];
