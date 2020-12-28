@@ -4,6 +4,7 @@ private["_buildings", "_status", "_end", "_inf_group", "_shallPatrol"];
 _end = false;
 _alives = [];
 _inf_group = nil;
+_minimalAttackBasechance = 51;
 
 if(count _alives == 0) then {
 	_inf_group = createGroup [_side, true];
@@ -27,23 +28,45 @@ while{!_end} do {
 	};
 
     _shallPatrol = true;
-    private _playableSidesStructures = [];
 
+    _attackBaseChance = ((random 100)- 51);
+    if (_attackBaseChance >= _minimalAttackBasechance) then {
     _westBaseStructures = (west) Call WFCO_FNC_GetSideStructures;
     _eastBaseStructures = (east) Call WFCO_FNC_GetSideStructures;
+        _targetSelected = false;
+        if(count _westBaseStructures > 0) then {
+            _near = [_building, _westBaseStructures] Call WFCO_FNC_SortByDistance;
+            _target = _near # 0;
 
-    if (count _westBaseStructures > 0) then { _playableSidesStructures = _playableSidesStructures + _westBaseStructures };
-    if (count _eastBaseStructures > 0) then { _playableSidesStructures = _playableSidesStructures + _eastBaseStructures };
+            if (_target distance (leader _inf_group) < 4000) then {
+                if!(isNil '_target') then {
+                    [_inf_group, true, [[_target, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
+                    _text = localize "STR_WF_RES_BASE_ATTACK_WARNING";
+                    [_text] remoteExecCall ["WFCL_fnc_handleMessage", west, true];
+                    _shallPatrol = false;
+                    _targetSelected = true;
+                } else {
+                    _shallPatrol = true
+                }
+            }
+        };
 
-    if(count _playableSidesStructures > 0)then {
-        _near = [_building, _playableSidesStructures] Call WFCO_FNC_SortByDistance;
+        if!(_targetSelected) then {
+            if(count _eastBaseStructures > 0) then {
+                _near = [_building, _eastBaseStructures] Call WFCO_FNC_SortByDistance;
         _target = _near # 0;
+                if (_target distance (leader _inf_group) < 4000) then {
         if!(isNil '_target') then {
             [_inf_group, true, [[_target, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
+                        _text = localize "STR_WF_RES_BASE_ATTACK_WARNING";
+                        [_text] remoteExecCall ["WFCL_fnc_handleMessage", east, true];
             _shallPatrol = false
         } else {
             _shallPatrol = true
         }
+                }
+            }
+        };
     };
 
     if(_shallPatrol) then {
