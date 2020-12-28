@@ -38,7 +38,7 @@ while{!_end} do {
             _near = [_building, _westBaseStructures] Call WFCO_FNC_SortByDistance;
             _target = _near # 0;
 
-            if (_target distance (leader _inf_group) < 4000) then {
+            if (_target distance (leader _inf_group) < 6000) then {
                 if!(isNil '_target') then {
                     [_inf_group, true, [[_target, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
                     _text = localize "STR_WF_RES_BASE_ATTACK_WARNING";
