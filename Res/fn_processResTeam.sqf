@@ -4,7 +4,7 @@ private["_buildings", "_status", "_end", "_inf_group", "_shallPatrol"];
 _end = false;
 _alives = [];
 _inf_group = nil;
-_minimalAttackBasechance = 51;
+_minimalAttackBasechance = 31;
 
 if(count _alives == 0) then {
 	_inf_group = createGroup [_side, true];
@@ -29,7 +29,7 @@ while{!_end} do {
 
     _shallPatrol = true;
 
-    _attackBaseChance = ((random 100)- 51);
+    _attackBaseChance = ((random 100)- 31);
     if (_attackBaseChance >= _minimalAttackBasechance) then {
     _westBaseStructures = (west) Call WFCO_FNC_GetSideStructures;
     _eastBaseStructures = (east) Call WFCO_FNC_GetSideStructures;
