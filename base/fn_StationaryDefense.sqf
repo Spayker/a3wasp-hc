@@ -8,14 +8,15 @@ _area = [_position,((_side) call WFCO_FNC_GetSideLogic) getVariable "wf_basearea
 
 _defense = createVehicle [_type, _position, [], 0, "NONE"];
 _defense call WFCO_FNC_BalanceInit;
-
 _defense setDir _direction;
+if!(_defense isKindOf "staticWeapon") then { _defense setVectorUp surfaceNormal position _defense };
+
 _defense setVariable ["side", _side];
 _defense setVariable ["playerUID", _playerUID];
 
 ["INFORMATION", format ["Construction_StationaryDefense.sqf: [%1] Defense [%2] has been constructed.", str _side, _type]] call WFCO_FNC_LogContent;
 
-_defense setVariable ["wf_defense", true]; //--- This is one of our defenses.
+_defense setVariable ["wf_defense", true, true]; //--- This is one of our defenses.
 
 call Compile format ["_defense addEventHandler ['Killed',{[_this # 0,_this select 1,%1] spawn WFCO_FNC_OnUnitKilled; [_this # 0] spawn WFCO_FNC_KillStaticDefenseCrew;}]",_sideID];
 _defense addEventHandler ['Deleted',{[_this # 0] call WFCO_FNC_KillStaticDefenseCrew;}];
