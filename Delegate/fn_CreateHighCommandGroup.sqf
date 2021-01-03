@@ -47,7 +47,7 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
     _unitGroup setCombatMode "YELLOW";
     
     if (_isVehicle) then { 
-		_unitGroup setFormation "FILE" 
+		_unitGroup setFormation "FILE";
 		_unitGroup setBehaviour "COMBAT";
 	} else {
 		_unitGroup setBehaviour "AWARE";
