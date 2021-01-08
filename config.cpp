@@ -83,5 +83,10 @@ class CfgFunctions {
             file = "wasphc\Task";
             class initTaskDirector {};
         };
+		
+		class ServerModuleCram {
+            file = "wasphc\Cram";
+            class initCram {};
+        };
 	};
 };

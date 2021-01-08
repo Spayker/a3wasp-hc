@@ -98,9 +98,9 @@ if (_manned && _defense emptyPositions "gunner" > 0 && (((missionNamespace getVa
 		}
 	};
 
-	//if (_type in ['CUP_WV_B_CRAM_OPFOR', 'B_AAA_System_01_F_OPFOR', 'CUP_WV_B_CRAM', 'B_AAA_System_01_F']) then {
-    //    [_defense] spawn WFSE_FNC_initCram
-	//};
+	if (_type in ['CUP_WV_B_CRAM_OPFOR', 'B_AAA_System_01_F_OPFOR', 'CUP_WV_B_CRAM', 'B_AAA_System_01_F']) then {
+        [_defense] spawn WFHC_FNC_initCram
+	};
 
 	_defense addMPEventHandler ['MPKilled', {
         params ["_unit", "_killer", "_instigator", "_useEffects"];
