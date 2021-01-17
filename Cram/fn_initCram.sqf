@@ -4,11 +4,7 @@ private["_cram","_range","_incoming","_target","_targetTime"];
 _range = 1500;
 while{ alive _cram } do {
 
-    _incoming = (_cram nearObjects["MissileBase", _range]);
-    {
-        if (typeOf _x != 'ammo_Missile_Cruise_01') then { _incoming deleteAt _forEachIndex }
-    } forEach _incoming;
-
+    _incoming = (_cram nearObjects["ammo_Missile_CruiseBase", _range]);
     if(count _incoming > 0) then {
 
         _target = selectRandom _incoming;
