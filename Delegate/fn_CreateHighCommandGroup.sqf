@@ -17,7 +17,7 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
                 [_x, _unitGroup, _position, _sideID] Call WFCO_FNC_CreateUnit;
                 [str _side,'UnitsCreated',1] Call WFCO_FNC_UpdateStatistics;
             } else {
-                _vehicleArray = [_position, _direction, _x, _unitGroup] call bis_fnc_spawnvehicle;
+                _vehicleArray = [[_position # 0, _position # 1, .5], _direction, _x, _unitGroup] call bis_fnc_spawnvehicle;
                 _vehicle = _vehicleArray # 0;
                 _vehicle setVectorUp surfaceNormal position _vehicle;
                 _vehicle  spawn {_this allowDamage false; sleep 15; _this allowDamage true};
@@ -44,26 +44,16 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
     } forEach _selectedGroupTemplate;
 
     _unitGroup allowFleeing 0;
-    if(vehicle (leader _unitGroup) != leader _unitGroup) then {
-        _unitGroup setBehaviour "COMBAT"
-	} else {
-        _unitGroup setBehaviour "AWARE"
-	};
-
     _unitGroup setCombatMode "YELLOW";
+
+    if (_isVehicle) then {
+		_unitGroup setFormation "FILE";
+		_unitGroup setBehaviour "COMBAT";
+	} else {
+		_unitGroup setBehaviour "AWARE";
+	};
     _unitGroup setSpeedMode "FULL";
-
-    {
-        _x disableAI "TARGET";
-        _x disableAI "AUTOCOMBAT";
-        _x disableAI "RADIOPROTOCOL";
-        if(_x != leader _unitGroup) then {
-            _x doFollow (leader _unitGroup);
-        }
-    } forEach (units _unitGroup);
-
-
-
+    _unitGroup enableAttack false;
 
     _unitGroup setVariable ["isHighCommandPurchased",true, true];
 }
