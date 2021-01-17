@@ -55,8 +55,8 @@ while{!_end} do {
             if(count _eastBaseStructures > 0) then {
                 _near = [_building, _eastBaseStructures] Call WFCO_FNC_SortByDistance;
         _target = _near # 0;
+                if !(isNil '_target') then {
                 if (_target distance (leader _inf_group) < 4000) then {
-        if!(isNil '_target') then {
             [_inf_group, true, [[_target, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
                         _text = localize "STR_WF_RES_BASE_ATTACK_WARNING";
                         [_text] remoteExecCall ["WFCL_fnc_handleMessage", east, true];
@@ -64,6 +64,8 @@ while{!_end} do {
         } else {
             _shallPatrol = true
         }
+                } else {
+                    _shallPatrol = true
                 }
             }
         };
