@@ -17,18 +17,17 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
                 [_x, _unitGroup, _position, _sideID] Call WFCO_FNC_CreateUnit;
                 [str _side,'UnitsCreated',1] Call WFCO_FNC_UpdateStatistics;
             } else {
-                _vehicleArray = [[0, 0, 150 - random(100)], _direction, _x, _unitGroup] call bis_fnc_spawnvehicle;
+                _vehicleArray = [_position, _direction, _x, _unitGroup] call bis_fnc_spawnvehicle;
                 _vehicle = _vehicleArray # 0;
+                _vehicle setVectorUp surfaceNormal position _vehicle;
                 _vehicle  spawn {_this allowDamage false; sleep 15; _this allowDamage true};
                 _position = [_position, 30] call WFCO_fnc_getEmptyPosition;
-                _vehicle setPosATL [_position # 0, _position # 1, .5];
-                _vehicle setVectorUp surfaceNormal position _vehicle;
                 [str _side,'UnitsCreated',1] Call WFCO_FNC_UpdateStatistics;
                 {
                     [_x, typeOf _x,_unitGroup,_position,_sideID] spawn WFCO_FNC_InitManUnit;
 
                     private _classLoadout = missionNamespace getVariable Format ['WF_%1ENGINEER', _side];
-
+                    _x disableAI "RADIOPROTOCOL";
                     _x setUnitLoadout _classLoadout;
                     _x setUnitTrait ["Engineer",true];
                     [str _side,'UnitsCreated',1] Call WFCO_FNC_UpdateStatistics;
@@ -43,26 +42,27 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
             _vehicle engineOn true
         }
     } forEach _selectedGroupTemplate;
+
     _unitGroup allowFleeing 0;
-    _unitGroup setCombatMode "YELLOW";
-    
-    if (_isVehicle) then { 
-		_unitGroup setFormation "FILE";
-		_unitGroup setBehaviour "COMBAT";
+    if(vehicle (leader _unitGroup) != leader _unitGroup) then {
+        _unitGroup setBehaviour "COMBAT"
 	} else {
-		_unitGroup setBehaviour "AWARE";
+        _unitGroup setBehaviour "AWARE"
 	};
+
+    _unitGroup setCombatMode "YELLOW";
     _unitGroup setSpeedMode "FULL";
-    _unitGroup enableAttack false;
 
     {
         _x disableAI "TARGET";
         _x disableAI "AUTOCOMBAT";
         _x disableAI "RADIOPROTOCOL";
-        _x doMove (position (leader _unitGroup));
+        if(_x != leader _unitGroup) then {
+            _x doFollow (leader _unitGroup);
+        }
     } forEach (units _unitGroup);
 
-    (units _unitGroup) doFollow (leader _unitGroup);
+
 
 
     _unitGroup setVariable ["isHighCommandPurchased",true, true];
