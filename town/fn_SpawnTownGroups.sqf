@@ -60,7 +60,7 @@ if (count _camps > 0) then {
 _allGroups = _infGroups + _vehGroups;
 _allGroupCount = count(_allGroups);
 
-_grpCountThresshold = 6;
+_grpCountThresshold = 7;
 _campsCount = count _camps;
 if (_campsCount > 0) then {
     _grpCountThresshold = _grpCountThresshold + _campsCount
