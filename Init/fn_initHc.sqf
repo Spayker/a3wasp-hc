@@ -30,6 +30,8 @@ sleep 20;
 0 = [] spawn WFHC_FNC_updateCampsInTown;
 ["INITIALIZATION", "Init_HC.sqf: camps update script is initialized."] Call WFCO_FNC_LogContent;
 
+waitUntil {townInit};
+
 0 = [] spawn WFHC_fnc_startTownProcessing;
 ["INITIALIZATION", "Init_HC.sqf: general town processing script is initialized."] Call WFCO_FNC_LogContent;
 
