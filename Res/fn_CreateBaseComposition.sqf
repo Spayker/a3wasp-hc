@@ -99,9 +99,8 @@ _resBasePositions = [_azi, _resBasePositions] call {
             	_newPos = [_posX + (_newRelPos # 0), _posY + (_newRelPos # 1), _z];
 
                 if (_type in WF_C_STATIC_DEFENCE_FOR_COMPOSITIONS) then {
-                    _newObj = _type createVehicle [0,0,750];
+                    _newObj = _type createVehicle _newPos;
                     _newObj enableSimulation false;
-                    _newObj setPos _newPos;
                     _newObj enableSimulation true;
                     _newObj addMPEventHandler ['MPKilled', {
                         params ["_unit", "_killer", "_instigator", "_useEffects"];
@@ -119,7 +118,6 @@ _resBasePositions = [_azi, _resBasePositions] call {
             	};
 
             	_newObj setDir (_azi + _azimuth);
-            	_newObj setPos _newPos;
 
                 if (WF_Debug) then {
                     if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 0)) then {
@@ -196,9 +194,8 @@ _resBasePositions = [_azi, _resBasePositions] call {
             	_newPos = [_posX + (_newRelPos # 0), _posY + (_newRelPos # 1), _z];
 
                 if (_type in WF_C_STATIC_DEFENCE_FOR_COMPOSITIONS) then {
-                    _newObj = _type createVehicle [0,0,750];
+                    _newObj = _type createVehicle _newPos;
                     _newObj enableSimulation false;
-                    _newObj setPos _newPos;
                     _newObj enableSimulation true;
                     _newObj addMPEventHandler ['MPKilled', {
                         params ["_unit", "_killer", "_instigator", "_useEffects"];
@@ -216,7 +213,6 @@ _resBasePositions = [_azi, _resBasePositions] call {
             	};
 
             	_newObj setDir (_azi + _azimuth);
-            	_newObj setPos _newPos;
 
                 if (WF_Debug) then {
                     if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 1)) then {
@@ -291,9 +287,8 @@ _resBasePositions = [_azi, _resBasePositions] call {
                 if ((count _relPos) > 2) then {_z = _relPos # 2;} else {_z = 0;};
                 _newPos = [_posX + (_newRelPos # 0), _posY + (_newRelPos # 1), _z];
                 if(_type in WF_C_STATIC_DEFENCE_FOR_COMPOSITIONS)then{
-                    _newObj = _type createVehicle [0,0,750];
+                    _newObj = _type createVehicle _newPos;
                     _newObj enableSimulation false;
-                    _newObj setPos _newPos;
                     _newObj enableSimulation true;
                     _newObj addMPEventHandler ['MPKilled', {
                         params ["_unit", "_killer", "_instigator", "_useEffects"];
@@ -309,7 +304,6 @@ _resBasePositions = [_azi, _resBasePositions] call {
                 };
 
                 _newObj setDir (_azi + _azimuth);
-                _newObj setPos _newPos;
 
                 if (WF_Debug) then {
                     if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 2)) then {
@@ -384,9 +378,8 @@ _resBasePositions = [_azi, _resBasePositions] call {
                 if ((count _relPos) > 2) then {_z = _relPos # 2;} else {_z = 0;};
                 _newPos = [_posX + (_newRelPos # 0), _posY + (_newRelPos # 1), _z];
                 if(_type in WF_C_STATIC_DEFENCE_FOR_COMPOSITIONS)then{
-                    _newObj = _type createVehicle [0,0,750];
+                    _newObj = _type createVehicle _newPos;
                     _newObj enableSimulation false;
-                    _newObj setPos _newPos;
                     _newObj enableSimulation true;
                     _newObj addMPEventHandler ['MPKilled', {
                         params ["_unit", "_killer", "_instigator", "_useEffects"];
@@ -402,7 +395,6 @@ _resBasePositions = [_azi, _resBasePositions] call {
                 };
 
                 _newObj setDir (_azi + _azimuth);
-                _newObj setPos _newPos;
 
                 if (WF_Debug) then {
                     if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 3)) then {

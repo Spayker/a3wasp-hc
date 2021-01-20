@@ -48,9 +48,9 @@ switch (_action) do {
                         _unit = gunner _defense;
                         if !(isNull _unit) then { //--- Make sure that we do not remove a player's unit.
                             if (alive _unit) then {
-                                if (isNil {(group _unit) getVariable "wf_funds"}) then { _unit setPos (_x # 1);	deleteVehicle _unit };
+                                if (isNil {(group _unit) getVariable "wf_funds"}) then { deleteVehicle _unit };
                             } else {
-                                _unit setPos (_x # 1); deleteVehicle _unit;
+                                deleteVehicle _unit;
                             };
                         };
                     //--Remove town static defence gunners--
