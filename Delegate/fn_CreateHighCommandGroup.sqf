@@ -17,7 +17,7 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
                 [_x, _unitGroup, _position, _sideID] Call WFCO_FNC_CreateUnit;
                 [str _side,'UnitsCreated',1] Call WFCO_FNC_UpdateStatistics;
             } else {
-                _vehicleArray = [[_position # 0, _position # 1, .5], _direction, _x, _unitGroup] call bis_fnc_spawnvehicle;
+                _vehicleArray = [[_position # 0, _position # 1, .75], _direction, _x, _unitGroup] call bis_fnc_spawnvehicle;
                 _vehicle = _vehicleArray # 0;
                 _vehicle setVectorUp surfaceNormal position _vehicle;
                 _vehicle  spawn {_this allowDamage false; sleep 15; _this allowDamage true};
@@ -39,7 +39,7 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
                 if((count _vehicleCoreArray) > 10) then { _unitskin = _vehicleCoreArray # 10 };
                 [_vehicle, _sideID, false, true, true, _unitskin] call WFCO_FNC_InitVehicle;
                 _vehicle allowCrewInImmobile true;
-            _vehicle engineOn true
+            _vehicle engineOn false
         }
     } forEach _selectedGroupTemplate;
 
