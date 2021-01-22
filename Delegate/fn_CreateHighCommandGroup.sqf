@@ -38,7 +38,6 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
                 _vehicleCoreArray = missionNamespace getVariable [_type, []];
                 if((count _vehicleCoreArray) > 10) then { _unitskin = _vehicleCoreArray # 10 };
                 [_vehicle, _sideID, false, true, true, _unitskin] call WFCO_FNC_InitVehicle;
-                _vehicle allowCrewInImmobile true;
             _vehicle engineOn false
         }
     } forEach _selectedGroupTemplate;
