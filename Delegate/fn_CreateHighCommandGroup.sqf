@@ -20,6 +20,7 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
                 [_x, _unitGroup, _position, _sideID] Call WFCO_FNC_CreateUnit;
                 [str _side,'UnitsCreated',1] Call WFCO_FNC_UpdateStatistics;
             } else {
+                _position = [_position, 30] call WFCO_fnc_getEmptyPosition;
                 _vehicleArray = [[_position # 0, _position # 1, .75], _direction, _x, _unitGroup] call bis_fnc_spawnvehicle;
                 _vehicle = _vehicleArray # 0;
                 _vehicle setVectorUp surfaceNormal position _vehicle;
