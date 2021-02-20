@@ -40,8 +40,7 @@ _procesTowns = {
             _initialStartingSupplyValue = _location getVariable "initialStartSupplyValue";
             _sideID = _location getVariable ["sideID", WF_C_GUER_ID];
             _side = (_sideID) Call WFCO_FNC_GetSideFromID;
-            _objects = (_location nearEntities[["Man","Car","Motorcycle","Tank","Air","Ship","UAV"], 	WF_C_TOWNS_CAPTURE_RANGE]) unitsBelowHeight 10;
-
+            _objects = (_location nearEntities[WF_C_ALL_MAN_VEHICLE_KINDS_NO_STATIC, 	WF_C_TOWNS_CAPTURE_RANGE]) unitsBelowHeight 10;
 
             _west = west countSide _objects;
             _east = east countSide _objects;

@@ -8,6 +8,9 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
     _side = side _player;
     _sideID = _side Call WFCO_FNC_GetSideID;
     _unitGroup = createGroup [_side, true];
+    _isCommanderAssigned = false;
+    _commanders = [];
+    _gunners = [];
     {
             _c = missionNamespace getVariable _x;
             sleep (_c # QUERYUNITTIME);
@@ -31,6 +34,10 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
                     _x setUnitLoadout _classLoadout;
                     _x setUnitTrait ["Engineer",true];
                     [str _side,'UnitsCreated',1] Call WFCO_FNC_UpdateStatistics;
+
+                    if (_x == commander _vehicle) then { _commanders pushBack _x };
+                    if (_x == gunner _vehicle) then { _gunners pushBack _x };
+
                 } forEach crew _vehicle;
 
                 _unitskin = -1;
@@ -41,6 +48,28 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
             _vehicle engineOn false
         }
     } forEach _selectedGroupTemplate;
+
+    if (count _commanders > 0) then {
+        {
+            if (_isCommanderAssigned) then {
+                _x setUnitRank 'SERGEANT'
+            } else {
+                _x setUnitRank 'LIEUTENANT';
+                _unitGroup selectLeader _x
+            }
+        } foreach _commanders
+    } else {
+        if (count _gunners > 0) then {
+            {
+                if (_isCommanderAssigned) then {
+                    _x setUnitRank 'SERGEANT'
+                } else {
+                    _x setUnitRank 'LIEUTENANT';
+                    _unitGroup selectLeader _x
+                }
+            } foreach _gunners
+        }
+    };
 
     _unitGroup allowFleeing 0;
     _unitGroup setCombatMode "YELLOW";
