@@ -38,7 +38,6 @@ class CfgFunctions {
 		
         class Towns {
             file = "\wasphc\Town";
-            class updateCampsInTown {};
             class startTownProcessing {};
             class startTownAiProcessing {};
             class getTownGroups {};

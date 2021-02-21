@@ -143,17 +143,6 @@ _procesTowns = {
 
                 if (!_resistanceDominion && !_westDominion && !_eastDominion) then {_west = 0; _east = 0; _resistance = 0};
 
-                _totalCamps = _location Call WFCO_FNC_GetTotalCamps;
-                if (_west > 0 && west in WF_PRESENTSIDES) then {
-                    if (_totalCamps != ([_location,west] Call WFCO_FNC_GetTotalCampsOnSide)) then {_skip = true};
-                };
-                if (_east > 0 && east in WF_PRESENTSIDES) then {
-                    if (_totalCamps != ([_location,east] Call WFCO_FNC_GetTotalCampsOnSide)) then {_skip = true};
-                };
-                if (_resistance > 0 && resistance in WF_PRESENTSIDES) then {
-                    if (_totalCamps != ([_location,resistance] Call WFCO_FNC_GetTotalCampsOnSide)) then {_skip = true};
-                };
-
                 _isSpawning = _location getVariable ["wf_spawning", false];
                 if(_isSpawning) then { _skip = true };
 
@@ -161,7 +150,7 @@ _procesTowns = {
                     _newSID = switch (true) do {case (_west > 0): {WF_C_WEST_ID}; case (_east > 0): {WF_C_EAST_ID}; case (_resistance > 0): {WF_C_GUER_ID};};
                     _newSide = (_newSID) Call WFCO_FNC_GetSideFromID;
                     _rate = _town_capture_rate * (([_location,_newSide] Call WFCO_FNC_GetTotalCampsOnSide) / (_location Call WFCO_FNC_GetTotalCamps)) * _town_camps_capture_rate;
-                    if (_rate < 1) then {_rate = 1};
+                    if (_rate < 1) then {_rate = 10};
 
                     if (_sideID != WF_C_UNKNOWN_ID) then {
                         if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
