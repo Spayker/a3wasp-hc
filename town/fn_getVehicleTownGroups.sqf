@@ -41,9 +41,10 @@ if (_side != resistance) then {
 } else {
     _sv = _town getVariable "maxSupplyValue";
     _groups_max = round(_groups_max * (missionNamespace getVariable "WF_C_TOWNS_UNITS_DEFENDER_COEF"));
-    _current_light_upgrade = floor random 10; //--Random real (floating point) value from 0 (inclusive) to x (not inclusive)--
+    _current_light_upgrade = floor random 11; //--Random real (floating point) value from 0 (inclusive) to x (not inclusive)--
     _current_heavy_upgrade = floor random 3;
     _current_air_upgrade = floor random 5;
+    _current_aa_heavy_upgrade = floor random 2;
 };
 
 if (count _townDefendersSpeciality > 0) then {
@@ -71,7 +72,7 @@ switch (true) do {
 					[Format ["Motorized_%1", _current_light_upgrade]],
 					[Format ["Motorized_%1", _current_light_upgrade]],
 					[Format ["Motorized_%1", _current_light_upgrade]],
-					[Format ["AA_Light_%1", _current_heavy_upgrade]]
+					[Format ["AA_Light_%1", _current_aa_light_upgrade]]
 				];
 
 	};
