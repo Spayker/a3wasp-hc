@@ -16,8 +16,8 @@ _spawnGroups = {
         if (_isFirstWave)then {
             _position = [_townPos, _spawnRadius, true] call WFCO_fnc_getEmptyPosition
         } else {
-            _minimalRadius = _spawnRadius - 100;
-            _position = [_townPos, _minimalRadius, true] call WFCO_fnc_getEmptyPosition;
+            _minimalRadius = _spawnRadius + 100;
+            _position = [_townPos, _spawnRadius, true] call WFCO_fnc_getEmptyPosition;
             _spawnRadius = _minimalRadius
         };
 
