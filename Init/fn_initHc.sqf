@@ -1,8 +1,7 @@
 //--- Headless Client initialization...
 ["INITIALIZATION", "Init_HC.sqf: Running the headless client initialization."] Call WFCO_FNC_LogContent;
 
-sideID = WF_Client_SideJoined Call WFCO_FNC_GetSideID;
-WF_Client_SideID = sideID;
+WF_Client_SideID = WF_Client_SideJoined Call WFCO_FNC_GetSideID;
 
 Headless_Client_ID  = clientOwner;
 Headless_Client_UID = getPlayerUID player;
