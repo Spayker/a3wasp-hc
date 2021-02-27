@@ -69,6 +69,34 @@ while{!_end} do {
     };
 
     if(_shallPatrol) then {
+        _enemyTowns = [];
+        {
+            if ((_x getVariable 'sideID') != WF_DEFENDER_ID) then {_enemyTowns pushBackUnique _x}
+        } forEach towns;
+
+        _sortedTowns = [];
+        if (count _enemyTowns > 0) then {
+            _sortedTowns = [getPosATL (leader _inf_group), _enemyTowns] Call WFCO_FNC_SortByDistance;
+        };
+
+        _prefferableTownAmount = count _sortedTowns;
+        if (_prefferableTownAmount > 4) then { _prefferableTownAmount = 3 };
+        _nearEnemyTowns = [];
+        {
+            if (_x distance (leader _inf_group) < 2500) then {
+                if(count _nearEnemyTowns != _prefferableTownAmount) then {
+                    _nearEnemyTowns pushBackUnique _x
+                }
+            }
+        } forEach _sortedTowns;
+
+        if(count _nearEnemyTowns > 0) then {
+            [_inf_group, _nearTowns, 400, 'FILE', _isInfantry] Call WFCO_FNC_AITownPatrol;
+            _shallPatrol = false
+        }
+    };
+
+    if(_shallPatrol) then {
         _nearTowns = [];
         _near = [];
         _allSortedTownsByDistance = [getPosATL (leader _inf_group), towns] Call WFCO_FNC_SortByDistance;
@@ -93,6 +121,6 @@ while{!_end} do {
 
         [_inf_group, _nearTowns, 400, 'FILE', _isInfantry] Call WFCO_FNC_AITownPatrol
     };
-	sleep 300
+	sleep 150
 }
 
