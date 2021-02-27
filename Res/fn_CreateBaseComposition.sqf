@@ -65,7 +65,11 @@ _resBasePositions = [_azi, _resBasePositions] call {
 
                 if!(_selectedRandomBRBaseLocation in _positionsToBuildBR) then {
                     if(count _positionsToBuildBR == 0) then {
+                        _town = [_selectedRandomBRBaseLocation] Call WFCO_FNC_GetClosestLocation;
+                        _townside =  (_town getVariable "sideID") Call WFCO_FNC_GetSideFromID;
+                        if(_townside != WF_DEFENDER) then {
                         _positionsToBuildBR pushBack (_selectedRandomBRBaseLocation)
+                        }
                     } else {
                         for [{_i = 0},{_i < count _positionsToBuildBR},{_i = _i + 1}] do {
                             _canPush = true;
@@ -166,7 +170,13 @@ _resBasePositions = [_azi, _resBasePositions] call {
                 _resBasePositions = _resBasePositions - [_selectedRandomLFBaseLocation];
                 if!(_selectedRandomLFBaseLocation in _positionsToBuildLF) then {
                     if(count _positionsToBuildLF == 0) then {
+                        if(_canPush == true) then {
+                            _town = [_selectedRandomLFBaseLocation] Call WFCO_FNC_GetClosestLocation;
+                            _townside =  (_town getVariable "sideID") Call WFCO_FNC_GetSideFromID;
+                            if(_townside != WF_DEFENDER) then {
                         _positionsToBuildLF pushBack (_selectedRandomLFBaseLocation)
+                            }
+                        }
                     } else {
                         for [{_i = 0},{_i < count _positionsToBuildLF},{_i = _i + 1}] do {
                             _canPush = true;
@@ -267,7 +277,13 @@ _resBasePositions = [_azi, _resBasePositions] call {
                 _resBasePositions = _resBasePositions - [_selectedRandomHFBaseLocation];
                 if!(_selectedRandomHFBaseLocation in _positionsToBuildHF)then{
                     if(count _positionsToBuildHF == 0)then{
-                        _positionsToBuildHF pushBack (_selectedRandomHFBaseLocation);
+                        if(_canPush == true) then {
+                            _town = [_selectedRandomHFBaseLocation] Call WFCO_FNC_GetClosestLocation;
+                            _townside =  (_town getVariable "sideID") Call WFCO_FNC_GetSideFromID;
+                            if(_townside != WF_DEFENDER) then {
+                                _positionsToBuildHF pushBack (_selectedRandomHFBaseLocation)
+                            }
+                        }
                     }else{
                         for [{_i = 0},{_i < count _positionsToBuildHF},{_i = _i + 1}] do {
                             _canPush = true;
@@ -365,7 +381,14 @@ _resBasePositions = [_azi, _resBasePositions] call {
                 _resBasePositions = _resBasePositions - [_selectedRandomAFBaseLocation];
                 if!(_selectedRandomAFBaseLocation in _positionsToBuildAF)then{
                     if(count _positionsToBuildAF == 0)then{
-                        _positionsToBuildAF pushBack (_selectedRandomAFBaseLocation);
+
+                        if(_canPush == true) then {
+                            _town = [_selectedRandomAFBaseLocation] Call WFCO_FNC_GetClosestLocation;
+                            _townside =  (_town getVariable "sideID") Call WFCO_FNC_GetSideFromID;
+                            if(_townside != WF_DEFENDER) then {
+                                _positionsToBuildAF pushBack (_selectedRandomAFBaseLocation)
+                            }
+                        }
                     }else{
                         for [{_i = 0},{_i < count _positionsToBuildAF},{_i = _i + 1}] do {
                             _canPush = true;
