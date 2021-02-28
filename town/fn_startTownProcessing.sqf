@@ -189,8 +189,6 @@ _procesTowns = {
                     _location setVariable ["sideID",_newSID,true];
                     [_location, _location getVariable "name", _sideID, _newSID] remoteExecCall ["WFCL_FNC_TownCaptured"];
 
-                    if (WF_C_RADAR in _locationSpecialities) then { [_location] remoteExec ["WFCL_FNC_UpdateRadarMarker", -2, true] };
-
                     [_location, _sideID, _newSID] remoteExecCall ["WFSE_FNC_SetCampsToSide", 2];
 
                     //--- Clear the town defenses, units first then replace the defenses if needed.
