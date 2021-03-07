@@ -31,8 +31,8 @@ sleep 20;
 
 waitUntil {townInit};
 
-// 0 = [] spawn WFHC_fnc_startTownProcessing;
-// ["INITIALIZATION", "Init_HC.sqf: general town processing script is initialized."] Call WFCO_FNC_LogContent;
+0 = [] spawn WFHC_fnc_startTownProcessing;
+["INITIALIZATION", "Init_HC.sqf: general town processing script is initialized."] Call WFCO_FNC_LogContent;
 
 0 = [] spawn WFHC_fnc_startTownAiProcessing;
 ["INITIALIZATION", "Init_HC.sqf: ai town processing script is initialized."] Call WFCO_FNC_LogContent;
