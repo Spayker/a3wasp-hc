@@ -23,6 +23,25 @@ class CfgFunctions {
             file = "wasphc\base";
             class startStaticDefenseProcessing {};
             class stationaryDefense {};
+            class BuildingDamaged {};
+            class buildingKilled {};
+            class createDefenseTemplate {};
+            class createObjectsFromArray {};
+            class CreateStartupBase {};
+            class OnHQKilled {};
+            class createBasePatrol {};
+            class performStructureSell {};
+            class buildingHandleDamage {};
+            class startBaseAreaProcessing {};
+        };
+
+        class HcBaseConstruction {
+            file = "wasphc\base\Construction";
+            class hQSite {};
+            class smallSite {};
+            class mediumSite {};
+            class mediumSiteObjects {};
+            class smallSiteObjects {};
         };
 
         class DelegateAi {

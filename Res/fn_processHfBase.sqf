@@ -14,7 +14,7 @@ _building setVariable ["wf_reducer", _dmgr # 0, true];
 _building setVariable ["wf_index", _facIndex, true];
 
 _building addEventHandler ["HandleDamage", {
-    _this call WFCO_FNC_BuildingHandleDamage;
+    _this call WFHC_FNC_BuildingHandleDamage;
     false
 }];
 _groups_max = 2;

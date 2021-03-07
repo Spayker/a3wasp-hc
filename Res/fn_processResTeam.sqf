@@ -31,14 +31,14 @@ while{!_end} do {
 
     _attackBaseChance = ((random 100)- 31);
     if (_attackBaseChance >= _minimalAttackBasechance) then {
-    _westBaseStructures = (west) Call WFCO_FNC_GetSideStructures;
-    _eastBaseStructures = (east) Call WFCO_FNC_GetSideStructures;
+        _westBaseStructures = (west) Call WFCO_FNC_GetSideStructures;
+        _eastBaseStructures = (east) Call WFCO_FNC_GetSideStructures;
         _targetSelected = false;
         if(count _westBaseStructures > 0) then {
             _near = [_building, _westBaseStructures] Call WFCO_FNC_SortByDistance;
             _target = _near # 0;
             if!(isNil '_target') then {
-            if (_target distance (leader _inf_group) < 6000) then {
+                if (_target distance (leader _inf_group) < 6000) then {
                     [_inf_group, true, [[_target, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
                     _text = localize "STR_WF_RES_BASE_ATTACK_WARNING";
                     [_text] remoteExecCall ["WFCL_fnc_handleMessage", west, true];
@@ -51,16 +51,16 @@ while{!_end} do {
         if!(_targetSelected) then {
             if(count _eastBaseStructures > 0) then {
                 _near = [_building, _eastBaseStructures] Call WFCO_FNC_SortByDistance;
-        _target = _near # 0;
+                _target = _near # 0;
                 if !(isNil '_target') then {
-                if (_target distance (leader _inf_group) < 4000) then {
-            [_inf_group, true, [[_target, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
+                    if (_target distance (leader _inf_group) < 4000) then {
+                        [_inf_group, true, [[_target, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
                         _text = localize "STR_WF_RES_BASE_ATTACK_WARNING";
                         [_text] remoteExecCall ["WFCL_fnc_handleMessage", east, true];
-            _shallPatrol = false
-        } else {
-            _shallPatrol = true
-        }
+                        _shallPatrol = false
+                    } else {
+                        _shallPatrol = true
+                    }
                 } else {
                     _shallPatrol = true
                 }
@@ -91,7 +91,7 @@ while{!_end} do {
         } forEach _sortedTowns;
 
         if(count _nearEnemyTowns > 0) then {
-            [_inf_group, _nearTowns, 400, 'FILE', _isInfantry] Call WFCO_FNC_AITownPatrol;
+            [_inf_group, _nearEnemyTowns, 400, 'FILE', _isInfantry] Call WFCO_FNC_AITownPatrol;
             _shallPatrol = false
         }
     };
