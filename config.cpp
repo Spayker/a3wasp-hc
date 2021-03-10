@@ -52,7 +52,8 @@ class CfgFunctions {
             class delegateBasePatrolAI {};
             class delegateTownAI {};
             class createHighCommandGroup {};
-			class createTownUnits {};
+		class createTownUnits {};
+		class createTeam {};
         };
 		
         class Towns {
