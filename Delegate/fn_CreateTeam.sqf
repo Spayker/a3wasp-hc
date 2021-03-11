@@ -6,10 +6,22 @@ _vehicles = [];
 
 if (_list isEqualType "") then {_list = [_list]};
 
+_civGroup = grpNull;
+
+if(_side == resistance) then {
+    _civGroup = createGroup [civilian, true]
+};
+
 {
 	if (_x isKindOf 'Man') then {
 		_position = [_position, 2, 15, 5, 0, 20, 0] call BIS_fnc_findSafePos;
+
+		if (isNull _group) then { _group = createGroup [_side, true] };
+
 		_unit = [_x,_group,_position,_sideID] Call WFCO_FNC_CreateUnit;
+		if (_side == resistance) then {
+		    [_unit] joinSilent _civGroup
+		};
 		_unit disableAI "RADIOPROTOCOL";
 		if(isDedicated) then {
             _unit enableSimulationGlobal false
@@ -17,7 +29,8 @@ if (_list isEqualType "") then {_list = [_list]};
             _unit enableSimulation false
         };
 
-		_units pushBack _unit
+		_units pushBack _unit;
+		sleep 0.5;
     } else {
         _direction = 0;
 		_height = .5;
@@ -68,6 +81,9 @@ if (_list isEqualType "") then {_list = [_list]};
             _x setUnitLoadout _classLoadout;
             _x setUnitTrait ["Engineer",true];
             _x disableAI "RADIOPROTOCOL";
+            if (_side == resistance) then {
+                [_x] joinSilent _civGroup
+            }
         } forEach crew _vehicle;
 
         _unitskin = -1;
@@ -78,11 +94,20 @@ if (_list isEqualType "") then {_list = [_list]};
 
         _vehicle engineOn true;
         _vehicles pushBack _vehicle;
+        sleep 1;
 	};
-    sleep 1;
 } forEach _list;
 
-{_group addVehicle _x} forEach _vehicles; //--- Add vehicles.
-_group allowFleeing 0; //--- Make the units brave.
+_groupToBeReturned = grpNull;
+if(_side == resistance) then {
+    _civGroup allowFleeing 0;
+    {_civGroup addVehicle _x} forEach _vehicles;
+    _groupToBeReturned = _civGroup;
+    deleteGroup _group
+} else {
+    {_group addVehicle _x} forEach _vehicles;
+    _group allowFleeing 0;
+    _groupToBeReturned = _group
+};
 
-[_units,_vehicles]
+[_units, _vehicles, _groupToBeReturned]

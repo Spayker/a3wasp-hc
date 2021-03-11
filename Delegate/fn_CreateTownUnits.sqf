@@ -27,12 +27,19 @@ _c = 0;
 for '_i' from 0 to count(_teams)-1 do {
 	_position = _positions # _i;
 
+	_group = grpNull; //createGroup [_side, true];
+	if(_side == resistance) then {
+	    _group = createGroup [_side, false];
+	} else {
 	_group = createGroup [_side, true];
+	};
 	["INFORMATION", Format["fn_CreateTownUnits.sqf: Town [%1] [%2] will create a team template %3 at %4", _town, _group, _teams # _i,_position]] Call WFCO_FNC_LogContent;
 	
-	_retVal = [_teams # _i, _position, _side, _sideID, _lock, _group, true, _town] call WFCO_FNC_CreateTeam;
+	_retVal = [_teams # _i, _position, _side, _sideID, _lock, _group, true, _town] call WFHC_FNC_CreateTeam;
 	_units = _units + _retVal # 0;
 	_vehicles = _vehicles + _retVal # 1;
+	_group = _retVal # 2;
+	_sideID = (side _group) Call WFCO_FNC_GetSideID;
 
 	_built = _built + count _units;
 	_builtveh = _builtveh + (count _vehicles);
@@ -48,7 +55,7 @@ for '_i' from 0 to count(_teams)-1 do {
 } foreach (_units + _vehicles);
 
     if (isNull _camp) then {
-    [_town, _group, _sideID] spawn WFCO_FNC_SetPatrol;
+        [_town, _group, _sideID, _town] spawn WFCO_FNC_SetPatrol;
     } else {
         [_town, _group, _sideID, _camp] spawn WFCO_FNC_SetPatrol;
     };
