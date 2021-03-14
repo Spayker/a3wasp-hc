@@ -22,7 +22,7 @@ if(_campsCount > 0) then { _groups_max = _campsCount };
 if(_groups_max > 0 && _groups_max <= 2) then { _groups_max = 3 };
 
 _current_infantry_upgrade = 0;
-if (_side != resistance) then {
+if (_side != civilian) then {
     _upgrades = (_side) Call WFCO_FNC_GetSideUpgrades;
     _current_infantry_upgrade = _upgrades select WF_UP_BARRACKS;
     _unitsCoef = missionNamespace getVariable "WF_C_TOWNS_UNITS_COEF";

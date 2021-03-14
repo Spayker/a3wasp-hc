@@ -45,11 +45,13 @@ _procesTowns = {
             _west = west countSide _objects;
             _east = east countSide _objects;
             _resistance = resistance countSide _objects;
+            _civilian = civilian countSide _objects;
 
             _activeEnemies = switch (_sideID) do {
-                case WF_C_WEST_ID: {_east + _resistance};
-                case WF_C_EAST_ID: {_west + _resistance};
-                case WF_C_GUER_ID: {_east + _west};
+                case WF_C_WEST_ID: {_east + _resistance + _civilian};
+                case WF_C_EAST_ID: {_west + _resistance + _civilian};
+                case WF_C_GUER_ID: {_east + _west + _civilian};
+                case WF_C_CIV_ID: {_east + _west + _resistance};
             };
 
             _supplyValue = _location getVariable "supplyValue";
@@ -60,7 +62,7 @@ _procesTowns = {
             };
 
             if(_town_supply_time && _sideID != WF_C_UNKNOWN_ID && !_skipTimeSupply) then {
-                if (_activeEnemies == 0 && _sideID != RESISTANCEID) then {
+                if (_activeEnemies == 0 && _sideID != WF_C_GUER_ID) then {
                     if (_isTimeToUpdateSuppluys) then {
                         _increaseOf = 1;
                         if (missionNamespace getVariable Format ["WF_%1_PRESENT",_side]) then {
@@ -93,7 +95,7 @@ _procesTowns = {
             if(WF_C_PORT in (_locationSpecialities)) then {
                 _supplyTruck = _location getVariable ["supplyVehicle", objNull];
                 _supplyTruckTimeCheck = _location getVariable ["supplyVehicleTimeCheck", time];
-                if (_side != resistance) then {
+                if (_side != civilian && _side != resistance) then {
                     if (time >= _supplyTruckTimeCheck) then {
                         if(isNull _supplyTruck) then {
                             _position = _location modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
@@ -110,44 +112,83 @@ _procesTowns = {
                 }
             };
 
-            if(_west > 0 || _east > 0 || _resistance > 0) then {
+            if(_west > 0 || _east > 0 || _resistance > 0 || _civilian > 0) then {
                 _skip = false;
                 _captured = false;
 
-                _resistanceDominion = if (_resistance > _east && _resistance > _west) then {true} else {false};
-                _westDominion = if (_west > _east && _west > _resistance) then {true} else {false};
-                _eastDominion = if (_east > _west && _east > _resistance) then {true} else {false};
+                _resistanceDominion = if (_resistance > _east && _resistance > _west && _resistance > _civilian) then {true} else {false};
+                _civilianDominion = if (_civilian > _east && _civilian > _west && _civilian > _resistance) then {true} else {false};
+                _westDominion = if (_west > _east && _west > _resistance && _west > _civilian) then {true} else {false};
+                _eastDominion = if (_east > _west && _east > _resistance && _east > _civilian) then {true} else {false};
 
-                if (_sideID == RESISTANCEID && _resistanceDominion) then {_force = _resistance;_skip = true};
-                if (_sideID == EASTID && _eastDominion) then {_force = _east;_skip = true};
-                if (_sideID == WESTID && _westDominion) then {_force = _west;_skip = true};
+                if (_sideID == WF_C_GUER_ID && _resistanceDominion) then {_force = _resistance;_skip = true};
+                if (_sideID == WF_C_EAST_ID && _eastDominion) then {_force = _east;_skip = true};
+                if (_sideID == WF_C_WEST_ID && _westDominion) then {_force = _west;_skip = true};
+                if (_sideID == WF_C_CIV_ID && _civilianDominion) then {_force = _civilian;_skip = true};
+
+                if (_civilianDominion) then {
+                    _civilian = if (_east > _west) then {_civilian - _east} else {
+                        if(_west > _resistance) then {
+                            _civilian - _west
+                        } else {
+                            _civilian - _resistance
+                        }
+                    };
+                    _force = _civilian;
+                    _east = 0;
+                    _west = 0;
+                    _resistance = 0;
+                };
 
                 if (_resistanceDominion) then {
-                    _resistance = if (_east > _west) then {_resistance - _east} else {_resistance - _west};
+                    _resistance = if (_east > _west) then {_resistance - _east} else {
+                        if(_west > _civilian) then {
+                            _resistance - _west
+                        } else {
+                            _resistance - _civilian
+                        }
+                    };
                     _force = _resistance;
                     _east = 0;
                     _west = 0;
+                    _civilian = 0;
                 };
+
                 if (_westDominion) then {
-                    _west = if (_east > _resistance) then {_west - _east} else {_west - _resistance};
+                    _west = if (_east > _resistance) then {_west - _east} else {
+                        if(_resistance > _civilian) then {
+                            _west - _resistance
+                        } else {
+                            _west - _civilian
+                        }
+                    };
                     _force = _west;
                     _east = 0;
                     _resistance = 0;
+                    _civilian = 0;
                 };
+
                 if (_eastDominion) then {
-                    _east = if (_west > _resistance) then {_east - _west} else {_east - _resistance};
+                    _east = if (_west > _resistance) then {_east - _west} else {
+                        if(_resistance > _civilian) then {
+                            _east - _resistance
+                        } else {
+                            _east - _civilian
+                        }
+                    };
                     _force = _east;
                     _west = 0;
                     _resistance = 0;
+                    _civilian = 0;
                 };
 
-                if (!_resistanceDominion && !_westDominion && !_eastDominion) then {_west = 0; _east = 0; _resistance = 0};
+                if (!_resistanceDominion && !_westDominion && !_eastDominion && !_civilianDominion) then {_west = 0; _east = 0; _resistance = 0; _civilian = 0};
 
                 _isSpawning = _location getVariable ["wf_spawning", false];
                 if(_isSpawning) then { _skip = true };
 
                 if !(_skip) then {
-                    _newSID = switch (true) do {case (_west > 0): {WF_C_WEST_ID}; case (_east > 0): {WF_C_EAST_ID}; case (_resistance > 0): {WF_C_GUER_ID};};
+                    _newSID = switch (true) do {case (_west > 0): {WF_C_WEST_ID}; case (_east > 0): {WF_C_EAST_ID}; case (_resistance > 0): {WF_C_GUER_ID}; case (_civilian > 0): {WF_C_CIV_ID};};
                     _newSide = (_newSID) Call WFCO_FNC_GetSideFromID;
                     _rate = _town_capture_rate * (([_location,_newSide] Call WFCO_FNC_GetTotalCampsOnSide) / (_location Call WFCO_FNC_GetTotalCamps)) * _town_camps_capture_rate;
                     if (_rate < 1) then {_rate = 10};
@@ -159,7 +200,7 @@ _procesTowns = {
                         };
                     };
 
-                    _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
+                    _supplyValue = round(_supplyValue - (_resistance + _east + _west + _civilian) * _rate);
                     if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
                     _location setVariable ["supplyValue",_supplyValue,true];
                 };
@@ -170,7 +211,7 @@ _procesTowns = {
                     //--Store town capturing time--
                     _location setVariable ["captureTime",time];
 
-                    if(_side != resistance && _newSide != resistance) then {
+                    if(_side != civilian && _newSide != civilian) then {
                         [format [":homes: town **%1** was captured by %2%3 from %4%5", _location, _newSide Call WFCO_FNC_GetSideFLAG, _newSide, _side Call WFCO_FNC_GetSideFLAG, _side]] Call WFDC_FNC_LogContent;
                     };
 
@@ -202,8 +243,8 @@ _procesTowns = {
                         if (_town_occupation_enabled) then { _side_enabled = true }
                     };
 
-                    //--If town belonged GUERS, check left groups, if infantry count is low than 9 or TownSV/10 kill them--
-                    if(_oldSideID == 2) then {
+                    //--If town belonged Civilian, check left groups, if infantry count is low than 9 or TownSV/10 kill them--
+                    if(_oldSideID == 3) then {
                         //--Check remaining units in the captured town--
                         _grps = _location getVariable ["wf_town_teams", []];
                         _totalTownUnitsCountLimit = ceil(_maxSupplyValue / 10);
@@ -247,7 +288,7 @@ _procesTowns = {
                     };
 
                     if (WF_C_PORT in _locationSpecialities) then {
-                        if (_newSide != resistance) then {
+                        if (_newSide != resistance && _newSide != civilian) then {
                             _position = _location modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
                             _safePosition = [_position, 30] call WFCO_fnc_getEmptyPosition;
                             _vehicle = [missionNamespace getVariable Format["WF_%1SUPPLY_TRUCK", str _newSide], _safePosition, _newSID, 0, false, false] Call WFCO_FNC_CreateVehicle;

@@ -27,9 +27,9 @@ _c = 0;
 for '_i' from 0 to count(_teams)-1 do {
 	_position = _positions # _i;
 
-	_group = grpNull; //createGroup [_side, true];
-	if(_side == resistance) then {
-	    _group = createGroup [_side, false];
+	_group = grpNull;
+	if(_side == civilian) then {
+	    _group = createGroup [west, false];
 	} else {
 	_group = createGroup [_side, true];
 	};
