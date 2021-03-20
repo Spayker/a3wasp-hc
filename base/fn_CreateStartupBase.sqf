@@ -4,6 +4,7 @@ params ['_side', '_startPosition', '_template'];
     params ['_side', '_startPosition', '_template'];
 Private ["_created","_current","_dir","_i","_object","_origin","_relDir","_relPos","_skip","_template","_toplace","_toWorld"];
     sleep 5;
+    _logic = nil;
 _sideID = (_side) Call WFCO_FNC_GetSideID;
 _origin = createVehicle ["Land_HelipadEmpty_F", _startPosition, [], 0, "NONE"];
 _dir = getDir _origin;
@@ -34,6 +35,12 @@ if(!(isNil '_template'))then{
                 _logic setVariable ["DefenseTeam", createGroup [_side, true]];
                 (_logic getVariable "DefenseTeam") setVariable ["wf_persistent", true];
                 _logic setVariable ["weapons",missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX_AI"];
+
+                    _logic setVariable ['avail', missionNamespace getVariable "WF_C_BASE_AV_FORTIFICATIONS"];
+                    _logic setVariable ['availStaticDefense', missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX"];
+                    _logic setVariable ["side", _side ];
+                    _logik setVariable ["wf_basearea", _areas + [_logic], true];
+
                 [_logic, _side,_logik,_areas] remoteExecCall ["WFCL_FNC_RequestBaseArea", _side, true];
 
                 _toWorld = _origin modelToWorld _relPos;
@@ -82,7 +89,8 @@ if(!(isNil '_template'))then{
 
             _toplace = createVehicle [_object, _toWorld, [], 0, "CAN_COLLIDE"];
             _toplace setDir (_dir - _relDir);
-    		_toplace setVectorUp surfaceNormal position _toplace
+        		_toplace setVectorUp surfaceNormal position _toplace;
+        		_toplace setVariable ["wf_defense", true, true];
     	}
     }
 };
@@ -107,6 +115,10 @@ switch _side do{
         _vehicle = [_tVeh, _vehicleStartPositions # ((count _vehicleStartPositions) - 1), east, 0, false] Call WFCO_FNC_CreateVehicle;
     };
 };
+
+    _objectsToFind = WF_C_GARBAGE_OBJECTS + WF_C_STATIC_DEFENCE_FOR_COMPOSITIONS;
+    _objects = nearestObjects [_startPosition, _objectsToFind, 150];
+    _logic setVariable ['avail', count _objects, true];
 
 deleteVehicle _origin;
 }

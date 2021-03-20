@@ -42,7 +42,14 @@ while {!WF_GameOver} do {
 	{
 		_side = _x;
 		_logik = (_side) Call WFCO_FNC_GetSideLogic;
-		_buildings = (_side Call WFCO_FNC_GetSideStructures) + (_side Call WFCO_FNC_GetSideHQ);
+
+		_hqs = (_side Call WFCO_FNC_GetSideHQ);
+		if(typeName _hqs != "ARRAY") then { _hqs = [] };
+		{
+		    if !(_x isKindOf 'Warfare_HQ_base_unfolded') then { _hqs = _hqs - [_x] }
+		} forEach _hqs;
+
+		_buildings = (_side Call WFCO_FNC_GetSideStructures) + _hqs;
 		_command=[_side,missionNamespace getVariable Format["WF_%1COMMANDCENTERTYPE",str _side],_buildings] Call WFCO_FNC_GetFactories;
 		_service=[_side,missionNamespace getVariable Format["WF_%1SERVICEPOINTTYPE",str _side],_buildings] Call WFCO_FNC_GetFactories;
 		_aar = [_side,missionNamespace getVariable Format["WF_%1AARADARTYPE",str _side],_buildings] Call WFCO_FNC_GetFactories;
@@ -62,8 +69,16 @@ while {!WF_GameOver} do {
 					deleteVehicle _x;
 					deleteGroup _grp;
 					_logik setVariable ["wf_basearea", _areas, true];
-				};
-			};
+				}
+			} else {
+			    [getPosATL _x, _side, _areas, _baseareaRange] Spawn _onAreaRemoved;
+                _areas deleteAt (_forEachIndex);
+                _areas = _areas - [objNull];
+                _grp = group _x;
+                deleteVehicle _x;
+                deleteGroup _grp;
+                _logik setVariable ["wf_basearea", _areas, true]
+			}
 		} forEach _areas;
 	} forEach WF_PRESENTSIDES;
 
