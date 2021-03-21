@@ -7,16 +7,13 @@ _inf_group = nil;
 _minimalAttackBasechance = 31;
 
 if(count _alives == 0) then {
+    if !(isNull _building) then {
 	_inf_group = createGroup [_side, true];
-	{
-		if !(isNull _building) then {
-			[_building,_x,_side,_inf_group] call WFHC_FNC_ResBuyUnit
+        [_building,_template,_side,_inf_group] call WFHC_FNC_ResBuyUnit
 		}
-	} forEach _template
 };
 
 sleep 30;
-
 while{!_end} do {
 	_alives = (units _inf_group) Call WFCO_FNC_GetLiveUnits;
 	if(count _alives > 0) then {

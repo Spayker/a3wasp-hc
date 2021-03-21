@@ -17,7 +17,7 @@ if (count _defenseData > 0) then {
 
     if (isNil "_kinds") exitWith {};
     //--- At least one type is needed.
-    if (count _kinds == 0 || _sideID != WF_C_GUER_ID) exitWith {};
+    if (count _kinds == 0 || _sideID != WF_C_CIV_ID) exitWith {};
 
     _nils = [];
     if (count _kinds > 1) then {

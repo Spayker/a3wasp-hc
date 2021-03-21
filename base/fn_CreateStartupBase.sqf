@@ -114,6 +114,11 @@ switch _side do{
         _tVeh = EAST_StartVeh # floor(random (count EAST_StartVeh));
         _vehicle = [_tVeh, _vehicleStartPositions # ((count _vehicleStartPositions) - 1), east, 0, false] Call WFCO_FNC_CreateVehicle;
     };
+        case resistance:{
+            call WFCO_fnc_respawnStartVeh;
+            _tVeh = GUER_StartVeh # floor(random (count GUER_StartVeh));
+            _vehicle = [_tVeh, _vehicleStartPositions # ((count _vehicleStartPositions) - 1), east, 0, false] Call WFCO_FNC_CreateVehicle;
+        };
 };
 
     _objectsToFind = WF_C_GARBAGE_OBJECTS + WF_C_STATIC_DEFENCE_FOR_COMPOSITIONS;

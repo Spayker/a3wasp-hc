@@ -44,7 +44,6 @@ while {!WF_GameOver} do {
 		_logik = (_side) Call WFCO_FNC_GetSideLogic;
 
 		_hqs = (_side Call WFCO_FNC_GetSideHQ);
-		if(typeName _hqs != "ARRAY") then { _hqs = [] };
 		{
 		    if !(_x isKindOf 'Warfare_HQ_base_unfolded') then { _hqs = _hqs - [_x] }
 		} forEach _hqs;

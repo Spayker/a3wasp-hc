@@ -96,6 +96,7 @@ class CfgFunctions {
             class processResTeam {};
             class resBuyUnit {};
             class manningOfResBaseDefense {};
+            class createUnitsForResBases {};
         };
 
         class ServerTaskDirector {
