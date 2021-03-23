@@ -28,7 +28,7 @@ _groups_max = 2;
 _campsCount = count (_town getVariable "camps");
 if(_campsCount > 0) then { _groups_max = _campsCount };
 
-if (_side != civilian) then {
+if (_side != resistance) then {
     _upgrades = (_side) Call WFCO_FNC_GetSideUpgrades;
     _current_light_upgrade = _upgrades # WF_UP_LIGHT;
     _current_heavy_upgrade = _upgrades # WF_UP_HEAVY;

@@ -6,23 +6,12 @@ _vehicles = [];
 
 if (_list isEqualType "") then {_list = [_list]};
 
-_civGroup = grpNull;
-if(_side == civilian) then {
-    _civGroup = createGroup [civilian, true]
-};
-
 {
 	if (_x isKindOf 'Man') then {
 		_position = [_position, 2, 15, 5, 0, 20, 0] call BIS_fnc_findSafePos;
 
-        if (_side == civilian) then {
-		    if (isNull _group) then { _group = createGroup [west, true] };
-        };
-
 		_unit = [_x,_group,_position,_sideID] Call WFCO_FNC_CreateUnit;
-		if (_side == civilian) then {
-		    [_unit] joinSilent _civGroup
-		};
+
 		_unit disableAI "RADIOPROTOCOL";
 		if(isDedicated) then {
             _unit enableSimulationGlobal false
@@ -82,9 +71,6 @@ if(_side == civilian) then {
             _x setUnitLoadout _classLoadout;
             _x setUnitTrait ["Engineer",true];
             _x disableAI "RADIOPROTOCOL";
-            if (_side == civilian) then {
-                [_x] joinSilent _civGroup
-            }
         } forEach crew _vehicle;
 
         _unitskin = -1;
@@ -99,16 +85,10 @@ if(_side == civilian) then {
 	};
 } forEach _list;
 
-_groupToBeReturned = grpNull;
-if(_side == civilian) then {
-    _civGroup allowFleeing 0;
-    {_civGroup addVehicle _x} forEach _vehicles;
-    _groupToBeReturned = _civGroup;
-    deleteGroup _group
-} else {
     {_group addVehicle _x} forEach _vehicles;
     _group allowFleeing 0;
-    _groupToBeReturned = _group
-};
+_groupToBeReturned = _group;
+deleteVehicle ((units _group) select 0);
+
 
 [_units, _vehicles, _groupToBeReturned]

@@ -27,12 +27,7 @@ _c = 0;
 for '_i' from 0 to count(_teams)-1 do {
 	_position = _positions # _i;
 
-	_group = grpNull;
-	if(_side == civilian) then {
-	    _group = createGroup [west, false];
-	} else {
 	_group = createGroup [_side, true];
-	};
 	["INFORMATION", Format["fn_CreateTownUnits.sqf: Town [%1] [%2] will create a team template %3 at %4", _town, _group, _teams # _i,_position]] Call WFCO_FNC_LogContent;
 	
 	_retVal = [_teams # _i, _position, _side, _sideID, _lock, _group, true, _town] call WFHC_FNC_CreateTeam;

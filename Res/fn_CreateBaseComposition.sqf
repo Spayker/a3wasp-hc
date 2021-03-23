@@ -5,39 +5,39 @@ private ["_posX", "_posY", "_multiplyMatrixFunc"];
 _azi = 0;
 
 missionNamespace setVariable ['WF_NEURODEF_RESISTANCE_BR', [
-   // ["CUP_I_ZU23_NAPA",[-3.94189,0.834961,-0.075161],271.306],
-   // ["Land_StoneWall_01_s_d_F",[-6.88037,0.893066,0],268.267],
-    ["CDF_WarfareBBarracks",[10.6921,0.741211,0],178.933]
-   // ["CUP_I_DSHKM_NAPA",[23.6787,-1.04395,-0.0750008],89.7327],
-   // ["Land_fort_bagfence_round",[24.5161,2.25732,0],11.2262],
-   // ["Land_fort_bagfence_round",[24.8291,-3.47168,0],161.226]
+    ["CUP_I_ZU23_NAPA",[-3.94189,0.834961,-0.075161],271.306],
+    ["Land_StoneWall_01_s_d_F",[-6.88037,0.893066,0],268.267],
+    ["CDF_WarfareBBarracks",[10.6921,0.741211,0],178.933],
+    ["CUP_I_DSHKM_NAPA",[23.6787,-1.04395,-0.0750008],89.7327],
+    ["Land_fort_bagfence_round",[24.5161,2.25732,0],11.2262],
+    ["Land_fort_bagfence_round",[24.8291,-3.47168,0],161.226]
 ]];
 
 missionNamespace setVariable ['WF_NEURODEF_RESISTANCE_LF', [
-   // ["CUP_I_ZU23_NAPA",[-3.94189,0.834961,-0.075161],271.306],
-   // ["Land_StoneWall_01_s_d_F",[-6.88037,0.893066,0],268.267],
-    ["CDF_WarfareBLightFactory",[10.6921,0.741211,0],178.933]
-   // ["CUP_I_DSHKM_NAPA",[23.6787,-1.04395,-0.0750008],89.7327],
-   // ["Land_fort_bagfence_round",[24.5161,2.25732,0],11.2262],
-  //  ["Land_fort_bagfence_round",[24.8291,-3.47168,0],161.226]
+    ["CUP_I_ZU23_NAPA",[-3.94189,0.834961,-0.075161],271.306],
+    ["Land_StoneWall_01_s_d_F",[-6.88037,0.893066,0],268.267],
+    ["CDF_WarfareBLightFactory",[10.6921,0.741211,0],178.933],
+    ["CUP_I_DSHKM_NAPA",[23.6787,-1.04395,-0.0750008],89.7327],
+    ["Land_fort_bagfence_round",[24.5161,2.25732,0],11.2262],
+    ["Land_fort_bagfence_round",[24.8291,-3.47168,0],161.226]
 ]];
 
 missionNamespace setVariable ['WF_NEURODEF_RESISTANCE_HF', [
-   // ["CUP_I_ZU23_NAPA",[-3.94189,0.834961,-0.075161],271.306],
-   // ["Land_StoneWall_01_s_d_F",[-6.88037,0.893066,0],268.267],
-    ["CDF_WarfareBHeavyFactory",[10.6921,0.741211,0],178.933]
-   // ["CUP_I_DSHKM_NAPA",[23.6787,-1.04395,-0.0750008],89.7327],
-   // ["Land_fort_bagfence_round",[24.5161,2.25732,0],11.2262],
-   // ["Land_fort_bagfence_round",[24.8291,-3.47168,0],161.226]
+    ["CUP_I_ZU23_NAPA",[-3.94189,0.834961,-0.075161],271.306],
+    ["Land_StoneWall_01_s_d_F",[-6.88037,0.893066,0],268.267],
+    ["CDF_WarfareBHeavyFactory",[10.6921,0.741211,0],178.933],
+    ["CUP_I_DSHKM_NAPA",[23.6787,-1.04395,-0.0750008],89.7327],
+    ["Land_fort_bagfence_round",[24.5161,2.25732,0],11.2262],
+    ["Land_fort_bagfence_round",[24.8291,-3.47168,0],161.226]
 ]];
 
 missionNamespace setVariable ['WF_NEURODEF_RESISTANCE_AF', [
-   // ["CUP_I_ZU23_NAPA",[-3.94189,0.834961,-0.075161],271.306],
-  //  ["Land_StoneWall_01_s_d_F",[-6.88037,0.893066,0],268.267],
-    ["CDF_WarfareBAircraftFactory",[10.6921,0.741211,0],178.933]
-  //  ["CUP_I_DSHKM_NAPA",[23.6787,-1.04395,-0.0750008],89.7327],
-  //  ["Land_fort_bagfence_round",[24.5161,2.25732,0],11.2262],
-  //  ["Land_fort_bagfence_round",[24.8291,-3.47168,0],161.226]
+    ["CUP_I_ZU23_NAPA",[-3.94189,0.834961,-0.075161],271.306],
+    ["Land_StoneWall_01_s_d_F",[-6.88037,0.893066,0],268.267],
+    ["CDF_WarfareBAircraftFactory",[10.6921,0.741211,0],178.933],
+    ["CUP_I_DSHKM_NAPA",[23.6787,-1.04395,-0.0750008],89.7327],
+    ["Land_fort_bagfence_round",[24.5161,2.25732,0],11.2262],
+    ["Land_fort_bagfence_round",[24.8291,-3.47168,0],161.226]
 ]];
 
 _resBasePositions = [_azi, _resBasePositions] call {
@@ -126,14 +126,14 @@ _resBasePositions = [_azi, _resBasePositions] call {
 
             	if(_type in WF_C_GARBAGE_OBJECTS) then { _newObj enableSimulation false };
 
-            	if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str civilian]) # 0)) then {
-            	    [_newObj, civilian, (missionNamespace getVariable Format["WF_%1STRUCTURES",str civilian]) # 0, 0] spawn WFHC_FNC_processBrBase
+            	if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 0)) then {
+            	    [_newObj, resistance, (missionNamespace getVariable Format["WF_%1STRUCTURES",str resistance]) # 0, 0] spawn WFHC_FNC_processBrBase
             	};
 
             	_newObj setDir (_azi + _azimuth);
 
                 if (WF_Debug) then {
-                    if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str civilian]) # 0)) then {
+                    if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 0)) then {
                         _marker = format ['ResBR%1', time];
                         createMarker [_marker,getPosATL _newObj];
                         _marker setMarkerTextLocal format ['ResBR%1', time];
@@ -234,14 +234,14 @@ _resBasePositions = [_azi, _resBasePositions] call {
 
             	if(_type in WF_C_GARBAGE_OBJECTS) then { _newObj enableSimulation false };
 
-            	if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str civilian]) # 1)) then {
-            	    [_newObj, civilian, (missionNamespace getVariable Format["WF_%1STRUCTURES",str civilian]) # 1, 1] spawn WFHC_FNC_processLfBase
+            	if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 1)) then {
+            	    [_newObj, resistance, (missionNamespace getVariable Format["WF_%1STRUCTURES",str resistance]) # 1, 1] spawn WFHC_FNC_processLfBase
             	};
 
             	_newObj setDir (_azi + _azimuth);
 
                 if (WF_Debug) then {
-                    if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str civilian]) # 1)) then {
+                    if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 1)) then {
                         _marker = format ['ResLF%1', time];
                         createMarker [_marker,getPosATL _newObj];
                         _marker setMarkerTextLocal format ['ResLF%1', time];
@@ -339,14 +339,14 @@ _resBasePositions = [_azi, _resBasePositions] call {
                     _newObj = _type createVehicle _newPos
                 };
 
-                if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str civilian]) # 2)) then {
-                    [_newObj, civilian, (missionNamespace getVariable Format["WF_%1STRUCTURES",str civilian]) # 2, 2] spawn WFHC_FNC_processHfBase
+                if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 2)) then {
+                    [_newObj, resistance, (missionNamespace getVariable Format["WF_%1STRUCTURES",str resistance]) # 2, 2] spawn WFHC_FNC_processHfBase
                 };
 
                 _newObj setDir (_azi + _azimuth);
 
                 if (WF_Debug) then {
-                    if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str civilian]) # 2)) then {
+                    if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 2)) then {
                         _marker = format ['ResHF%1', time];
                         createMarker [_marker,getPosATL _newObj];
                         _marker setMarkerTextLocal format ['ResHF%1', time];
@@ -444,14 +444,14 @@ _resBasePositions = [_azi, _resBasePositions] call {
                     _newObj = _type createVehicle _newPos
                 };
 
-                if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str civilian]) # 3)) then {
-                    [_newObj, civilian, (missionNamespace getVariable Format["WF_%1STRUCTURES",str civilian]) # 3, 3] spawn WFHC_FNC_processAfBase
+                if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 3)) then {
+                    [_newObj, resistance, (missionNamespace getVariable Format["WF_%1STRUCTURES",str resistance]) # 3, 3] spawn WFHC_FNC_processAfBase
                 };
 
                 _newObj setDir (_azi + _azimuth);
 
                 if (WF_Debug) then {
-                    if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str civilian]) # 3)) then {
+                    if(_type == ((missionNamespace getVariable Format["WF_%1STRUCTURENAMES",str resistance]) # 3)) then {
                         _marker = format ['ResAF%1', time];
                         createMarker [_marker,getPosATL _newObj];
                         _marker setMarkerTextLocal format ['ResAF%1', time];

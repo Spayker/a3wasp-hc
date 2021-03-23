@@ -60,7 +60,7 @@ _procesAiTowns = {
                        [_town, _side, "spawn"] spawn WFHC_FNC_OperateTownDefensesUnits;
                        _town setVariable ["wf_active", true];
 
-                       if(_side == civilian) then {
+                       if(_side == resistance) then {
                            _locationSpecialities = _town getVariable "townSpeciality";
                            _vehicles = _town getVariable ["respVehicles", []];
                            _startVehicles = GUER_StartVeh;
@@ -68,14 +68,14 @@ _procesAiTowns = {
 
                            if (count _vehicles > 0) then {
                                {
-                                   _vehicle = [_x # 0, _x # 1, civilian, _x # 2, false] Call WFCO_FNC_CreateVehicle;
+                                   _vehicle = [_x # 0, _x # 1, resistance, _x # 2, false] Call WFCO_FNC_CreateVehicle;
                                    _vehicles set [_forEachIndex, [_x # 0, _x # 1, _x # 2, _vehicle]]
                                } forEach _vehicles
                            } else {
                                _vehicles = [];
                                {
                                    _type = _startVehicles # floor(random (count _startVehicles));
-                                   _vehicle = [_type, _x # 0, civilian, _x # 1, false] Call WFCO_FNC_CreateVehicle;
+                                   _vehicle = [_type, _x # 0, resistance, _x # 1, false] Call WFCO_FNC_CreateVehicle;
                                    _vehicles pushBack [_type, _x # 0, _x # 1, _vehicle]
                                } forEach (_town getVariable ["respVehPositions", []]);
                                _town setVariable ["respVehicles", _vehicles];
@@ -125,7 +125,7 @@ _procesAiTowns = {
 
                        _locationSpecialities = _town getVariable "townSpeciality";
                        if (WF_C_MILITARY_BASE in _locationSpecialities || WF_C_AIR_BASE in _locationSpecialities) then {
-                           if(_side == civilian) then {
+                           if(_side == resistance) then {
                                { deleteVehicle (_x # 3) } forEach (_town getVariable ["respVehicles", []])
                            } else {
                                _town setVariable ["respVehicles", []];

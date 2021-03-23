@@ -1,7 +1,7 @@
 params ["_allDefences", "_pos"];
 private ["_action","_defense","_side","_spawn","_town","_units","_sideID","_hc"];
 
-_side = civilian;
+_side = resistance;
 _team = createGroup [_side, true];
 missionNamespace setVariable [format ["WF_%1_DefenseTeam", _side], _team];
 
