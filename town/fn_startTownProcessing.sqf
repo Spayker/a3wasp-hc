@@ -14,7 +14,6 @@ _town_supply_time_delay = missionNamespace getVariable "WF_C_ECONOMY_SUPPLY_TIME
 _supplyTruckTimeCheckDelay = missionNamespace getVariable "WF_C_ECONOMY_SUPPLY_TRUCK_TIME_CHECK_DELAY";
 _town_supply_time = if ((missionNamespace getVariable "WF_C_ECONOMY_SUPPLY_SYSTEM") == 1) then {true} else {false};
 
-_town_defender_enabled = if ((missionNamespace getVariable "WF_C_TOWNS_DEFENDER") > 0) then {true} else {false};
 _town_occupation_enabled = if ((missionNamespace getVariable "WF_C_TOWNS_OCCUPATION") > 0) then {true} else {false};
 
 _distance = missionNamespace getVariable "WF_C_DEPOT_BUY_DISTANCE";
@@ -35,9 +34,11 @@ _procesTowns = {
         _location = _towns # _i;
         if!(isNil "_location") then {
             _locationSpecialities = _location getVariable "townSpeciality";
+            _supplyValue = _location getVariable "supplyValue";
             _maxSupplyValue = _location getVariable "maxSupplyValue";
             _startingSupplyValue = _location getVariable "startingSupplyValue";
             _initialStartingSupplyValue = _location getVariable "initialStartSupplyValue";
+            _resFaction = _location getVariable ["resFaction", nil];
             _sideID = _location getVariable ["sideID", WF_C_CIV_ID];
             _side = (_sideID) Call WFCO_FNC_GetSideFromID;
             _objects = (_location nearEntities[WF_C_ALL_MAN_VEHICLE_KINDS_NO_STATIC, 	WF_C_TOWNS_CAPTURE_RANGE]) unitsBelowHeight 10;
@@ -52,15 +53,12 @@ _procesTowns = {
                 case WF_C_GUER_ID: {_east + _west};
             };
 
-            _supplyValue = _location getVariable "supplyValue";
-
             if (_town_supply_time) then {
                 //--- If we're running on 2 sides, skip the time based supply if the defender hold the town.
                 _skipTimeSupply = if (_sideID == WF_DEFENDER_ID) then {true} else {false};
             };
 
             if(_town_supply_time && _sideID != WF_C_UNKNOWN_ID && !_skipTimeSupply) then {
-                if (_activeEnemies == 0 && _sideID != WF_C_CIV_ID) then {
                     if (_isTimeToUpdateSuppluys) then {
                         _increaseOf = 1;
                         if (missionNamespace getVariable Format ["WF_%1_PRESENT",_side]) then {
@@ -87,13 +85,20 @@ _procesTowns = {
                             }
                         }
                     }
-                }
             };
 
             if(WF_C_PORT in (_locationSpecialities)) then {
+
+                _shallSpawnSupplyTruck = true;
+                if(_sideID == WF_DEFENDER_ID && !(isNil '_resFaction')) then {
+                    if(_resFaction == WF_DEFENDER_CDF_FACTION) then {
+                        _shallSpawnSupplyTruck = false
+                }
+            };
+
+                if(_shallSpawnSupplyTruck) then {
                 _supplyTruck = _location getVariable ["supplyVehicle", objNull];
                 _supplyTruckTimeCheck = _location getVariable ["supplyVehicleTimeCheck", time];
-                if (_side != resistance) then {
                     if (time >= _supplyTruckTimeCheck) then {
                         if(isNull _supplyTruck) then {
                             _position = _location modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
@@ -118,9 +123,18 @@ _procesTowns = {
                 _westDominion = if (_west > _east && _west > _resistance) then {true} else {false};
                 _eastDominion = if (_east > _west && _east > _resistance) then {true} else {false};
 
-                if (_sideID == WF_C_GUER_ID && _resistanceDominion) then {_force = _resistance;_skip = true};
                 if (_sideID == WF_C_EAST_ID && _eastDominion) then {_force = _east;_skip = true};
                 if (_sideID == WF_C_WEST_ID && _westDominion) then {_force = _west;_skip = true};
+
+                if (_sideID == WF_C_GUER_ID && _resistanceDominion) then {
+                    if!(isNil '_resFaction') then {
+                        if(_resFaction == WF_DEFENDER_CDF_FACTION) then {
+                            _force = _resistance;_skip = false
+                        } else {
+                            _skip = true
+                        }
+                    }
+                };
 
                 if (_resistanceDominion) then {
                     _resistance = _resistance - (selectMax [_east, _west]);
@@ -154,7 +168,9 @@ _procesTowns = {
                     _rate = _town_capture_rate * (([_location,_newSide] Call WFCO_FNC_GetTotalCampsOnSide) / (_location Call WFCO_FNC_GetTotalCamps)) * _town_camps_capture_rate;
                     if (_rate < 1) then {_rate = 10};
 
-                    if (_sideID != WF_C_UNKNOWN_ID) then {
+                    if(_sideID == WF_C_GUER_ID) then {
+                        if!(isNil '_resFaction') then {
+                            if(_resFaction == WF_DEFENDER_GUER_FACTION) then {
                         if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
                             _timeAttacked = time + 60;
                             [_side, "IsUnderAttack", ["Town", _location]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
@@ -164,6 +180,19 @@ _procesTowns = {
                     _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
                     if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
                     _location setVariable ["supplyValue",_supplyValue,true];
+
+                        }
+                    } else {
+                        if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
+                            _timeAttacked = time + 60;
+                            [_side, "IsUnderAttack", ["Town", _location]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
+                        };
+
+                        _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
+                        if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
+                        _location setVariable ["supplyValue",_supplyValue,true];
+
+                    }
                 };
 
                 if(_captured) then {
@@ -173,12 +202,29 @@ _procesTowns = {
                     _location setVariable ["captureTime",time];
                     [format [":homes: town **%1** was captured by %2%3 from %4%5", _location, _newSide Call WFCO_FNC_GetSideFLAG, _newSide, _side Call WFCO_FNC_GetSideFLAG, _side]] Call WFDC_FNC_LogContent;
 
-
-                    _oldSideID = _location getVariable "sideID";
-
-                    if (_sideID != WF_C_UNKNOWN_ID) then {
+                    if(_sideID == WF_C_GUER_ID) then {
+                        if!(isNil '_resFaction') then {
+                            if(_resFaction == WF_DEFENDER_GUER_FACTION) then {
+                                if (missionNamespace getVariable Format ["WF_%1_PRESENT", _side]) then {
+                                    [_side, "Lost", _location] remoteExecCall ["WFSE_FNC_SideMessage", 2]
+                                }
+                            }
+                        }
+                    } else {
                         if (missionNamespace getVariable Format ["WF_%1_PRESENT",_side]) then {
                             [_side, "Lost", _location] remoteExecCall ["WFSE_FNC_SideMessage", 2]
+                        }
+                    };
+
+                    if!(isNil '_resFaction') then {
+                        if (_newSID == _sideID) then {
+                            if(_resFaction == WF_DEFENDER_CDF_FACTION) then {
+                                _location setVariable ["resFaction", WF_DEFENDER_GUER_FACTION, true];
+                            }
+                        } else {
+                            if(_newSID != WF_DEFENDER_ID) then {
+                                _location setVariable ["resFaction", nil, true]
+                            }
                         }
                     };
 
@@ -188,19 +234,10 @@ _procesTowns = {
 
                     _location setVariable ["sideID",_newSID,true];
                     [_location, _location getVariable "name", _sideID, _newSID] remoteExecCall ["WFCL_FNC_TownCaptured"];
-
                     [_location, _sideID, _newSID] remoteExecCall ["WFSE_FNC_SetCampsToSide", 2];
 
                     //--- Clear the town defenses, units first then replace the defenses if needed.
                     [_location, _side, "remove"] spawn WFHC_FNC_OperateTownDefensesUnits;
-
-                    //--- Check if the side is enabled in town and add defenses if needed.
-                    _side_enabled = false;
-                    if (_newSide == WF_DEFENDER) then {
-                        if (_town_defender_enabled) then { _side_enabled = true }
-                    } else {
-                        if (_town_occupation_enabled) then { _side_enabled = true }
-                    };
 
                     if (WF_C_MINE in _locationSpecialities) then {
                         _locationName = _location getVariable "name";
@@ -216,7 +253,6 @@ _procesTowns = {
                     };
 
                     if (WF_C_PORT in _locationSpecialities) then {
-                        if (_newSide != resistance) then {
                             _position = _location modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
                             _safePosition = [_position, 30] call WFCO_fnc_getEmptyPosition;
                             _vehicle = [missionNamespace getVariable Format["WF_%1SUPPLY_TRUCK", str _newSide], _safePosition, _newSID, 0, false, false] Call WFCO_FNC_CreateVehicle;
@@ -224,7 +260,6 @@ _procesTowns = {
                             _location setVariable ["supplyVehicle", _vehicle, true];
                             _location setVariable ["supplyVehicleTimeCheck", time + _supplyTruckTimeCheckDelay, true];
                             (format[localize "STR_WF_CHAT_Town_Supply_Truck_Spawned", _location getVariable "name"]) remoteExecCall ["WFCL_FNC_CommandChatMessage", _newSide]
-                        }
                     };
 
                     // calculating town damage
