@@ -58,7 +58,7 @@ _procesTowns = {
                 _skipTimeSupply = if (_sideID == WF_DEFENDER_ID) then {true} else {false};
             };
 
-            if(_town_supply_time && _sideID != WF_C_UNKNOWN_ID && !_skipTimeSupply) then {
+            if(_town_supply_time && !_skipTimeSupply) then {
                     if (_isTimeToUpdateSuppluys) then {
                         _increaseOf = 1;
                         if (missionNamespace getVariable Format ["WF_%1_PRESENT",_side]) then {
@@ -176,11 +176,9 @@ _procesTowns = {
                             [_side, "IsUnderAttack", ["Town", _location]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
                         };
                     };
-
                     _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
                     if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
                     _location setVariable ["supplyValue",_supplyValue,true];
-
                         }
                     } else {
                         if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
@@ -191,7 +189,6 @@ _procesTowns = {
                         _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
                         if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
                         _location setVariable ["supplyValue",_supplyValue,true];
-
                     }
                 };
 
@@ -216,16 +213,14 @@ _procesTowns = {
                         }
                     };
 
-                    if!(isNil '_resFaction') then {
                         if (_newSID == _sideID) then {
-                            if(_resFaction == WF_DEFENDER_CDF_FACTION) then {
-                                _location setVariable ["resFaction", WF_DEFENDER_GUER_FACTION, true];
-                            }
+                        _location setVariable ["resFaction", WF_DEFENDER_GUER_FACTION, true]
+                    } else {
+                        if(_newSID == WF_DEFENDER_ID) then {
+                            _location setVariable ["resFaction", WF_DEFENDER_GUER_FACTION, true]
                         } else {
-                            if(_newSID != WF_DEFENDER_ID) then {
                                 _location setVariable ["resFaction", nil, true]
                             }
-                        }
                     };
 
                     if (missionNamespace getVariable Format ["WF_%1_PRESENT",_newSide]) then {
