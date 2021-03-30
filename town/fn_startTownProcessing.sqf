@@ -47,14 +47,14 @@ _procesTowns = {
             _east = east countSide _objects;
             _resistance = resistance countSide _objects;
 
-            _activeEnemies = switch (_sideID) do {
-                case WF_C_WEST_ID: {_east + _resistance};
-                case WF_C_EAST_ID: {_west + _resistance};
-                case WF_C_GUER_ID: {_east + _west};
+            _activeEnemies = 0;
+            if(count WF_FRIENDLY_SIDES > 0 && _side in WF_FRIENDLY_SIDES) then {
+                _activeEnemies = [_objects, WF_FRIENDLY_SIDES] call WFCO_FNC_GetAreaEnemiesCount
+            } else {
+                _activeEnemies = [_objects, [_side]] call WFCO_FNC_GetAreaEnemiesCount
             };
 
             if (_town_supply_time) then {
-                //--- If we're running on 2 sides, skip the time based supply if the defender hold the town.
                 _skipTimeSupply = if (_sideID == WF_DEFENDER_ID) then {true} else {false};
             };
 
@@ -169,18 +169,26 @@ _procesTowns = {
                     if (_rate < 1) then {_rate = 10};
 
                     if(_sideID == WF_C_GUER_ID) then {
-                        if!(isNil '_resFaction') then {
                             if(_resFaction == WF_DEFENDER_GUER_FACTION) then {
+
                         if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
                             _timeAttacked = time + 60;
                             [_side, "IsUnderAttack", ["Town", _location]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
                         };
-                    };
+
+                            if ((_side in WF_FRIENDLY_SIDES) && (_newSide in WF_FRIENDLY_SIDES)) then {} else {
+                                _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
+                                if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
+                                _location setVariable ["supplyValue",_supplyValue,true];
+                            }
+                        } else {
                     _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
                     if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
                     _location setVariable ["supplyValue",_supplyValue,true];
                         }
                     } else {
+                        if ((_side in WF_FRIENDLY_SIDES) && (_newSide in WF_FRIENDLY_SIDES)) then {} else {
+
                         if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
                             _timeAttacked = time + 60;
                             [_side, "IsUnderAttack", ["Town", _location]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
@@ -189,6 +197,7 @@ _procesTowns = {
                         _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
                         if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
                         _location setVariable ["supplyValue",_supplyValue,true];
+                    }
                     }
                 };
 

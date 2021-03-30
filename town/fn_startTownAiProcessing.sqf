@@ -46,14 +46,19 @@ _procesAiTowns = {
 
            _sideID = _town getVariable ["sideID", WF_C_UNKNOWN_ID];
            if(_sideID != WF_C_UNKNOWN_ID) then {
-               _side = (_sideID) call WFCO_FNC_GetSideFromID;
-
-               _detected = 0;
 
                _detected = (_town nearEntities ["AllVehicles", (_town getVariable "range") * 1.5]) unitsBelowHeight 20;
-               _enemies = [_detected, _side] call WFCO_FNC_GetAreaEnemiesCount;
-               if(_enemies > 0) then {
+               _side = (_sideID) call WFCO_FNC_GetSideFromID;
+               _enemies = 0;
 
+
+               if(count WF_FRIENDLY_SIDES > 0 && _side in WF_FRIENDLY_SIDES) then {
+                    _enemies = [_detected, WF_FRIENDLY_SIDES] call WFCO_FNC_GetAreaEnemiesCount
+               } else {
+                    _enemies = [_detected, [_side]] call WFCO_FNC_GetAreaEnemiesCount
+               };
+
+               if(_enemies > 0) then {
                    _town setVariable ["wf_inactivity", time];
                    if(!(_town getVariable "wf_active")) then {
                        ["INFORMATION", format ["fn_startTownAiProcessing.sqf: Town [%1] has been activated, creating defensive units for [%2].", _town, _side]] call WFCO_FNC_LogContent;
