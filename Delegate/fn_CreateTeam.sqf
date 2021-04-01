@@ -87,8 +87,5 @@ if (_list isEqualType "") then {_list = [_list]};
 
     {_group addVehicle _x} forEach _vehicles;
     _group allowFleeing 0;
-_groupToBeReturned = _group;
-deleteVehicle ((units _group) select 0);
 
-
-[_units, _vehicles, _groupToBeReturned]
+[_units, _vehicles, _group]
