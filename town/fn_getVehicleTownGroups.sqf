@@ -131,6 +131,7 @@ switch (true) do {
 
 _unit_vehicles = [];
 _k = 0;
+_groups_max = _groups_max * 2;
 for '_j' from 0 to (_groups_max - 1) do {
     _units pushBack (_unitTemplates # _k);
     if(_k <= (count _unitTemplates) - 1) then {
