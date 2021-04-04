@@ -117,7 +117,7 @@ switch _side do{
         case resistance:{
             call WFCO_fnc_respawnStartVeh;
             _tVeh = GUER_StartVeh # floor(random (count GUER_StartVeh));
-            _vehicle = [_tVeh, _vehicleStartPositions # ((count _vehicleStartPositions) - 1), east, 0, false] Call WFCO_FNC_CreateVehicle;
+            _vehicle = [_tVeh, _vehicleStartPositions # ((count _vehicleStartPositions) - 1), resistance, 0, false] Call WFCO_FNC_CreateVehicle;
         };
 };
 
