@@ -38,7 +38,6 @@ _procesTowns = {
             _maxSupplyValue = _location getVariable "maxSupplyValue";
             _startingSupplyValue = _location getVariable "startingSupplyValue";
             _initialStartingSupplyValue = _location getVariable "initialStartSupplyValue";
-            _resFaction = _location getVariable ["resFaction", nil];
             _sideID = _location getVariable ["sideID", WF_C_CIV_ID];
             _side = (_sideID) Call WFCO_FNC_GetSideFromID;
             _objects = (_location nearEntities[WF_C_ALL_MAN_VEHICLE_KINDS_NO_STATIC, 	WF_C_TOWNS_CAPTURE_RANGE]) unitsBelowHeight 10;
@@ -88,15 +87,6 @@ _procesTowns = {
             };
 
             if(WF_C_PORT in (_locationSpecialities)) then {
-
-                _shallSpawnSupplyTruck = true;
-                if(_sideID == WF_DEFENDER_ID && !(isNil '_resFaction')) then {
-                    if(_resFaction == WF_DEFENDER_CDF_FACTION) then {
-                        _shallSpawnSupplyTruck = false
-                }
-            };
-
-                if(_shallSpawnSupplyTruck) then {
                 _supplyTruck = _location getVariable ["supplyVehicle", objNull];
                 _supplyTruckTimeCheck = _location getVariable ["supplyVehicleTimeCheck", time];
                     if (time >= _supplyTruckTimeCheck) then {
@@ -112,7 +102,6 @@ _procesTowns = {
                         };
                         _location setVariable ["supplyVehicleTimeCheck", time + _supplyTruckTimeCheckDelay, true];
                     }
-                }
             };
 
             if(_west > 0 || _east > 0 || _resistance > 0) then {
@@ -125,16 +114,6 @@ _procesTowns = {
 
                 if (_sideID == WF_C_EAST_ID && _eastDominion) then {_force = _east;_skip = true};
                 if (_sideID == WF_C_WEST_ID && _westDominion) then {_force = _west;_skip = true};
-
-                if (_sideID == WF_C_GUER_ID && _resistanceDominion) then {
-                    if!(isNil '_resFaction') then {
-                        if(_resFaction == WF_DEFENDER_CDF_FACTION) then {
-                            _force = _resistance;_skip = false
-                        } else {
-                            _skip = true
-                        }
-                    }
-                };
 
                 if (_resistanceDominion) then {
                     _resistance = _resistance - (selectMax [_east, _west]);
@@ -168,25 +147,6 @@ _procesTowns = {
                     _rate = _town_capture_rate * (([_location,_newSide] Call WFCO_FNC_GetTotalCampsOnSide) / (_location Call WFCO_FNC_GetTotalCamps)) * _town_camps_capture_rate;
                     if (_rate < 1) then {_rate = 10};
 
-                    if(_sideID == WF_C_GUER_ID) then {
-                            if(_resFaction == WF_DEFENDER_GUER_FACTION) then {
-
-                        if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
-                            _timeAttacked = time + 60;
-                            [_side, "IsUnderAttack", ["Town", _location]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
-                        };
-
-                            if ((_side in WF_FRIENDLY_SIDES) && (_newSide in WF_FRIENDLY_SIDES)) then {} else {
-                                _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
-                                if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
-                                _location setVariable ["supplyValue",_supplyValue,true];
-                            }
-                        } else {
-                    _supplyValue = round(_supplyValue - (_resistance + _east + _west) * _rate);
-                    if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
-                    _location setVariable ["supplyValue",_supplyValue,true];
-                        }
-                    } else {
                         if ((_side in WF_FRIENDLY_SIDES) && (_newSide in WF_FRIENDLY_SIDES)) then {} else {
 
                         if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
@@ -198,7 +158,6 @@ _procesTowns = {
                         if (_supplyValue < 1) then {_supplyValue = _startingSupplyValue; _captured = true};
                         _location setVariable ["supplyValue",_supplyValue,true];
                     }
-                    }
                 };
 
                 if(_captured) then {
@@ -208,28 +167,8 @@ _procesTowns = {
                     _location setVariable ["captureTime",time];
                     [format [":homes: town **%1** was captured by %2%3 from %4%5", _location, _newSide Call WFCO_FNC_GetSideFLAG, _newSide, _side Call WFCO_FNC_GetSideFLAG, _side]] Call WFDC_FNC_LogContent;
 
-                    if(_sideID == WF_C_GUER_ID) then {
-                        if!(isNil '_resFaction') then {
-                            if(_resFaction == WF_DEFENDER_GUER_FACTION) then {
                                 if (missionNamespace getVariable Format ["WF_%1_PRESENT", _side]) then {
                                     [_side, "Lost", _location] remoteExecCall ["WFSE_FNC_SideMessage", 2]
-                                }
-                            }
-                        }
-                    } else {
-                        if (missionNamespace getVariable Format ["WF_%1_PRESENT",_side]) then {
-                            [_side, "Lost", _location] remoteExecCall ["WFSE_FNC_SideMessage", 2]
-                        }
-                    };
-
-                        if (_newSID == _sideID) then {
-                        _location setVariable ["resFaction", WF_DEFENDER_GUER_FACTION, true]
-                    } else {
-                        if(_newSID == WF_DEFENDER_ID) then {
-                            _location setVariable ["resFaction", WF_DEFENDER_GUER_FACTION, true]
-                        } else {
-                                _location setVariable ["resFaction", nil, true]
-                            }
                     };
 
                     if (missionNamespace getVariable Format ["WF_%1_PRESENT",_newSide]) then {
