@@ -107,6 +107,7 @@ _procesTowns = {
                 _westDominion = if (_west > _east && _west > _resistance) then {true} else {false};
                 _eastDominion = if (_east > _west && _east > _resistance) then {true} else {false};
 
+                if (_sideID == WF_C_GUER_ID && _resistanceDominion) then {_force = _resistance;_skip = true};
                 if (_sideID == WF_C_EAST_ID && _eastDominion) then {_force = _east;_skip = true};
                 if (_sideID == WF_C_WEST_ID && _westDominion) then {_force = _west;_skip = true};
 
