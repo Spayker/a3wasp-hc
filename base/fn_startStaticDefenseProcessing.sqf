@@ -17,7 +17,7 @@ _procesStaticDefenses = {
                 if (isNull(gunner _defense) || !alive (gunner _defense)) then {
 
                     _buildings = (_side) call WFCO_FNC_GetSideStructures;
-                    _closest = ['BARRACKSTYPE',_buildings,WF_C_BASE_DEFENSE_MANNING_RANGE,_defense] call WFCO_FNC_BuildingInRange;
+                    _closest = ['BARRACKSTYPE',_buildings,WF_C_BASE_DEFENSE_MANNING_RANGE,_defense, _side] call WFCO_FNC_BuildingInRange;
                     _canMann = alive _closest;
 
                     //--Second check if we have a barracks in WF_C_BASE_DEFENSE_MANNING_RANGE + WF_C_BASE_DEFENSE_MANNING_RANGE_EXT * 2 (DIAMETER)--
@@ -25,7 +25,7 @@ _procesStaticDefenses = {
                     if(!_canMann) then {
                         _closest = ['BARRACKSTYPE',_buildings,
                                    (WF_C_BASE_DEFENSE_MANNING_RANGE + (WF_C_BASE_DEFENSE_MANNING_RANGE_EXT * 2)),
-                                   _defense] call WFCO_FNC_BuildingInRange;
+                                   _defense, _side] call WFCO_FNC_BuildingInRange;
                         _canMann = (alive _closest && alive([position _defense,_buildings] call WFCO_FNC_GetClosestEntity5));
                     };
 
