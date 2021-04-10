@@ -50,10 +50,11 @@ _procesAiTowns = {
                _detected = (_town nearEntities ["AllVehicles", (_town getVariable "range") * 1.5]) unitsBelowHeight 20;
                _side = (_sideID) call WFCO_FNC_GetSideFromID;
                _enemies = 0;
+               _logic = (_side) Call WFCO_FNC_GetSideLogic;
+               _friendlySides = _logic getVariable ["wf_friendlySides", []];
 
-
-               if(count WF_FRIENDLY_SIDES > 0 && _side in WF_FRIENDLY_SIDES) then {
-                    _enemies = [_detected, WF_FRIENDLY_SIDES] call WFCO_FNC_GetAreaEnemiesCount
+               if(count _friendlySides > 0 && _side in _friendlySides) then {
+                    _enemies = [_detected, _friendlySides] call WFCO_FNC_GetAreaEnemiesCount
                } else {
                     _enemies = [_detected, [_side]] call WFCO_FNC_GetAreaEnemiesCount
                };

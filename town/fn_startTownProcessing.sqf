@@ -46,8 +46,11 @@ _procesTowns = {
             _resistance = resistance countSide _objects;
 
             _activeEnemies = 0;
-            if(count WF_FRIENDLY_SIDES > 0 && _side in WF_FRIENDLY_SIDES) then {
-                _activeEnemies = [_objects, WF_FRIENDLY_SIDES] call WFCO_FNC_GetAreaEnemiesCount
+            _logic = (_side) Call WFCO_FNC_GetSideLogic;
+            _friendlySides = _logic getVariable ["wf_friendlySides", []];
+
+            if(count _friendlySides > 0 && _side in _friendlySides) then {
+                _activeEnemies = [_objects, _friendlySides] call WFCO_FNC_GetAreaEnemiesCount
             } else {
                 _activeEnemies = [_objects, [_side]] call WFCO_FNC_GetAreaEnemiesCount
             };
@@ -143,7 +146,7 @@ _procesTowns = {
                     _rate = _town_capture_rate * (([_location,_newSide] Call WFCO_FNC_GetTotalCampsOnSide) / (_location Call WFCO_FNC_GetTotalCamps)) * _town_camps_capture_rate;
                     if (_rate < 1) then {_rate = 10};
 
-                        if ((_side in WF_FRIENDLY_SIDES) && (_newSide in WF_FRIENDLY_SIDES)) then {} else {
+                    if ((_side in _friendlySides) && (_newSide in _friendlySides)) then {} else {
 
                         if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
                             _timeAttacked = time + 60;
