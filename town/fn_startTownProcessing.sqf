@@ -4,7 +4,6 @@ _timeAttacked = 0;
 _activeEnemies = 0;
 _force = 0;
 _lastUp = 0;
-_skipTimeSupply = false;
 _newSID = -1;
 _newSide = civilian;
 _town_camps_capture_rate = missionNamespace getVariable "WF_C_CAMPS_CAPTURE_RATE_MAX";
@@ -54,10 +53,6 @@ _procesTowns = {
             };
 
             if (_town_supply_time) then {
-                _skipTimeSupply = if (_sideID == WF_DEFENDER_ID) then {true} else {false};
-            };
-
-            if(_town_supply_time && !_skipTimeSupply) then {
                     if (_isTimeToUpdateSuppluys) then {
                         _increaseOf = 1;
                         if (missionNamespace getVariable Format ["WF_%1_PRESENT",_side]) then {
