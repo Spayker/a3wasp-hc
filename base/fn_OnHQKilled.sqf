@@ -9,7 +9,7 @@ private ["_side", "_hqs", "_teamkill", "_killer_uid", "_logik"];
 
 _side = _mhq getVariable ["wf_side", side _mhq];
 //--- Spawn a radio message.
-[_side, "Destroyed", ["Base", _mhq]] call WFSE_FNC_SideMessage;
+[_side,"Destroyed", ["Base", _mhq]] remoteExecCall ["WFSE_FNC_SideMessage", 2];
 
 _logik = _side call WFCO_FNC_GetSideLogic;
 _hqs = _logik getVariable ["wf_hq", []];
