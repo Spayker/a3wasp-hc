@@ -37,6 +37,7 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
                     if (_x == gunner _vehicle) then { _gunners pushBack _x };
 
                 } forEach crew _vehicle;
+                (crew _vehicle) joinSilent (_unitGroup);
         }
     } forEach _selectedGroupTemplate;
 
