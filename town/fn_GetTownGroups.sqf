@@ -16,10 +16,9 @@ _townDefendersSpeciality = _town getVariable ["townDefendersSpeciality", []];
 _unitTemplates = [];
 _units = [];
 
-_groups_max = 2;
+_groups_max = 3;
 _campsCount = count (_town getVariable "camps");
 if(_campsCount > 0) then { _groups_max = _campsCount };
-if(_groups_max > 0 && _groups_max <= 2) then { _groups_max = 3 };
 
 _current_infantry_upgrade = 0;
 if (_side != resistance) then {
