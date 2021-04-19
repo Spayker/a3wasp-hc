@@ -76,6 +76,7 @@ params ["_units", "_destination", "_side", "_artyRange"];
             sleep 5;
 
             _artillery setVariable ["restricted",false,true];
+            [_artillery] call WFCO_FNC_RearmVehicle
     }
 
 } forEach _units;
