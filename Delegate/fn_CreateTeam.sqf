@@ -22,7 +22,6 @@ if (_list isEqualType "") then {_list = [_list]};
 		_units pushBack _unit;
 		sleep 0.5;
     } else {
-        _direction = 0;
 		_height = .5;
 		_startHeight = 150 - random(100);
 		
@@ -31,8 +30,17 @@ if (_list isEqualType "") then {_list = [_list]};
             _startHeight = 250;
 		};
 
-        _vehicleArray = [[0, 0, _startHeight], _direction, _x, _group] call bis_fnc_spawnvehicle;
-        _vehicle = _vehicleArray # 0;
+        _safePos = [_position, 200] call WFCO_fnc_getEmptyPosition;
+        if(_x isKindOf 'Ship') then { _safePos = [_position, 2, 75, 5, 2, 0, 1] call BIS_fnc_findSafePos };
+        _vehicle = [_x, [_safePos # 0, _safePos # 1, _height], _sideID, 0, false, nil, nil, nil] Call WFCO_FNC_CreateVehicle;
+        if(_x isKindOf 'Air') then {
+            _vehicle lock true
+        } else {
+            _vehicle setVectorUp surfaceNormal position _vehicle
+        };
+
+        _group reveal _vehicle;
+        createVehicleCrew _vehicle;
         if(isDedicated) then {
             _vehicle enableSimulationGlobal false;
 		} else {
@@ -47,17 +55,6 @@ if (_list isEqualType "") then {_list = [_list]};
             _vehicle removeEventHandler ["HandleDamage", _eventHandler];
             _vehicle allowDamage true
         };
-
-        _safePos = [_position, 200] call WFCO_fnc_getEmptyPosition;
-        if(_x isKindOf 'Ship') then { _safePos = [_position, 2, 75, 5, 2, 0, 1] call BIS_fnc_findSafePos };
-
-        _vehicle setPosATL ([_safePos # 0, _safePos # 1, _height]);
-		
-		if(_x isKindOf 'Air') then {
-            _vehicle lock true;
-        } else {
-			_vehicle setVectorUp surfaceNormal position _vehicle;
-		};
 
 		{
             [_x, typeOf _x,_group,_position,_sideID] Call WFCO_FNC_InitManUnit;
@@ -88,4 +85,4 @@ if (_list isEqualType "") then {_list = [_list]};
     {_group addVehicle _x} forEach _vehicles;
     _group allowFleeing 0;
 
-[_units, _vehicles, _group]
+[_units, _vehicles]

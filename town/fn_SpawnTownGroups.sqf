@@ -44,9 +44,7 @@ _spawnGroups = {
 if (count _camps > 0) then {
 	for '_i' from 0 to (count(_camps)-1) do {
 		_position = [];
-        _camp = _camps select floor (random count _camps);
-        _index = _camps find _camp;
-        if(_index > -1)then{_camps deleteAt _index};
+        _camp = _camps select _i;
         _position = ([getPosATL _camp, _spawn_inf_radius] call WFCO_FNC_GetSafePlace);
 
         if(count _infGroups > _i) then {
