@@ -72,7 +72,7 @@ if (!_deployed) then {
 			_logic setVariable ["DefenseTeam", createGroup [_side, true]];
             (_logic getVariable "DefenseTeam") setVariable ["wf_persistent", true];
 	        _logic setVariable ["weapons",missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX_AI"];
-            [_logic, _side,_logik,_areas] remoteExecCall ["WFCL_FNC_RequestBaseArea",_side];
+            [_logic, _side,_logik,_areas] remoteExecCall ["WFCL_FNC_RequestBaseArea",_side, true];
 		};
 	};
 	
