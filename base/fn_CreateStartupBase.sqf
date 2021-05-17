@@ -48,7 +48,6 @@ if(!(isNil '_template'))then{
                     _hqName = missionNamespace getVariable Format["WF_%1MHQNAME", _side];
                     _hq = [_hqName, [_toWorld # 0, _toWorld # 1, 5], _sideID, 0, true, false, true] Call WFCO_FNC_CreateVehicle;
                 _hq setVectorUp surfaceNormal position _hq;
-                _hq setDir 90;
                 if(damage _hq > 0) then { _hq setDamage 0 };
                 _shallCreateBaseArea = false
             };

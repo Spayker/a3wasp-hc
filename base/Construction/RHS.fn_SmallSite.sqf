@@ -58,20 +58,30 @@ _site setVariable ["wf_index", _index];
 
 [_site, _rlType] remoteExec ["WFCL_FNC_addBaseBuildingRepAction", _side, true];
 
-if!(_isStartBase) then {
+    if (_rlType == "Barracks" || _rlType == "Aircraft") then {
+        _distance = (missionNamespace getVariable Format ["WF_%1STRUCTUREDISTANCES", str _side]) # _index;
+        _direction = (missionNamespace getVariable Format ["WF_%1STRUCTUREDIRECTIONS", str _side]) # _index;
+        _position = _site modelToWorld [(sin _direction * _distance), (cos _direction * _distance), 0];
+        _position set [2, .5];
+        _site setVariable ["respawnPoint", _position, true];
+        [_position] remoteExecCall ["WFSE_FNC_CleanTerrainRespawnPoint", 2];
+
+        if ((missionNamespace getVariable "WF_C_BASE_PATROLS_INFANTRY") > 0) then {
+            [_site, _side] spawn WFHC_fnc_createBasePatrol;
+            ["INFORMATION", Format ["fn_SmallSite.sqf: [%1] Base patrol has been triggered upon Barrack creation.", str _side]] Call WFCO_FNC_LogContent;
+        };
+
+        //--- Base Patrols.
+        if(!(_isStartBase) && _rlType == "Barracks") then {
 if(missionNamespace getVariable[format["WF_AutoWallConstructingEnabled_%1", _playerUID], WF_AutoWallConstructingEnabled]) then {
             _defenses = [_site, missionNamespace getVariable format ["WF_NEURODEF_%1_WALLS", _rlType]] call WFHC_FNC_CreateDefenseTemplate;
-	_site setVariable ["WF_Walls", _defenses];
+                _site setVariable ["WF_Walls", _defenses]
+            };
+            [_side, "Constructed", ["Base", _site]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
+        }
 };
 
-        [_side, "Constructed", ["Base", _site]] remoteExecCall ["WFSE_FNC_SideMessage", 2];
 
-    //--- Base Patrols.
-    if (_rlType == "Barracks" && (missionNamespace getVariable "WF_C_BASE_PATROLS_INFANTRY") > 0) then {
-        	[_site, _side] spawn WFHC_fnc_createBasePatrol;
-    	["INFORMATION", Format ["fn_SmallSite.sqf: [%1] Base patrol has been triggered upon Barrack creation.", str _side]] Call WFCO_FNC_LogContent;
-    }
-};
 
 if (!isNull _site) then {
 	_logik setVariable ["wf_structures", (_logik getVariable "wf_structures") + [_site], true];
