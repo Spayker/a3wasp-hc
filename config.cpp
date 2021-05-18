@@ -35,6 +35,11 @@ class CfgFunctions {
             class startBaseAreaProcessing {};
         };
 
+        class HcBaseAi {
+            file = "wasphc\base\ai";
+            class aiCommander {};
+        };
+
         class HcBaseConstruction {
             file = "wasphc\base\Construction";
             class hQSite {};

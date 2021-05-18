@@ -6,12 +6,11 @@
 */
 
 params["_town", "_side"];
-private ["_get","_groups_max","_current_light_upgrade","_current_heavy_upgrade","_town_airactive","_units",
+private ["_get","_groups_max","_current_light_upgrade","_current_heavy_upgrade","_units",
             "_side","_sv","_town","_unitTemplateCount","_randomSelectedTemplate","_unitTemplates",
             "_contents","_final","_startingSupplyValue","_campsCount"];
 
 _sv = _town getVariable "supplyValue";
-_town_airactive = _town getVariable "wf_active_air";
 _startingSupplyValue = _town getVariable "startingSupplyValue";
 _townDefendersSpeciality = _town getVariable ["townDefendersSpeciality", []];
 
@@ -20,8 +19,6 @@ _unitTemplates = [];
 
 _current_light_upgrade = 0;
 _current_heavy_upgrade = 0;
-_current_aa_light_upgrade = floor random 2;
-_current_aa_heavy_upgrade = 0;
 _current_air_upgrade = 0;
 
 _groups_max = 2;
@@ -32,7 +29,6 @@ if (_side != resistance) then {
     _upgrades = (_side) Call WFCO_FNC_GetSideUpgrades;
     _current_light_upgrade = _upgrades # WF_UP_LIGHT;
     _current_heavy_upgrade = _upgrades # WF_UP_HEAVY;
-    _current_air_upgrade = _upgrades # WF_UP_AIR;
 
     _unitsCoef = missionNamespace getVariable "WF_C_TOWNS_UNITS_COEF";
     if (_unitsCoef == 0) then { _unitsCoef = 1 };
@@ -43,8 +39,6 @@ if (_side != resistance) then {
     _groups_max = round(_groups_max * (missionNamespace getVariable "WF_C_TOWNS_UNITS_DEFENDER_COEF"));
     _current_light_upgrade = floor random 11; //--Random real (floating point) value from 0 (inclusive) to x (not inclusive)--
     _current_heavy_upgrade = floor random 3;
-    _current_air_upgrade = floor random 5;
-    _current_aa_heavy_upgrade = floor random 2;
 };
 
 if (count _townDefendersSpeciality > 0) then {

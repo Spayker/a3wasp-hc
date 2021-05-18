@@ -1,11 +1,9 @@
 params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
 
-[_player, _selectedGroupTemplate, _position, _direction] spawn {
-    params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
+[_side, _selectedGroupTemplate, _position, _direction] spawn {
+    params ["_side", "_selectedGroupTemplate", "_position", "_direction"];
 
     _isVehicle = true;
-
-    _side = side _player;
     _sideID = _side Call WFCO_FNC_GetSideID;
     _unitGroup = createGroup [_side, true];
     _isCommanderAssigned = false;

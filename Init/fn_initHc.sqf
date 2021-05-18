@@ -44,6 +44,10 @@ waitUntil {townInit};
 //--- Base Area (grouped base)
 if ((missionNamespace getVariable "WF_C_BASE_AREA") > 0) then {[] spawn WFHC_fnc_startBaseAreaProcessing};
 
+//--- start ai commander
+[] spawn WFHC_FNC_aiCommander;
+["INITIALIZATION", Format ["Init_HC.sqf: AI commander module at [%1]", time]] Call WFCO_FNC_LogContent;
+
 //--- Stationary defense init
 WF_static_defenses = [];
 [] spawn WFHC_FNC_startStaticDefenseProcessing;
