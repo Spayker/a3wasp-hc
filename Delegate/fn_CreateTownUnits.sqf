@@ -33,6 +33,7 @@ for '_i' from 0 to count(_teams)-1 do {
 	_retVal = [_teams # _i, _position, _side, _sideID, _lock, _group, true, _town] call WFHC_FNC_CreateTeam;
 	_units = _units + _retVal # 0;
 	_vehicles = _vehicles + _retVal # 1;
+	_group = _retVal # 2;
 	_sideID = (side _group) Call WFCO_FNC_GetSideID;
 
 	_built = _built + count _units;

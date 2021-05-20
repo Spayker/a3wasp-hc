@@ -58,6 +58,7 @@ if (_list isEqualType "") then {_list = [_list]};
 
 		{
             [_x, typeOf _x,_group,_position,_sideID] Call WFCO_FNC_InitManUnit;
+            [_x] joinSilent _group;
             private _classLoadout = missionNamespace getVariable Format ['WF_%1WHEELEDCREW',_side];
             if(_vehicle isKindOf "Tank") then {
                 _classLoadout = missionNamespace getVariable Format ['WF_%1TRACKEDCREW',_side];
@@ -85,4 +86,4 @@ if (_list isEqualType "") then {_list = [_list]};
     {_group addVehicle _x} forEach _vehicles;
     _group allowFleeing 0;
 
-[_units, _vehicles]
+[_units, _vehicles, _group]
