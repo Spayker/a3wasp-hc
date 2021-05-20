@@ -44,15 +44,15 @@ while {!WF_GameOver} do {
                     } forEach _highCommandGroups
                 };
 
-                // define how many groups can be ordered
-                _hcAllowedGroupAmount = WF_C_HIGH_COMMAND_MIN_GROUP_AMOUNT + ( (((_side) call WFCO_FNC_GetSideUpgrades) # WF_UP_HC_GROUP_AMOUNT) * 2 );
-                _freeHcGroupsAmount = _hcAllowedGroupAmount - (count _highCommandGroups);
-
                 // get available production structures
                 _factories = [];
                 {
                     _factories = _factories + ([_side, missionNamespace getVariable format ["WF_%1%2TYPE", str _side, _x], (_side Call WFCO_FNC_GetSideStructures)] call WFCO_FNC_GetFactories);
                 } forEach WF_C_BASE_PRODUCTION_STRUCTURE_NAMES;
+
+                // define how many groups can be ordered
+                _hcAllowedGroupAmount = WF_C_HIGH_COMMAND_MIN_GROUP_AMOUNT + ( (((_side) call WFCO_FNC_GetSideUpgrades) # WF_UP_HC_GROUP_AMOUNT) * 2 );
+                _freeHcGroupsAmount = _hcAllowedGroupAmount - (count _highCommandGroups);
 
                 diag_log format ['fn_aiCommander.sqf: _freeHcGroupsAmount - %1', _freeHcGroupsAmount];
                 diag_log format ['fn_aiCommander.sqf: _factories - %1', count _factories];
@@ -102,7 +102,15 @@ while {!WF_GameOver} do {
                                 _position = [_spawnPosition, 30] call WFCO_fnc_getEmptyPosition;
                                 _factoryPosition = getPos _factory;
                                 _direction = -((((_position # 1) - (_factoryPosition # 1)) atan2 ((_position # 0) - (_factoryPosition # 0))) - 90);
-                                [_side, _selectedGroupTemplate, _position, _direction] call WFHC_fnc_CreateHighCommandGroup
+                                [_side, _selectedGroupTemplate, _position, _direction] call WFHC_fnc_CreateHighCommandGroup;
+
+                                _commonTime = 0;
+                                {
+                                    _firstClassName = _selectedGroupTemplate # 0;
+                                    _firstUnitConfig = missionNamespace getVariable _firstClassName;
+                                    _commonTime = _commonTime + (_firstUnitConfig # QUERYUNITTIME)
+                                } foreach _selectedGroupTemplate;
+                                sleep _commonTime
                             }
                     }
                 };
