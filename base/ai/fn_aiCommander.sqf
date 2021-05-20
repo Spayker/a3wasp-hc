@@ -1,7 +1,7 @@
 Private ['_side', '_commanderGroup', '_isAiCommanderRunning'];
 
 while {!WF_GameOver} do {
-    sleep 60;
+    sleep 90;
     {
         _side = _x;
         // get team commander
