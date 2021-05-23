@@ -1,8 +1,8 @@
-params ["_units", "_destination", "_side", "_artyRange"];
+params ["_units", "_destination", "_side", "_artyRange", "_magazineType"];
 
 {
-    [_x, _destination, _side, _artyRange] spawn {
-        params ["_artillery", "_destination", "_side", "_artyRange"];
+    [_x, _destination, _side, _artyRange, _magazineType] spawn {
+        params ["_artillery", "_destination", "_side", "_artyRange", "_magazineType"];
         Private["_angle","_artillery","_artillery_classes","_artillery_type","_burst","_destination","_dispersion","_direction","_distance","_FEH","_gunner","_i","_index","_minRange","_maxRange","_position","_reloadTime","_side","_type","_velocity","_watchPosition","_weapon","_xcoord","_ycoord"];
 
             _index = [typeOf _artillery, _side] Call WFCO_FNC_IsArtillery;
@@ -66,8 +66,9 @@ params ["_units", "_destination", "_side", "_artyRange"];
 				//--- Default Position.
 				_landDestination = [((_destination # 0)+((sin _direction)*_distance))+(random _dispersion)-(random _dispersion),(_destination # 1)+((cos _direction)*_distance)+(random _dispersion)-(random _dispersion),0];
 
-                _artillery doArtilleryFire [_landDestination, currentMagazine _artillery, 3];
-                sleep 5
+                _artillery doArtilleryFire [_landDestination, _magazineType, 3];
+                sleep 5;
+                [_artillery] call WFCO_FNC_RearmVehicle
             };
 
             if (alive (_gunner)) then {{_gunner enableAI _x} forEach ['MOVE','TARGET','AUTOTARGET']};
@@ -76,7 +77,6 @@ params ["_units", "_destination", "_side", "_artyRange"];
             sleep 5;
 
             _artillery setVariable ["restricted",false,true];
-            [_artillery] call WFCO_FNC_RearmVehicle
     }
 
 } forEach _units;
