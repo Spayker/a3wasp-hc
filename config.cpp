@@ -91,19 +91,6 @@ class CfgFunctions {
             class fireRemoteArtillery {};
         };
 
-        class ServerResBases {
-            file = "wasphc\Res";
-            class CreateBaseComposition {};
-            class processBrBase {};
-            class processLfBase {};
-            class processHfBase {};
-            class processAfBase {};
-            class processResTeam {};
-            class resBuyUnit {};
-            class manningOfResBaseDefense {};
-            class createUnitsForResBases {};
-        };
-
         class ServerTaskDirector {
             file = "wasphc\Task";
             class initTaskDirector {};
