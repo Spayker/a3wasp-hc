@@ -32,7 +32,7 @@ if (_list isEqualType "") then {_list = [_list]};
 
         _safePos = [_position, 200] call WFCO_fnc_getEmptyPosition;
         if(_x isKindOf 'Ship') then { _safePos = [_position, 2, 75, 5, 2, 0, 1] call BIS_fnc_findSafePos };
-        _vehicle = [_x, [_safePos # 0, _safePos # 1, _height], _sideID, 0, false, nil, nil, nil] Call WFCO_FNC_CreateVehicle;
+        _vehicle = [_x, [_safePos # 0, _safePos # 1, _height], _sideID, 0, _lockVehicles, true, _global] Call WFCO_FNC_CreateVehicle;
         if(_x isKindOf 'Air') then {
             _vehicle lock true
         } else {
@@ -70,12 +70,6 @@ if (_list isEqualType "") then {_list = [_list]};
             _x setUnitTrait ["Engineer",true];
             _x disableAI "RADIOPROTOCOL";
         } forEach crew _vehicle;
-
-        _unitskin = -1;
-        _type = typeOf _vehicle;
-        _vehicleCoreArray = missionNamespace getVariable [_type, []];
-        if((count _vehicleCoreArray) > 10) then { _unitskin = _vehicleCoreArray # 10 };
-        [_vehicle, _sideID, _lockVehicles, true, _global, _unitskin] call WFCO_FNC_InitVehicle;
 
         _vehicle engineOn true;
         _vehicles pushBack _vehicle;
