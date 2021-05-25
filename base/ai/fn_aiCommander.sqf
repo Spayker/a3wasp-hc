@@ -89,15 +89,14 @@ while {!WF_GameOver} do {
                             {
                                 if (_x == _structureType) then {
                                     _templateUpgradeLevel = _requiredGroupUpgrades # _forEachIndex;
-                                    _currentSideBarracksUpgradeLevel = _upgrades # _currentSideUpgradeLevel;
-                                    if (_templateUpgradeLevel <= _currentSideBarracksUpgradeLevel) then {
+                                    if (_currentSideUpgradeLevel >= _templateUpgradeLevel) then {
                                         _filteredTemplates pushBack (_generalGroupTemplates # _forEachIndex)
                                     }
                                 }
                             } forEach _groupTypes;
 
                             if (count _filteredTemplates > 0) then {
-                                _selectedGroupTemplate = _filteredTemplates # ((count _filteredTemplates) - 1);
+                                _selectedGroupTemplate = selectRandom _filteredTemplates;
                                 _spawnPosition = _factory getVariable 'respawnPoint';
                                 _position = [_spawnPosition, 30] call WFCO_fnc_getEmptyPosition;
                                 _factoryPosition = getPos _factory;
