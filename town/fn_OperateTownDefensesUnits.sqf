@@ -10,8 +10,6 @@ private ["_defense","_crewUnits","_spawn","_units","_sideID","_publicFor"];
 
 _sideID = (_side) call WFCO_FNC_GetSideID;
 
-if (_sideID != WF_C_GUER_ID) exitWith {};
-
 switch (_action) do {
 	case "spawn": {
 	    _allDefences = _town getVariable ["wf_town_defenses", []];
