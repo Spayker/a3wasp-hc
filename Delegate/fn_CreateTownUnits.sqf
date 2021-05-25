@@ -50,7 +50,7 @@ for '_i' from 0 to count(_teams)-1 do {
 } foreach (_units + _vehicles);
 
     if (isNull _camp) then {
-        [_town, _group, _sideID, _town] spawn WFCO_FNC_SetPatrol;
+        [_town, _group, _sideID] spawn WFCO_FNC_SetPatrol;
     } else {
         [_town, _group, _sideID, _camp] spawn WFCO_FNC_SetPatrol;
     };
