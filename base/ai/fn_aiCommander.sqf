@@ -90,7 +90,10 @@ while {!WF_GameOver} do {
                                 if (_x == _structureType) then {
                                     _templateUpgradeLevel = _requiredGroupUpgrades # _forEachIndex;
                                     if (_currentSideUpgradeLevel >= _templateUpgradeLevel) then {
-                                        _filteredTemplates pushBack (_generalGroupTemplates # _forEachIndex)
+                                        _selectedGroupTemplate = _generalGroupTemplates # _forEachIndex;
+                                        if !(_selectedGroupTemplate in WF_ADV_ARTILLERY) then {
+                                            _filteredTemplates pushBack (_selectedGroupTemplate)
+                                        }
                                     }
                                 }
                             } forEach _groupTypes;
