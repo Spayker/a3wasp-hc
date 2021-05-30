@@ -67,7 +67,7 @@ switch (true) do {
 					[Format ["Motorized_%1", if (_side == resistance) then { floor random 11 } else { floor random _current_light_upgrade }]],
 					[Format ["Motorized_%1", if (_side == resistance) then { floor random 11 } else { floor random _current_light_upgrade }]],
 					[Format ["Motorized_%1", if (_side == resistance) then { floor random 11 } else { floor random _current_light_upgrade }]],
-					[Format ["AA_Light_%1", floor random 2]]
+					[Format ["AA_%1", floor random 3]]
 				];
 
 	};
@@ -77,7 +77,7 @@ switch (true) do {
 					[Format ["Motorized_%1", if (_side == resistance) then { floor random 11 } else { floor random _current_light_upgrade }]],
 					[Format ["Motorized_%1", if (_side == resistance) then { floor random 11 } else { floor random _current_light_upgrade }]],
 					[Format ["Motorized_%1", if (_side == resistance) then { floor random 11 } else { floor random _current_light_upgrade }]],
-					[Format ["AA_Light_%1", floor random 2]]
+					[Format ["AA_%1", floor random 3]]
 				];
 
 	};
@@ -87,7 +87,7 @@ switch (true) do {
 					[Format ["Motorized_%1", if (_side == resistance) then { floor random 11 } else { floor random _current_light_upgrade }]],
 					[Format ["Mechanized_%1", _current_heavy_upgrade]],
 					[Format ["Mechanized_%1", _current_heavy_upgrade]],
-					[Format ["AA_Light_%1", floor random 2]]
+					[Format ["AA_%1", floor random 3]]
 				];
 
 	};
@@ -97,7 +97,7 @@ switch (true) do {
 					[Format ["Motorized_%1", if (_side == resistance) then { floor random 11 } else { floor random _current_light_upgrade }]],
 					[Format ["Mechanized_%1", if (_side == resistance) then { floor random 3 } else { floor random _current_heavy_upgrade }]],
 					[Format ["Mechanized_%1", if (_side == resistance) then { floor random 3 } else { floor random _current_heavy_upgrade }]],
-					[Format ["AA_Heavy_%1", floor random 2]]
+					[Format ["AA_%1", floor random 3]]
 				];
 
 	};
@@ -105,7 +105,7 @@ switch (true) do {
 		_unitTemplates = [
 					[Format ["Mechanized_%1", if (_side == resistance) then { floor random 3 } else { floor random _current_heavy_upgrade }]],
 					[Format ["Mechanized_%1", if (_side == resistance) then { floor random 3 } else { floor random _current_heavy_upgrade }]],
-					[Format ["AA_Heavy_%1", if (_side == resistance) then { floor random 2 } else { 0 }]],
+					[Format ["AA_%1", floor random 3]],
 					[Format ["Armored_%1", if (_side == resistance) then { floor random 5 } else { floor random _current_heavy_upgrade }]],
 					[Format ["Armored_%1", if (_side == resistance) then { floor random 5 } else { floor random _current_heavy_upgrade }]],
 					[Format ["Armored_%1", if (_side == resistance) then { floor random 5 } else { floor random _current_heavy_upgrade }]]
@@ -115,7 +115,7 @@ switch (true) do {
 	case (_sv >= 100): {
         _unitTemplates = [
                 [Format ["Mechanized_%1", if (_side == resistance) then { floor random 3 } else { floor random _current_heavy_upgrade }]],
-                [Format ["AA_Heavy_%1", if (_side == resistance) then { floor random 2 } else { 0 }]],
+                [Format ["AA_%1", floor random 3 ]],
                 [Format ["Armored_%1", if (_side == resistance) then { floor random 5 } else { floor random _current_heavy_upgrade }]],
                 [Format ["Armored_%1", if (_side == resistance) then { floor random 5 } else { floor random _current_heavy_upgrade }]],
                 [Format ["Armored_%1", if (_side == resistance) then { floor random 5 } else { floor random _current_heavy_upgrade }]],
