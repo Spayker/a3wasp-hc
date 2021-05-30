@@ -68,7 +68,6 @@ if (isPlayer _killer) then {
 };
 
 //--Decrement buildings limit--
-if(_side != resistance) then {
     _logik = (_side) Call WFCO_FNC_GetSideLogic;
 
     if (_type == "Headquarters") then {
@@ -87,8 +86,8 @@ if(_side != resistance) then {
 
     _logik setVariable ["wf_structures", (_logik getVariable "wf_structures") - [_structure, objNull], true];
         [_side, "Destroyed", ["Base", _structure]] spawn WFSE_FNC_SideMessage
-    }
 };
+
 
 [_structure] spawn {
     params ['_structure'];
