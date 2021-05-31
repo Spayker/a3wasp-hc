@@ -76,12 +76,10 @@ _site setVariable ["wf_index", _index];
 if(missionNamespace getVariable[format["WF_AutoWallConstructingEnabled_%1", _playerUID], WF_AutoWallConstructingEnabled]) then {
             _defenses = [_site, missionNamespace getVariable format ["WF_NEURODEF_%1_WALLS", _rlType]] call WFHC_FNC_CreateDefenseTemplate;
                 _site setVariable ["WF_Walls", _defenses]
-            };
-            [_side, "Constructed", ["Base", _site]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
+            }
         }
-};
-
-
+            };
+    [_side, "Constructed", ["Base", _site]] remoteExecCall ["WFSE_FNC_SideMessage", 2];
 
 if (!isNull _site) then {
 	_logik setVariable ["wf_structures", (_logik getVariable "wf_structures") + [_site], true];
