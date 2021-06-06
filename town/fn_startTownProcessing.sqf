@@ -46,6 +46,8 @@ _procesTowns = {
             _resistance = resistance countSide _objects;
 
             _activeEnemies = 0;
+            _friendlySides = [];
+            if(_sideId != WF_C_CIV_ID) then {
             _logic = (_side) Call WFCO_FNC_GetSideLogic;
             _friendlySides = _logic getVariable ["wf_friendlySides", []];
 
@@ -53,8 +55,10 @@ _procesTowns = {
                 _activeEnemies = [_objects, _friendlySides] call WFCO_FNC_GetAreaEnemiesCount
             } else {
                 _activeEnemies = [_objects, [_side]] call WFCO_FNC_GetAreaEnemiesCount
+                }
             };
 
+            if(_sideId != WF_C_CIV_ID) then {
             if (_town_supply_time) then {
                     if (_isTimeToUpdateSuppluys) then {
                         _increaseOf = 1;
@@ -100,6 +104,7 @@ _procesTowns = {
                         };
                         _location setVariable ["supplyVehicleTimeCheck", time + _supplyTruckTimeCheckDelay, true];
                     }
+                }
             };
 
             if(_west > 0 || _east > 0 || _resistance > 0) then {
@@ -166,8 +171,10 @@ _procesTowns = {
                     _location setVariable ["captureTime",time];
                     [format [":homes: town **%1** was captured by %2%3 from %4%5", _location, _newSide Call WFCO_FNC_GetSideFLAG, _newSide, _side Call WFCO_FNC_GetSideFLAG, _side]] Call WFDC_FNC_LogContent;
 
+                    if(_sideId != WF_C_CIV_ID) then {
                                 if (missionNamespace getVariable Format ["WF_%1_PRESENT", _side]) then {
                                     [_side, "Lost", _location] remoteExecCall ["WFSE_FNC_SideMessage", 2]
+                        }
                     };
 
                     if (missionNamespace getVariable Format ["WF_%1_PRESENT",_newSide]) then {
@@ -175,10 +182,10 @@ _procesTowns = {
                     };
 
                     _location setVariable ["sideID",_newSID,true];
-                    [_location, _location getVariable "name", _sideID, _newSID] remoteExecCall ["WFCL_FNC_TownCaptured", _side];
+                    if(_sideId != WF_C_CIV_ID) then {
+                        [_location, _location getVariable "name", _sideID, _newSID] remoteExecCall ["WFCL_FNC_TownCaptured", _side]
+                    };
                     [_location, _location getVariable "name", _sideID, _newSID] remoteExecCall ["WFCL_FNC_TownCaptured", _newSide];
-
-
                     [_location, _sideID, _newSID] remoteExecCall ["WFSE_FNC_SetCampsToSide", 2];
 
                     //--- Clear the town defenses, units first then replace the defenses if needed.
