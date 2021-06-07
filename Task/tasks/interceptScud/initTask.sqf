@@ -53,7 +53,7 @@ if(!isNull _twn) then {
 	_twnPos set [1, (_twnPos # 1) + random [-75, 0, 75]];
 	[_side,"NewMissionAvailable"] remoteExecCall ["WFSE_FNC_SideMessage", 2];
 	[0, _side, _twn getVariable ["name", "Town"], _twnPos] remoteExecCall ["WFCL_FNC_svTrstTsk", _side, true];
-	["TASK DIRECTOR", format["saveTourists\initTask.sqf: tasks assigned for %1 in town %2", _side, _twn getVariable ["name", "Town"]]] call WFCO_FNC_LogContent;
+	["TASK DIRECTOR", format["interceptScud\initTask.sqf: tasks assigned for %1 in town %2", _side, _twn getVariable ["name", "Town"]]] call WFCO_FNC_LogContent;
 	sleep 5;		
 	["CommonText", "STR_WF_M_DeliverTouristTownDesc", _twn getVariable ["name", "Town"]] remoteExec ["WFCL_FNC_LocalizeMessage", _side];
 	sleep 5;
@@ -70,7 +70,7 @@ if(!isNull _twn) then {
 	if(_twnSideID == _sideID) then {
 		[1, _side] remoteExecCall ["WFCL_FNC_svTrstTsk", _side, true];
 		
-		["TASK DIRECTOR", format["saveTourists\initTask.sqf: DeliverTouristTown %1 by side %2 succeeded complete", _twn getVariable ["name", "Town"], _side]] call WFCO_FNC_LogContent;
+		["TASK DIRECTOR", format["interceptScud\initTask.sqf: DeliverTouristTown %1 by side %2 succeeded complete", _twn getVariable ["name", "Town"], _side]] call WFCO_FNC_LogContent;
 		sleep 25;
 		civilian setFriend [_side, 1];
 		_group1 = createGroup civilian;
@@ -85,7 +85,7 @@ if(!isNull _twn) then {
 		_units pushBack (_group3 createUnit [_hostages # (random ((count _hostages) - 1)), [_twnPos, 75, 360, 5, 0] call BIS_fnc_findSafePos, [], 1, "FORM"]);	
 		
 		[2, _side, nil, _twnPos] remoteExecCall ["WFCL_FNC_svTrstTsk", _side, true];
-		["TASK DIRECTOR", format["saveTourists\initTask.sqf: assigned task %1 for side %2", localize "STR_WF_M_DeliverTouristTalk", _side]] call WFCO_FNC_LogContent;
+		["TASK DIRECTOR", format["interceptScud\initTask.sqf: assigned task %1 for side %2", localize "STR_WF_M_DeliverTouristTalk", _side]] call WFCO_FNC_LogContent;
 
 		//--Set mission done flag on each unit--
 		{
@@ -117,7 +117,7 @@ if(!isNull _twn) then {
 							if(_totTalkComplete > 0) exitWith {
 								_allAlive = 0;								
 								[3, _side] remoteExecCall ["WFCL_FNC_svTrstTsk", _side, true];
-								["TASK DIRECTOR", format["saveTourists\initTask.sqf: task %1 for side %2 SUCCEEDED", "SaveTourists", _side]] call WFCO_FNC_LogContent;
+								["TASK DIRECTOR", format["interceptScud\initTask.sqf: task %1 for side %2 SUCCEEDED", "InterceptScud", _side]] call WFCO_FNC_LogContent;
 								_bldFinded = false;
 								_building = nearestBuilding ((getPos _x) getPos [250 * sqrt random 1, random 360]);
 								
@@ -250,14 +250,14 @@ if(!isNull _twn) then {
 									missionNameSpace setVariable [format["taskIsRun%1", _taskName], false];																		
 								};
 								
-								breakTo "exitSaveTourists";
+								breakTo "exitInterceptScud";
 							};
 						} else {						
 							_allAlive = 0;
 							[8, _side] remoteExecCall ["WFCL_FNC_svTrstTsk", _side, true];
 							[9, _side, nil, nil, nil, name _x] remoteExecCall ["WFCL_FNC_svTrstTsk", _side, true];
 							["CommonText", "STR_WF_M_DeliverTouristOneOrMoreDown", name _x] remoteExec ["WFCL_FNC_LocalizeMessage", _side];
-							["TASK DIRECTOR", format["saveTourists\initTask.sqf: task %1 for side %2 FAILED: %3", "SaveTourists", _side, localize "STR_WF_M_DeliverTouristOneOrMoreDown"]] call WFCO_FNC_LogContent;
+							["TASK DIRECTOR", format["interceptScud\initTask.sqf: task %1 for side %2 FAILED: %3", "InterceptScud", _side, localize "STR_WF_M_DeliverTouristOneOrMoreDown"]] call WFCO_FNC_LogContent;
 
 							[_units] spawn {
 								params ["_units"];
@@ -274,7 +274,7 @@ if(!isNull _twn) then {
 								} forEach _units;
 							};
 							
-							breakTo "exitSaveTourists";
+							breakTo "exitInterceptScud";
 						};
 					};
 				} forEach _units;
@@ -282,7 +282,7 @@ if(!isNull _twn) then {
 				sleep 3;
 			};
 
-			scopeName "exitSaveTourists";
+			scopeName "exitInterceptScud";
 			missionNameSpace setVariable [format["taskIsRun%1", _taskName], false];
 		};
 
@@ -327,4 +327,4 @@ if(!isNull _twn) then {
 	};
 };
 
-["TASK DIRECTOR", "saveTourists\initTask.sqf: SaveTourists taks COMPLETE!"] call WFCO_FNC_LogContent;
+["TASK DIRECTOR", "interceptScud\initTask.sqf: interceptScud task COMPLETE!"] call WFCO_FNC_LogContent;
