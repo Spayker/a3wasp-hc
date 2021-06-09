@@ -56,14 +56,12 @@ if(!isNull _twn) then {
 	["TASK DIRECTOR", format["saveTourists\initTask.sqf: tasks assigned for %1 in town %2", _side, _twn getVariable ["name", "Town"]]] call WFCO_FNC_LogContent;
 	sleep 5;		
 	["CommonText", "STR_WF_M_DeliverTouristTownDesc", _twn getVariable ["name", "Town"]] remoteExec ["WFCL_FNC_LocalizeMessage", _side];
-	sleep 5;
-	["CommonText", "STR_WF_M_DeliverTouristTownDesc1", _twn getVariable ["name", "Town"]] remoteExec ["WFCL_FNC_LocalizeMessage", _side];
 	
 	while { _twn getVariable "sideID" == 2 } do {
 		sleep 5;
 	};
 	
-	_twnSideID = _twn getVariable ["sideID", WF_C_UNKNOWN_ID];
+	_twnSideID = _twn getVariable ["sideID", WF_C_CIV_ID];
 	_twnSide = _twnSideID call WFCO_FNC_GetSideFromID;
 	_sideID = (_side) call WFCO_FNC_GetSideID;
 	
@@ -311,7 +309,7 @@ if(!isNull _twn) then {
 			};
 		} forEach _units;
 	} else {		
-		if(_twnSideID != _sideID && _twnSideID != 2) then {						
+		if(_twnSideID != _sideID) then {
 			[10, _side] remoteExecCall ["WFCL_FNC_svTrstTsk", _side, true];			
 			[11, _side, _twn getVariable ["name", "Town"]] remoteExecCall ["WFCL_FNC_svTrstTsk", _side, true];
 			["CommonText", "STR_WF_M_DeliverTouristTownLost", _twn getVariable ["name", "Town"]] remoteExec ["WFCL_FNC_LocalizeMessage", _side];
