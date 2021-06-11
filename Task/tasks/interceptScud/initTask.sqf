@@ -134,31 +134,7 @@ if(!isNull _twn) then {
 			scopeName "exitInterceptScud";
 			missionNameSpace setVariable [format["taskIsRun%1", _taskName], false];
 		};
-
-		sleep 5;		
-
-		{
-			_unit = _x;
-			if(alive _unit) then {
-				_wp =_group1 addWaypoint [_twnPos, 0];
-				_wp =_group2 addWaypoint [_twnPos, 0];
-				_wp =_group3 addWaypoint [_twnPos, 0];
-				[_unit, _side] spawn {
-					params ["_unt", "_side"];
-					while { alive _unt } do {
-						_ents = _unt nearEntities ["Man", 5];						
-						{								
-							if(side _x == _side && (isPlayer (leader (group _x)))) exitWith { 
-								_unt setVariable ["_talkComplete", 1];
-								_unt setVariable ["_playerName", name (leader (group _x))];
-							};
-						} forEach _ents;
-						
-						sleep 3;				
-					};
-				};
-			};
-		} forEach _units;
+		sleep 5
 	} else {		
 		if(_twnSideID != _sideID) then {
 			[10, _side] remoteExecCall ["WFCL_FNC_svTrstTsk", _side, true];			
