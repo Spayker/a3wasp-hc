@@ -1,10 +1,10 @@
 ["TASK DIRECTOR", "TaskDirector.sqf: begin work."] Call WFCO_FNC_LogContent;
 
-//--Task Object: integer InUse flag; array TaskData; array task for a Side: [WEST, EAST, CIVILIAN]; integer max total launches count for all sides--
+//--Task Object: integer InUse flag; array TaskData; array task for a Side: [WEST, EAST, RESISTANCE]; integer max total launches count for all sides--
 //--Task data: string Name, boolean playerOnAllSides (west and east must include online players), array Timings [min, mid, max] (time range for mission start) --
 WF_TD_TASKS = [
-    [scriptNull, ["saveTourists", false, [5400, 7200, 8200]], [west, east], 2],
-    [scriptNull, ["interceptScud", false, [5400, 7200, 8200]], [west, east, resistance], 1]
+    [scriptNull, ["saveTourists", false, [5400, 7200, 8200]], [west, east], 1],
+    [scriptNull,["interceptScud", false, [8200, 8800, 9400]], [west, east, resistance], 1]
 			];
 
 _directorDoWork = true;
@@ -16,7 +16,6 @@ while { _directorDoWork } do {
 		_task = _x;
 		_taskData = _task # 1;
 		_taskSides = _task # 2;
-		
 		_taskAvailableLaunches = _task # 3;
 		
 		//--Do work with task if it dont started--		
