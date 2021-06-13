@@ -1,37 +1,36 @@
 params["_cram"];
 private["_cram","_range","_incoming","_target","_targetTime"];
 
-_range = 1500;
+_range = 2000;
 while{ alive _cram } do {
 
-    _incoming = (_cram nearObjects["ammo_Missile_CruiseBase", _range]);
+    _incoming = [];
+    {
+        _incoming = _incoming + (_cram nearObjects[_x, _range])
+    } forEach WF_ARTY_SHELL_TYPES;
+
     if(count _incoming > 0) then {
 
         _target = selectRandom _incoming;
 
+
         if!(isNull _target) then {
-            _artyVehicleSide = civilian;
-            _shotParents = getShotParents _target;
 
-            if(count _shotParents > 0) then { _artyVehicleSide = side (_shotParents # 0) };
-
-            if (_artyVehicleSide != side _cram) then {
-
+            _oldDistance = _cram distance _target;
+            sleep 0.1;
+            _dirTarget = direction _target;
                 _fromTarget = _target getDir _cram;
-                _dirTarget = direction _target;
 
-                if(_dirTarget < _fromTarget + 25 && _dirTarget > _fromTarget - 25 && ((getPos _target) # 2) > 20 && alive _target) then {
-                  _targetTime = time + 0.5;
-                  while{alive _cram && alive _target && _targetTime > time} do {
+            if(_dirTarget < _fromTarget + 25 && _dirTarget > _fromTarget - 25 && ((getPos _target) select 2) > 20 && alive _target && ( (_cram distance _target) < _oldDistance ) )then{
+            while{alive _cram && alive _target}do{
                     _cram doWatch _target;
-                    if((_cram weaponDirection (currentWeapon _cram)) # 2 > 0.15) then {
+              if((_cram weaponDirection (currentWeapon _cram)) select 2 > 0.15)then{
                       _cram fireAtTarget[_target,(currentWeapon _cram)];
-                      sleep 0.5
-                    }
-                  }
+              };
+            };
                 };
 
-                if(alive _target && alive _cram && _target distance _cram < _range && _target distance _cram > 40 && (getPos _target) # 2 > 10)then{
+          if(alive _target && alive _cram && _target distance _cram < _range && _target distance _cram > 40 && (getPos _target) # 2 > 10 && ( (_cram distance _target) < _oldDistance))then{
                   _null = [_target,_cram]spawn{
                       private["_target","_cram","_expPos","_exp"];
                       _target = _this # 0;
@@ -42,8 +41,6 @@ while{ alive _cram } do {
                   }
                 }
             }
-        };
-        sleep 1
-    } else { sleep 5 }
+    } else { sleep 0.1 }
 }
 
