@@ -7,7 +7,6 @@ while {!WF_GameOver} do {
         // get team commander
         _commanderGroup = (_side) Call WFCO_FNC_GetCommanderTeam;
 
-        diag_log format ['fn_aiCommander.sqf: _commanderGroup - %1', _commanderGroup];
         if(isNull _commanderGroup) then {
             // let's run ai commander for current side
 
@@ -19,7 +18,6 @@ while {!WF_GameOver} do {
 
                 // get high command groups
                 _highCommandGroups = [_side] call WFCO_FNC_getHighCommandGroups;
-                diag_log format ['fn_aiCommander.sqf: _highCommandGroups - %1', _highCommandGroups];
                 if(count _highCommandGroups > 0) then {
                     // time to give orders for HC groups
                     {
@@ -32,13 +30,11 @@ while {!WF_GameOver} do {
                         {
                             if ((_x getVariable 'sideID') != _sideId) then {_enemyTowns pushBackUnique _x}
                         } forEach towns;
-                        diag_log format ['fn_aiCommander.sqf: _enemyTowns - %1', _enemyTowns];
 
                         _sortedTowns = [];
                         if (count _enemyTowns > 0) then {
                             _sortedTowns = [getPosATL (leader _group), _enemyTowns] Call WFCO_FNC_SortByDistance;
                         };
-                        diag_log format ['fn_aiCommander.sqf: _sortedTowns - %1', _sortedTowns];
 
                         [_group, true, [[_sortedTowns # 0, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
                     } forEach _highCommandGroups
@@ -54,8 +50,6 @@ while {!WF_GameOver} do {
                 _hcAllowedGroupAmount = WF_C_HIGH_COMMAND_MIN_GROUP_AMOUNT + ( (((_side) call WFCO_FNC_GetSideUpgrades) # WF_UP_HC_GROUP_AMOUNT) * 2 );
                 _freeHcGroupsAmount = _hcAllowedGroupAmount - (count _highCommandGroups);
 
-                diag_log format ['fn_aiCommander.sqf: _freeHcGroupsAmount - %1', _freeHcGroupsAmount];
-                diag_log format ['fn_aiCommander.sqf: _factories - %1', count _factories];
                 if (_freeHcGroupsAmount > 0 && count _factories > 0) then {
                     // define types of HC groups to be ordered
                     _generalGroupTemplates = missionNamespace getVariable Format["WF_%1AITEAMTEMPLATES", _side];
@@ -66,7 +60,6 @@ while {!WF_GameOver} do {
                     for "_i" from 1 to _freeHcGroupsAmount do {
                             _factory = _factories # (floor random (count _factories));
                             _structureType = _factory getVariable ['wf_structure_type', ''];
-                            diag_log format ['fn_aiCommander.sqf: _structureType - %1', _structureType];
 
                             // ordering hc group
                             _currentSideUpgradeLevel = 0;
