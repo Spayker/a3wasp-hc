@@ -18,7 +18,7 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
                 [_x, _unitGroup, _position, _sideID] Call WFCO_FNC_CreateUnit;
                 [str _side,'UnitsCreated',1] Call WFCO_FNC_UpdateStatistics;
             } else {
-                _vehicle = [_x, _position, _sideID, 0, false, nil, nil, nil] Call WFCO_FNC_CreateVehicle;
+                _vehicle = [_x, _position, _sideID, 0, true, nil, nil, nil] Call WFCO_FNC_CreateVehicle;
                 _unitGroup reveal _vehicle;
                 createVehicleCrew _vehicle;
                 [str _side,'UnitsCreated',1] Call WFCO_FNC_UpdateStatistics;
