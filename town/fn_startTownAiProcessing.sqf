@@ -31,6 +31,8 @@ for "_k" from 0 to ((count towns) - 1) step 1 do {
 	sleep 0.01;
 };
 
+waitUntil{count towns == totalTowns};
+
 _procesAiTowns = {
    towns = towns - [objNull];
    for "_i" from 0 to ((count towns) - 1) step 1 do {
@@ -44,7 +46,7 @@ _procesAiTowns = {
            _infGroups = [];
            _vehGroups = [];
 
-           _sideID = _town getVariable ["sideID", WF_C_GUER_ID];
+           _sideID = _town getVariable "sideID";
                _detected = (_town nearEntities ["AllVehicles", (_town getVariable "range") * 1.5]) unitsBelowHeight 20;
                _side = (_sideID) call WFCO_FNC_GetSideFromID;
                _enemies = 0;

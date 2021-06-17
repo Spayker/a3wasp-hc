@@ -5,7 +5,7 @@ _activeEnemies = 0;
 _force = 0;
 _lastUp = 0;
 _newSID = -1;
-_newSide = civilian;
+_newSide = nil;
 _town_camps_capture_rate = missionNamespace getVariable "WF_C_CAMPS_CAPTURE_RATE_MAX";
 
 _town_capture_rate = missionNamespace getVariable 'WF_C_TOWNS_CAPTURE_RATE';
@@ -26,6 +26,8 @@ for "_j" from 0 to ((count towns) - 1) step 1 do {
 	sleep 0.01;
 };
 
+waitUntil{count towns == totalTowns};
+
 _procesTowns = {
     params ["_isTimeToUpdateSuppluys"];
     _towns = towns - [objNull];
@@ -37,7 +39,7 @@ _procesTowns = {
             _maxSupplyValue = _location getVariable "maxSupplyValue";
             _startingSupplyValue = _location getVariable "startingSupplyValue";
             _initialStartingSupplyValue = _location getVariable "initialStartSupplyValue";
-            _sideID = _location getVariable ["sideID", WF_C_GUER_ID];
+            _sideID = _location getVariable "sideID";
             _side = (_sideID) Call WFCO_FNC_GetSideFromID;
             _objects = (_location nearEntities[WF_C_ALL_MAN_VEHICLE_KINDS_NO_STATIC, 	WF_C_TOWNS_CAPTURE_RANGE]) unitsBelowHeight 10;
 
