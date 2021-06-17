@@ -27,11 +27,6 @@ if(_health <= 0 && _master getVariable ["wf_site_alive", true]) then {
 
 
     [_master] call WFHC_FNC_BuildingKilled;
-
-    _side = _master getVariable "wf_side";
-    if (_side == resistance) then {
-        [_side, getPosAtl _master] spawn WFCO_fnc_cleanResBaseArea
-    }
 };
 
 _damage
