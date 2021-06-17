@@ -37,7 +37,7 @@ _procesTowns = {
             _maxSupplyValue = _location getVariable "maxSupplyValue";
             _startingSupplyValue = _location getVariable "startingSupplyValue";
             _initialStartingSupplyValue = _location getVariable "initialStartSupplyValue";
-            _sideID = _location getVariable ["sideID", WF_C_CIV_ID];
+            _sideID = _location getVariable ["sideID", WF_C_GUER_ID];
             _side = (_sideID) Call WFCO_FNC_GetSideFromID;
             _objects = (_location nearEntities[WF_C_ALL_MAN_VEHICLE_KINDS_NO_STATIC, 	WF_C_TOWNS_CAPTURE_RANGE]) unitsBelowHeight 10;
 
@@ -47,9 +47,6 @@ _procesTowns = {
 
             _activeEnemies = 0;
             _friendlySides = [];
-            if(_sideId == WF_C_CIV_ID) then {
-                _activeEnemies = [_objects, [_side]] call WFCO_FNC_GetAreaEnemiesCount
-            } else {
             _logic = (_side) Call WFCO_FNC_GetSideLogic;
             _friendlySides = _logic getVariable ["wf_friendlySides", []];
 
@@ -57,10 +54,8 @@ _procesTowns = {
                 _activeEnemies = [_objects, _friendlySides] call WFCO_FNC_GetAreaEnemiesCount
             } else {
                 _activeEnemies = [_objects, [_side]] call WFCO_FNC_GetAreaEnemiesCount
-                }
             };
 
-            if(_sideId != WF_C_CIV_ID) then {
             if (_town_supply_time) then {
                     if (_isTimeToUpdateSuppluys) then {
                         _increaseOf = 1;
@@ -106,8 +101,8 @@ _procesTowns = {
                         };
                         _location setVariable ["supplyVehicleTimeCheck", time + _supplyTruckTimeCheckDelay, true];
                     }
-                }
             };
+
 
             if(_west > 0 || _east > 0 || _resistance > 0) then {
                 _skip = false;
@@ -155,7 +150,7 @@ _procesTowns = {
 
                     if ((_side in _friendlySides) && (_newSide in _friendlySides)) then {} else {
 
-                        if (_activeEnemies > 0 && time > _timeAttacked && _sideID != WF_C_CIV_ID) then {
+                        if (_activeEnemies > 0 && time > _timeAttacked) then {
                             _timeAttacked = time + 60;
                             [_side, "IsUnderAttack", ["Town", _location]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
                         };
@@ -173,10 +168,8 @@ _procesTowns = {
                     _location setVariable ["captureTime",time];
                     [format [":homes: town **%1** was captured by %2%3 from %4%5", _location, _newSide Call WFCO_FNC_GetSideFLAG, _newSide, _side Call WFCO_FNC_GetSideFLAG, _side]] Call WFDC_FNC_LogContent;
 
-                    if(_sideId != WF_C_CIV_ID) then {
                                 if (missionNamespace getVariable Format ["WF_%1_PRESENT", _side]) then {
                                     [_side, "Lost", _location] remoteExecCall ["WFSE_FNC_SideMessage", 2]
-                        }
                     };
 
                     if (missionNamespace getVariable Format ["WF_%1_PRESENT",_newSide]) then {
@@ -184,9 +177,7 @@ _procesTowns = {
                     };
 
                     _location setVariable ["sideID",_newSID,true];
-                    if(_sideId != WF_C_CIV_ID) then {
-                        [_location, _location getVariable "name", _sideID, _newSID] remoteExecCall ["WFCL_FNC_TownCaptured", _side]
-                    };
+                    [_location, _location getVariable "name", _sideID, _newSID] remoteExecCall ["WFCL_FNC_TownCaptured", _side];
                     [_location, _location getVariable "name", _sideID, _newSID] remoteExecCall ["WFCL_FNC_TownCaptured", _newSide];
                     [_location, _sideID, _newSID] remoteExecCall ["WFSE_FNC_SetCampsToSide", 2];
 
