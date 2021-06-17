@@ -47,7 +47,9 @@ _procesTowns = {
 
             _activeEnemies = 0;
             _friendlySides = [];
-            if(_sideId != WF_C_CIV_ID) then {
+            if(_sideId == WF_C_CIV_ID) then {
+                _activeEnemies = [_objects, [_side]] call WFCO_FNC_GetAreaEnemiesCount
+            } else {
             _logic = (_side) Call WFCO_FNC_GetSideLogic;
             _friendlySides = _logic getVariable ["wf_friendlySides", []];
 
@@ -153,7 +155,7 @@ _procesTowns = {
 
                     if ((_side in _friendlySides) && (_newSide in _friendlySides)) then {} else {
 
-                        if (_activeEnemies > 0 && time > _timeAttacked && (missionNamespace getVariable Format ["WF_%1_PRESENT",_side])) then {
+                        if (_activeEnemies > 0 && time > _timeAttacked && _sideID != WF_C_CIV_ID) then {
                             _timeAttacked = time + 60;
                             [_side, "IsUnderAttack", ["Town", _location]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
                         };
