@@ -50,11 +50,16 @@ while {!WF_GameOver} do {
                         // group has no waypoints so we can assign new ones
                         _enemyTowns = [];
                         {
-                                if ((_x getVariable 'sideID') != _sideId) then {
+                                _townSideId = _x getVariable 'sideID';
                                     _friendlySides = _logic getVariable ["wf_friendlySides", []];
+
                                     if (count _friendlySides > 0) then {
-                                        if !(_side in _friendlySides) then { _enemyTowns pushBackUnique _x }
+                                    _townSide = _townSideId Call WFCO_FNC_GetSideFromID;
+                                    if !(_townSide in _friendlySides) then {
+                                        _enemyTowns pushBackUnique _x
+                                    }
                                     } else {
+                                    if (_townSideId != _sideId) then {
                                         _enemyTowns pushBackUnique _x
                                     }
                                 }
