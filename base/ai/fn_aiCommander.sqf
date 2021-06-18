@@ -4,14 +4,36 @@ while {!WF_GameOver} do {
     sleep 90;
     {
         _side = _x;
+        _logic = (_side) Call WFCO_FNC_GetSideLogic;
+        _isFirstLostTeam = _logic getVariable ["wf_isFirstOutTeam", false];
+
+        if (_isFirstLostTeam) then {
+            _highCommandGroups = [_side] call WFCO_FNC_getHighCommandGroups;
+            if(count _highCommandGroups > 0) then {
+                {
+                    _destroy = units _x;
+                    _vehicles = [];
+                    {
+                        if !(isPlayer _x) then {
+                            if (vehicle _x != _x) then { _vehicles pushBackUnique (vehicle _x) };
+                            if (_x isKindOf 'Man') then {removeAllWeapons _x};
+                            deleteVehicle _x
+                        }
+                    } forEach _destroy;
+                    { _x setDammage 1 } forEach _vehicles;
+                    _x setVariable ["isHighCommandPurchased", false, true];
+                    deleteGroup _x;
+                } forEach _highCommandGroups
+            }
+        } else {
         // get team commander
         _commanderGroup = (_side) Call WFCO_FNC_GetCommanderTeam;
-
+            diag_log format ['fn_aiCommander.sqf: _commanderGroup - %1', _commanderGroup];
         if(isNull _commanderGroup) then {
             // let's run ai commander for current side
 
-            [_side] spawn {
-                params ['_side'];
+                [_side, _logic] spawn {
+                    params ['_side', '_logic'];
                 private ['_sideId', '_factories','_highCommandGroups','_waypoints'];
 
                 _sideId = _side Call WFCO_FNC_GetSideID;
@@ -28,7 +50,14 @@ while {!WF_GameOver} do {
                         // group has no waypoints so we can assign new ones
                         _enemyTowns = [];
                         {
-                            if ((_x getVariable 'sideID') != _sideId) then {_enemyTowns pushBackUnique _x}
+                                if ((_x getVariable 'sideID') != _sideId) then {
+                                    _friendlySides = _logic getVariable ["wf_friendlySides", []];
+                                    if (count _friendlySides > 0) then {
+                                        if !(_side in _friendlySides) then { _enemyTowns pushBackUnique _x }
+                                    } else {
+                                        _enemyTowns pushBackUnique _x
+                                    }
+                                }
                         } forEach towns;
 
                         _sortedTowns = [];
@@ -121,6 +150,9 @@ while {!WF_GameOver} do {
                 [_side] remoteExecCall ["WFSE_FNC_aiComUpgrade", 2];
             }
         }
+        }
+
+
     } forEach WF_PRESENTSIDES
 }
 
