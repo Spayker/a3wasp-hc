@@ -25,6 +25,8 @@ while{ alive _cram } do {
             while{alive _cram && alive _target}do{
                     _cram doWatch _target;
               if((_cram weaponDirection (currentWeapon _cram)) select 2 > 0.15)then{
+                _ammoCram = _cram ammo (currentMuzzle (gunner _cram));
+                if(_ammoCram == 0) then { _cram setVehicleAmmo 1 };
                       _cram fireAtTarget[_target,(currentWeapon _cram)];
               };
             };
@@ -41,6 +43,10 @@ while{ alive _cram } do {
                   }
                 }
             }
-    } else { sleep 0.1 }
+    } else {
+        _ammoCram = _cram ammo (currentMuzzle (gunner _cram));
+        if(_ammoCram > 0) then { _cram setVehicleAmmo 0 };
+        sleep 0.1
+    }
 }
 
