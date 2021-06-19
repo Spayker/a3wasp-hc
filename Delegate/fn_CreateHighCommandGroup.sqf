@@ -67,8 +67,10 @@ params ["_player", "_selectedGroupTemplate", "_position", "_direction"];
     if (_isVehicle) then {
 		_unitGroup setFormation "FILE";
 		_unitGroup setBehaviour "COMBAT";
+		_unitGroup setVariable ["isHighCommandInfantry",false, true];
 	} else {
 		_unitGroup setBehaviour "AWARE";
+		_unitGroup setVariable ["isHighCommandInfantry",true, true];
 	};
     _unitGroup setSpeedMode "FULL";
     _unitGroup enableAttack false;
