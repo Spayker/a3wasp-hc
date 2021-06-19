@@ -85,7 +85,7 @@ if (isPlayer _killer) then {
     };
 
     _logik setVariable ["wf_structures", (_logik getVariable "wf_structures") - [_structure, objNull], true];
-        [_side, "Destroyed", ["Base", _structure]] spawn WFSE_FNC_SideMessage
+    [_side, "Destroyed", ["Base", _structure]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
 };
 
 

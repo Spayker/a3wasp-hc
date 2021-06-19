@@ -79,7 +79,8 @@ if(missionNamespace getVariable[format["WF_AutoWallConstructingEnabled_%1", _pla
             }
         }
             };
-    [_side, "Constructed", ["Base", _site]] remoteExecCall ["WFSE_FNC_SideMessage", 2];
+
+    if!(_isStartBase) then { [_side, "Constructed", ["Base", _site]] remoteExecCall ["WFSE_FNC_SideMessage", 2] };
 
 if (!isNull _site) then {
 	_logik setVariable ["wf_structures", (_logik getVariable "wf_structures") + [_site], true];
