@@ -71,6 +71,17 @@ while {!WF_GameOver} do {
                         };
 
                         [_group, true, [[_sortedTowns # 0, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
+
+                            _isInfantry = _group getVariable ["isHighCommandInfantry", false];
+                            if(_isInfantry) then {
+                                _waypoints = waypoints _group;
+                                if (count _waypoints > 0) then {
+                                    _group setBehaviour "SAFE";
+                                    _group setCombatMode  "RED";
+
+                                    { _x setWaypointBehaviour 'AWARE' } forEach _waypoints
+                                }
+                            }
                     } forEach _highCommandGroups
                 };
 
