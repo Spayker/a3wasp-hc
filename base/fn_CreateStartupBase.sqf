@@ -41,7 +41,11 @@ if(!(isNil '_template'))then{
                     _logic setVariable ["side", _side ];
                     _logik setVariable ["wf_basearea", _areas + [_logic], true];
 
-                [_logic, _side,_logik,_areas] remoteExecCall ["WFCL_FNC_RequestBaseArea", _side, true];
+                // [_logic, _side,_logik,_areas] remoteExecCall ["WFCL_FNC_RequestBaseArea", _side, true];
+                _logic  setVariable ['avail',missionNamespace getVariable "WF_C_BASE_AV_FORTIFICATIONS", true];
+                _logic  setVariable ['availStaticDefense',missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX", true];
+                _logic  setVariable ["side", _side, true];
+                _logik setVariable ["wf_basearea", _areas + [_logic], true];
 
                 _toWorld = _origin modelToWorld _relPos;
                 //--- HQ init.

@@ -44,7 +44,7 @@ if (!_deployed) then {
     _mhqs pushBackUnique _site;
     _logik setVariable ["wf_hq", _mhqs, true];
 	
-	[_site,true,_sideID] remoteExec ["WFCL_fnc_initBaseStructure", 0, true];
+	[_site,true,_sideID] remoteExec ["WFCL_fnc_initBaseStructure", _side, true];
 	
         [_side,"Deployed", ["Base", _site]] remoteExecCall ["WFSE_FNC_SideMessage", 2];
 
@@ -72,7 +72,11 @@ if (!_deployed) then {
 			_logic setVariable ["DefenseTeam", createGroup [_side, true]];
             (_logic getVariable "DefenseTeam") setVariable ["wf_persistent", true];
 	        _logic setVariable ["weapons",missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX_AI"];
-            [_logic, _side,_logik,_areas] remoteExecCall ["WFCL_FNC_RequestBaseArea",_side, true];
+            // [_logic, _side,_logik,_areas] remoteExecCall ["WFCL_FNC_RequestBaseArea",_side, true];
+            _logic  setVariable ['avail',missionNamespace getVariable "WF_C_BASE_AV_FORTIFICATIONS", true];
+            _logic  setVariable ['availStaticDefense',missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX", true];
+            _logic  setVariable ["side", _side, true];
+            _logik setVariable ["wf_basearea", _areas + [_logic], true]
 		};
 	};
 	
