@@ -119,9 +119,9 @@ while {!WF_GameOver} do {
                                     if (_currentSideUpgradeLevel >= _templateUpgradeLevel) then {
                                         _selectedGroupTemplate = _generalGroupTemplates # _forEachIndex;
                                         _shallAdd = true;
-                                        if (_selectedGroupTemplate in WF_ADV_ARTILLERY) then { _shallAdd = false };
+                                            if ((_selectedGroupTemplate # 0) in WF_ADV_ARTILLERY) then { _shallAdd = false };
 
-                                        if(_selectedGroupTemplate in (missionNamespace getVariable [format["WF_%1REPAIRTRUCKS", _side], []])) then {
+                                            if((_selectedGroupTemplate # 0) in (missionNamespace getVariable [format["WF_%1REPAIRTRUCKS", _side], []])) then {
                                             _shallAdd = false
                                         };
 
