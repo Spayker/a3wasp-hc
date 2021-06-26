@@ -1,16 +1,19 @@
 params ['_side', '_startPosition', '_template'];
 
 [_side, _startPosition, _template] spawn {
-    params ['_side', '_startPosition', '_template'];
+
+    Params ['_side', '_startPosition', '_template'];
 Private ["_created","_current","_dir","_i","_object","_origin","_relDir","_relPos","_skip","_template","_toplace","_toWorld"];
+
     sleep 5;
-    _logic = nil;
+    _newBaseArea = nil;
 _sideID = (_side) Call WFCO_FNC_GetSideID;
 _origin = createVehicle ["Land_HelipadEmpty_F", _startPosition, [], 0, "NONE"];
 _dir = getDir _origin;
 
 _toplace = objNull;
 _vehicleStartPositions = [];
+    _additionalBaseStructurePositions = [];
 _shallCreateBaseArea = true;
 _skip = true;
 
@@ -31,21 +34,19 @@ if(!(isNil '_template'))then{
                 _areas = _logik getVariable ["wf_basearea", []];
 
                 _grp = createGroup sideLogic;
-                _logic = _grp createUnit ["Logic", _startPosition ,[],0,"NONE"];
-                _logic setVariable ["DefenseTeam", createGroup [_side, true]];
-                (_logic getVariable "DefenseTeam") setVariable ["wf_persistent", true];
-                _logic setVariable ["weapons",missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX_AI"];
+                    _newBaseArea = _grp createUnit ["Logic", _startPosition ,[],0,"NONE"];
+                    _newBaseArea setVariable ["DefenseTeam", createGroup [_side, true]];
+                    (_newBaseArea getVariable "DefenseTeam") setVariable ["wf_persistent", true];
+                    _newBaseArea setVariable ["weapons",missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX_AI"];
+                    _newBaseArea setVariable ['avail', missionNamespace getVariable "WF_C_BASE_AV_FORTIFICATIONS"];
+                    _newBaseArea setVariable ['availStaticDefense', missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX"];
+                    _newBaseArea setVariable ["side", _side ];
+                    _logik setVariable ["wf_basearea", _areas + [_newBaseArea], true];
 
-                    _logic setVariable ['avail', missionNamespace getVariable "WF_C_BASE_AV_FORTIFICATIONS"];
-                    _logic setVariable ['availStaticDefense', missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX"];
-                    _logic setVariable ["side", _side ];
-                    _logik setVariable ["wf_basearea", _areas + [_logic], true];
-
-                // [_logic, _side,_logik,_areas] remoteExecCall ["WFCL_FNC_RequestBaseArea", _side, true];
-                _logic  setVariable ['avail',missionNamespace getVariable "WF_C_BASE_AV_FORTIFICATIONS", true];
-                _logic  setVariable ['availStaticDefense',missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX", true];
-                _logic  setVariable ["side", _side, true];
-                _logik setVariable ["wf_basearea", _areas + [_logic], true];
+                    _newBaseArea  setVariable ['avail',missionNamespace getVariable "WF_C_BASE_AV_FORTIFICATIONS", true];
+                    _newBaseArea  setVariable ['availStaticDefense',missionNamespace getVariable "WF_C_BASE_DEFENSE_MAX", true];
+                    _newBaseArea  setVariable ["side", _side, true];
+                    _logik setVariable ["wf_basearea", _areas + [_newBaseArea], true];
 
                 _toWorld = _origin modelToWorld _relPos;
                 //--- HQ init.
@@ -80,6 +81,10 @@ if(!(isNil '_template'))then{
             if (_object == 'Land_JumpTarget_F') then {
                 _toWorld = _origin modelToWorld _relPos;
                 _vehicleStartPositions pushBack [_toWorld # 0, _toWorld # 1, 5];
+                    _skip = true
+                };
+                if (_object == 'Land_HelipadCircle_F') then {
+                    _additionalBaseStructurePositions pushBack [(_origin modelToWorld _relPos), _relDir];
                     _skip = true
             }
         };
@@ -126,7 +131,9 @@ switch _side do{
 
     _objectsToFind = WF_C_GARBAGE_OBJECTS + WF_C_STATIC_DEFENCE_FOR_COMPOSITIONS;
     _objects = nearestObjects [_startPosition, _objectsToFind, 150];
-    _logic setVariable ['avail', count _objects, true];
+    _newBaseArea setVariable ['avail', count _objects, true];
+    _newBaseArea setVariable ['additionalBaseStructurePositions', _additionalBaseStructurePositions];
+    _newBaseArea setVariable ['baseDirection', _dir];
 
 deleteVehicle _origin;
 }

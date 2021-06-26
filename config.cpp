@@ -38,6 +38,10 @@ class CfgFunctions {
         class HcBaseAi {
             file = "wasphc\base\ai";
             class aiCommander {};
+            class aiComSetWaypoint {};
+            class aiBuildHcGroups {};
+            class aiCleanUpHcGroups {};
+            class aiBaseBuildStructures {};
         };
 
         class HcBaseConstruction {

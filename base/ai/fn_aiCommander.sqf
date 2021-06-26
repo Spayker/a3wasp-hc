@@ -8,23 +8,7 @@ while {!WF_GameOver} do {
         _isFirstLostTeam = _logic getVariable ["wf_isFirstOutTeam", false];
 
         if (_isFirstLostTeam) then {
-            _highCommandGroups = [_side] call WFCO_FNC_getHighCommandGroups;
-            if(count _highCommandGroups > 0) then {
-                {
-                    _destroy = units _x;
-                    _vehicles = [];
-                    {
-                        if !(isPlayer _x) then {
-                            if (vehicle _x != _x) then { _vehicles pushBackUnique (vehicle _x) };
-                            if (_x isKindOf 'Man') then {removeAllWeapons _x};
-                            deleteVehicle _x
-                        }
-                    } forEach _destroy;
-                    { _x setDammage 1 } forEach _vehicles;
-                    _x setVariable ["isHighCommandPurchased", false, true];
-                    deleteGroup _x;
-                } forEach _highCommandGroups
-            }
+           [_side] call WFHC_fnc_aiCleanUpHcGroups
         } else {
         // get team commander
         _commanderGroup = (_side) Call WFCO_FNC_GetCommanderTeam;
@@ -40,135 +24,23 @@ while {!WF_GameOver} do {
 
                 // get high command groups
                 _highCommandGroups = [_side] call WFCO_FNC_getHighCommandGroups;
+                    diag_log format ['fn_aiCommander.sqf: _highCommandGroups - %1', _highCommandGroups];
                 if(count _highCommandGroups > 0) then {
                     // time to give orders for HC groups
-                    {
-                        _group = _x;
-                        // get group waypoints
-                        _group Call WFCO_fnc_aiWpRemove;
-
-                        // group has no waypoints so we can assign new ones
-                        _enemyTowns = [];
-                        {
-                                _townSideId = _x getVariable 'sideID';
-                                    _friendlySides = _logic getVariable ["wf_friendlySides", []];
-
-                                    if (count _friendlySides > 0) then {
-                                    _townSide = _townSideId Call WFCO_FNC_GetSideFromID;
-                                    if !(_townSide in _friendlySides) then {
-                                        _enemyTowns pushBackUnique _x
-                                    }
-                                    } else {
-                                    if (_townSideId != _sideId) then {
-                                        _enemyTowns pushBackUnique _x
-                                    }
-                                }
-                        } forEach towns;
-
-                        _sortedTowns = [];
-                        if (count _enemyTowns > 0) then {
-                            _sortedTowns = [getPosATL (leader _group), _enemyTowns] Call WFCO_FNC_SortByDistance;
+                        { [_x, _logic] call WFHC_fnc_aiComSetWaypoint } forEach _highCommandGroups
                         };
 
-                        [_group, true, [[_sortedTowns # 0, 'SAD', 100, 60, "", []]]] Call WFCO_fnc_aiWpAdd;
-
-                            _isInfantry = _group getVariable ["isHighCommandInfantry", false];
-                            if(_isInfantry) then {
-                                _waypoints = waypoints _group;
-                                if (count _waypoints > 0) then {
-                                    _group setBehaviour "SAFE";
-                                    _group setCombatMode  "RED";
-
-                                    { _x setWaypointBehaviour 'AWARE' } forEach _waypoints
-                                }
-                            }
-                    } forEach _highCommandGroups
-                };
-
-                // get available production structures
-                _factories = [];
-                {
-                    _factories = _factories + ([_side, missionNamespace getVariable format ["WF_%1%2TYPE", str _side, _x], (_side Call WFCO_FNC_GetSideStructures)] call WFCO_FNC_GetFactories);
-                } forEach WF_C_BASE_PRODUCTION_STRUCTURE_NAMES;
+                    // deploy additional structures
+                    [_side, _logic] call WFHC_fnc_aiBaseBuildStructures;
 
                 // define how many groups can be ordered
-                _hcAllowedGroupAmount = WF_C_HIGH_COMMAND_MIN_GROUP_AMOUNT + ( (((_side) call WFCO_FNC_GetSideUpgrades) # WF_UP_HC_GROUP_AMOUNT) * 2 );
-                _freeHcGroupsAmount = _hcAllowedGroupAmount - (count _highCommandGroups);
-
-                if (_freeHcGroupsAmount > 0 && count _factories > 0) then {
-                    // define types of HC groups to be ordered
-                    _generalGroupTemplates = missionNamespace getVariable Format["WF_%1AITEAMTEMPLATES", _side];
-                    _groupTypes = missionNamespace getVariable Format["WF_%1AITEAMTYPES", _side];
-                    _requiredGroupUpgrades = missionNamespace getVariable Format["WF_%1AITEAMUPGRADES", _side];
-                    _upgrades = (_side) Call WFCO_FNC_GetSideUpgrades;
-
-                    for "_i" from 1 to _freeHcGroupsAmount do {
-                            _factory = _factories # (floor random (count _factories));
-                            _structureType = _factory getVariable ['wf_structure_type', ''];
-
-                            // ordering hc group
-                            _currentSideUpgradeLevel = 0;
-                            switch (_structureType) do {
-                                case 'Barracks': {
-                                    _currentSideUpgradeLevel = _upgrades # WF_UP_BARRACKS;
-                                };
-                                case 'Light': {
-                                    _currentSideUpgradeLevel = _upgrades # WF_UP_LIGHT;
-                                };
-                                case 'Heavy': {
-                                    _currentSideUpgradeLevel = _upgrades # WF_UP_HEAVY;
-                                };
-                                case 'Aircraft': {
-                                    _currentSideUpgradeLevel = _upgrades # WF_UP_AIR;
-                                };
-                            };
-
-                            _filteredTemplates = [];
-                            {
-                                if (_x == _structureType) then {
-                                    _templateUpgradeLevel = _requiredGroupUpgrades # _forEachIndex;
-                                    if (_currentSideUpgradeLevel >= _templateUpgradeLevel) then {
-                                        _selectedGroupTemplate = _generalGroupTemplates # _forEachIndex;
-                                        _shallAdd = true;
-                                            if ((_selectedGroupTemplate # 0) in WF_ADV_ARTILLERY) then { _shallAdd = false };
-
-                                            if((_selectedGroupTemplate # 0) in (missionNamespace getVariable [format["WF_%1REPAIRTRUCKS", _side], []])) then {
-                                            _shallAdd = false
-                                        };
-
-                                        if(_shallAdd) then {
-                                            _filteredTemplates pushBack (_selectedGroupTemplate)
-                                        }
-                                    }
-                                }
-                            } forEach _groupTypes;
-
-                            if (count _filteredTemplates > 0) then {
-                                _selectedGroupTemplate = selectRandom _filteredTemplates;
-                                _spawnPosition = _factory getVariable 'respawnPoint';
-                                _position = [_spawnPosition, 30] call WFCO_fnc_getEmptyPosition;
-                                _factoryPosition = getPos _factory;
-                                _direction = -((((_position # 1) - (_factoryPosition # 1)) atan2 ((_position # 0) - (_factoryPosition # 0))) - 90);
-                                [_side, _selectedGroupTemplate, _position, _direction] call WFHC_fnc_CreateHighCommandGroup;
-
-                                _commonTime = 0;
-                                {
-                                    _firstClassName = _selectedGroupTemplate # 0;
-                                    _firstUnitConfig = missionNamespace getVariable _firstClassName;
-                                    _commonTime = _commonTime + (_firstUnitConfig # QUERYUNITTIME)
-                                } foreach _selectedGroupTemplate;
-                                sleep _commonTime
-                            }
-                    }
-                };
+                    [_side] call WFHC_fnc_aiBuildHcGroups;
 
                 // perform upgrades
                 [_side] remoteExecCall ["WFSE_FNC_aiComUpgrade", 2];
             }
         }
         }
-
-
     } forEach WF_PRESENTSIDES
 }
 
