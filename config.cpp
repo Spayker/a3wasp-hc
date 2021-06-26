@@ -42,6 +42,7 @@ class CfgFunctions {
             class aiBuildHcGroups {};
             class aiCleanUpHcGroups {};
             class aiBaseBuildStructures {};
+            class aiRunTacticalFeatures {};
         };
 
         class HcBaseConstruction {

@@ -1,4 +1,4 @@
-Params ['_side'];
+Params ['_side', '_highCommandGroups'];
 Private ['_generalGroupTemplates', '_groupTypes', '_requiredGroupUpgrades', '_upgrades', '_factory', '_i', '_structureType', '_currentSideUpgradeLevel', '_filteredTemplates', '_templateUpgradeLevel', '_currentSideUpgradeLevel', '_selectedGroupTemplate', '_shallAdd', '_spawnPosition', '_position', '_factoryPosition', '_direction', '_commonTime', '_firstClassName', '_firstUnitConfig', '_hcAllowedGroupAmount', '_freeHcGroupsAmount', '_factories'];
 
 // get available production structures

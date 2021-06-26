@@ -30,11 +30,15 @@ while {!WF_GameOver} do {
                         { [_x, _logic] call WFHC_fnc_aiComSetWaypoint } forEach _highCommandGroups
                         };
 
+                    // run tactical features
+                    [_side, _logic, _highCommandGroups] call WFHC_fnc_aiRunTacticalFeatures;
+
                     // deploy additional structures
                     [_side, _logic] call WFHC_fnc_aiBaseBuildStructures;
 
+
                 // define how many groups can be ordered
-                    [_side] call WFHC_fnc_aiBuildHcGroups;
+                    [_side, _highCommandGroups] call WFHC_fnc_aiBuildHcGroups;
 
                 // perform upgrades
                 [_side] remoteExecCall ["WFSE_FNC_aiComUpgrade", 2];
