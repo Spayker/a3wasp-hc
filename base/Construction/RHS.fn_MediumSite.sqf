@@ -78,7 +78,7 @@ if((missionNamespace getVariable[format["WF_AutoWallConstructingEnabled_%1", _pl
 
 if (!isNull _site) then {
 	_logik setVariable ["wf_structures", (_logik getVariable "wf_structures") + [_site], true];
-	[_site,false,_sideID] remoteExec ["WFCL_fnc_initBaseStructure", 0, true];
+	[_site,false,_sideID] remoteExec ["WFCL_fnc_initBaseStructure", _side, true];
 	
 	_site addEventHandler ["Hit", {
             params ["_unit"];
