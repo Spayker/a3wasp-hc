@@ -1,35 +1,15 @@
-params ["_master"];
-private ["_side", "_index", "_env", "_ex", "_smoke", "_fire", "_killer", "_killer_uid", "_killer_name", "_side_killer",
-"_teamkill", "_current", "_logik", "_bounty", "_desc", "_type", "_position", "_ruins", "_dmgbl", "_envPos"];
+params ["_structure"];
+private ["_side", "_index", "_killer", "_killer_uid", "_killer_name", "_side_killer",
+"_teamkill", "_current", "_logik", "_bounty", "_type"];
 
-_position = getPos _master;
-_side = _master getVariable "wf_side";
-_index = _master getVariable "wf_index";
-_desc = _master getVariable "wf_structure_desc";
-_type = _master getVariable "wf_structure_type";
-_killer = _master getVariable ["wf_instigator", objNull];
+_side = _structure getVariable "wf_side";
+_index = _structure getVariable "wf_index";
+_type = _structure getVariable "wf_structure_type";
+_killer = _structure getVariable ["wf_instigator", objNull];
 _killer_uid = "";
 
-_env = _master getVariable "wf_env";
-_dmgbl = _master getVariable "wf_dmgbl";
-
-//--removeAllEH from env objects. Then Destroy env objects--
-{
-    _x removeAllEventHandlers "Hit";
-    _x removeAllEventHandlers "HandleDamage";    
-} forEach _env;
-
-{
-    _x setDamage 1;
-
-    //--Create explosion, fire and smoke--
-    if((typeOf _x) in _dmgbl) then {
-        [_x] spawn WFSE_FNC_CreateDestructionEffect;
-    };
-} forEach _env;
-
-_master setDammage 1;
-[_master] spawn WFSE_FNC_CreateDestructionEffect;
+_structure setDammage 1;
+[_structure] spawn WFSE_FNC_CreateDestructionEffect;
 
 //--Determine if killer is in player squad--
 if(!isPlayer _killer) then {
@@ -73,8 +53,8 @@ if (isPlayer _killer) then {
 
             ["HeadHunterReceiveBounty", _killer_name, _bounty, _index, _side] remoteExecCall ["WFCL_FNC_LocalizeMessage",
                 _side_killer];
-
-            [_killer, score _killer + ceil(_bounty/100)] call WFSE_FNC_RequestChangeScore;
+				
+			[_killer, score _killer + ceil(_bounty/100)] call WFSE_FNC_RequestChangeScore;
         };
 
         _killer_name = format [" by %1**%2**%3", _side_killer call WFCO_FNC_GetSideFLAG, _killer_name,
@@ -88,36 +68,30 @@ if (isPlayer _killer) then {
 };
 
 //--Decrement buildings limit--
-if(_side != resistance) then {
     _logik = (_side) Call WFCO_FNC_GetSideLogic;
 
-    if (_index != -1) then {
-    	_current = _logik getVariable "wf_structures_live";
-    	_current set [_index - 1, (_current select (_index-1)) - 1];
-    	_logik setVariable ["wf_structures_live", _current, true];
+    if (_type == "Headquarters") then {
+        _mhqs = (_side) Call WFCO_FNC_GetSideHQ;
+        _mhqs = _mhqs - [_structure];
+
+        _logik setVariable ["wf_hq", _mhqs, true]
     };
 
-    _logik setVariable ["wf_structures", (_logik getVariable "wf_structures") - [_master, objNull], true];
+    if!(isNil '_index') then {
+        if (_index > 0) then {
+    	_current = _logik getVariable "wf_structures_live";
+    	_current set [_index - 1, (_current # (_index-1)) - 1];
+            _logik setVariable ["wf_structures_live", _current, true]
+    };
 
-    [_side, "Destroyed", ["Base", _master]] Spawn WFSE_FNC_SideMessage;
+    _logik setVariable ["wf_structures", (_logik getVariable "wf_structures") - [_structure, objNull], true];
+    [_side, "Destroyed", ["Base", _structure]] remoteExecCall ["WFSE_FNC_SideMessage", 2]
 };
 
-[_env, _master, _position] spawn {
-	params ['_env', '_master', '_position'];
-	//--Delete all ruins--
-	sleep WF_DELETE_RUINS_LAT;
-	//--Get attached objects and remove each of them--
-	{
-		deleteVehicle _x;
-	} forEach _env;
-	deleteVehicle _master;
-	_ruins = nearestObjects [_position, ["ruins"], 25];
 
-	//--Delete ruins--
-	{
-		deleteVehicle _x;
-	} forEach _ruins
+[_structure] spawn {
+    params ['_structure'];
+sleep WF_DELETE_RUINS_LAT;
+deleteVehicle _structure
 }
-
-
 

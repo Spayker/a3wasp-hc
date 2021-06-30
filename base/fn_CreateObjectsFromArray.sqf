@@ -1,5 +1,4 @@
 /*
-	File: objectMapper.sqf
 	Author: Joris-Jan van 't Land
 
 	Description:
@@ -33,18 +32,15 @@ private ["_newObjs"];
 private ["_cfgObjectComps", "_script"];
 _cfgObjectComps = configFile >> "CfgObjectCompositions";
 
-if (_objs isEqualType "") then 
-{
+if (_objs isEqualType "") then {
 	//Composition class was given.
 	_script = getText(_cfgObjectComps >> _objs >> "objectScript");
 	_objs = [];
 } 
-else 
-{
+else {
 	private ["_testSample"];
-	_testSample = _objs select 0;
-	if !(_testSample isEqualType []) then 
-	{
+	_testSample = _objs # 0;
+	if !(_testSample isEqualType []) then {
 		//Tag list was given.
 		private ["_queryTags"];
 		_queryTags = +_objs;
