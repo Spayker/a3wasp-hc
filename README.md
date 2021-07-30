@@ -1,4 +1,4 @@
-# ARMA3WARFARE_HC
+# A3 WASP WARFARE_HC
 Headless Client scripts designed to reduce server side lags and significant performance drops.
 
 ## Description
